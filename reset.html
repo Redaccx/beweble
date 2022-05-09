@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+<style>
+  body{
+
+    padding: 0px;
+    margin:0px ;
+    font-family: 'Montserrat Medium'
+}
+
+main {
+    width: 250px
+}
+
+.container,
+.feedbackContainer,
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center
+}
+
+.container {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+fieldset, .feedbackContainer {
+    border: rgb(192,192,192,0.1) 1px solid;
+    height: 340px;
+    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.12)
+}
+
+input[type = "email"] {
+    width: 340px;
+    margin-top: 8px;
+    padding: 2px 6px;
+    border: none;
+    background-color: #f7f7f7;
+    height: 40px;
+    outline-color: #2196f3;
+    font-size: 1rem
+}
+
+button {
+    float: right;
+    margin: 20px 47px 0px 0px;
+    padding: 10px 20px;
+    border-radius: 6px;
+    float: right;
+    background-color: #130f40;
+    color: white;
+    cursor: pointer
+    
+}
+
+.container div {
+    margin: 10px 40px;
+    position: relative
+}
+
+img {
+    width: 100px;
+    height: 100px;
+    margin: auto;
+    display: block
+}
+
+.reset-container div:first-of-type {   
+    width: 340px;
+    margin-top: 50px;
+}
+
+label {
+    position: absolute;
+    top: 56%;
+    left: 6px;
+    color: #505050
+}
+
+.focused-field {
+    animation-name: gainFocus;
+    animation-fill-mode: forwards;
+    animation-duration: 0.15s;
+    animation-timing-function: ease-out
+}
+
+@keyframes gainFocus {
+    0% {
+        top: 56%;
+        left: 6px;
+        color: #505050;
+        font-size: 1rem
+    }
+    100% {
+        top: 0%;
+        left: 0px;
+        color: #2196f3;
+        font-size: 0.9rem
+    }
+}
+
+.unfocused-field {
+    animation-name: loseFocus;
+    animation-fill-mode: forwards;
+    animation-duration: 0.15s;
+    animation-timing-function: ease-out
+}
+
+@keyframes loseFocus {
+    0% {
+        top: 0%;
+        left: 0px;
+        color: #2196f3;
+        font-size: 0.9rem
+    }
+    100% {
+        top: 56%;
+        left: 6px;
+        color: #505050;
+        font-size: 1rem
+    }
+}
+
+.initial-focused-field {
+    top: 0%;
+    left: 0px;
+    color: #2196f3;
+    font-size: 0.9rem
+}
+
+.initial-unfocused-field {
+    top: 56%;
+    left: 6px;
+    color: #505050;
+    font-size: 1rem
+}
+
+.feedbackContainer {
+    height: 300px;
+    width: 300px;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    display: none 
+}
+
+.feedbackIcon {
+    width: 70px;
+    height: 70px;
+    margin-bottom: 20px;
+}
+
+.success .feedbackIcon {
+    background-image: url('../img/success.svg');
+}
+
+.failure .feedbackIcon {
+    background-image: url('../img/failure.svg');
+}
+</style>
+<html>
+    <head>
+      <section class="container reset-container">
+          <fieldset>
+            <div>
+              <img src="https://l.top4top.io/p_23200ck361.jpg">
+        <title></title>
+        <script src="auth.js"></script>
+    </head>
+  <body>
+    <input type="email" placeholder="Email..." id="email_field" />
+      <button onclick="sendPasswordReset()"> Reset Password</button>
+      <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+  <script>
+    // Initialize Firebase
+    var config = {
+    apiKey: "AIzaSyAFPHSQdRugV6ngWGtPuUfSzBhS94D30hU",
+    authDomain: "reda-7d506.firebaseapp.com",
+    databaseURL: "",
+    projectId: "reda-7d506",
+    storageBucket: "reda-7d506.appspot.com",
+    messagingSenderId: "637395019512",
+    appId: "1:637395019512:web:1c7834e529eb90dcaf3d0d",
+    measurementId: "G-Q7H13D1YFC"
+    };
+    firebase.initializeApp(config);
+  </script>
+  </body>
+</html>
