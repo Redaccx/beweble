@@ -7,7 +7,7 @@ body{
     padding: 0px;
     margin: 0px;
     font-size: 16px;
-    color: #130f40;
+    color: #000;
     
     background-color: #fff;
     background-size: cover;
@@ -80,7 +80,7 @@ div h3{
 }
 
 div button{
-    background-color: #130f40;
+    background-color: #000;
     color: white;
     border: 0px  black;
     border-radius: 5px;
@@ -95,7 +95,7 @@ div button{
 
 div button:hover{
     background-color: white;
-    color: #130f40;
+    color: #000;
     border: 1px solid white;
 }
 
