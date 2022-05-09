@@ -1,0 +1,167 @@
+<DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>tools</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap');
+
+:root{
+    --blue:#000;
+    --black:#000;
+    --light-color:#666;
+    --border:.1rem solid rgba(0,0,0,.1);
+    --box-shadow:0 .5rem 1rem rgba(0,0,0,.1);
+}
+
+*{
+    font-family: 'Poppins', sans-serif;
+    margin:-4; padding:0;
+    box-sizing: border-box;
+    outline: none; border:none;
+    text-decoration: none;
+    text-transform: capitalize;
+    transition: all .2s linear;
+}
+
+html{
+    font-size: 62.5%;
+    overflow-x: hidden;
+    scroll-padding-top: 7rem;
+    scroll-behavior: smooth;
+}
+
+section{
+    padding:2rem 9%;
+}
+
+html::-webkit-scrollbar{
+    width:1rem;
+}
+
+html::-webkit-scrollbar-track{
+    background: #fff;
+}
+
+html::-webkit-scrollbar-thumb{
+    background: var(--blue);
+    border-radius: 5rem;
+}
+
+.heading{
+    text-align: center;
+    padding-bottom: 2rem;
+    font-size: 5rem;
+    color:var(--black);
+}
+
+.heading span{
+    position: relative;
+    z-index: 0;
+}
+
+.heading span::before{
+    content: '';
+    position: absolute;
+    bottom: 1.2rem; left:0;
+    height: 100%;
+    width:100%;
+    background: var(--blue);
+    clip-path: polygon(0 90%, 100% 83%, 100% 100%, 0% 100%);
+    z-index: -1;
+}
+
+.btn{
+    margin-top: 1rem;
+    display: inline-block;
+    padding:.9rem 3rem;
+    font-size: 1.7rem;
+    cursor: pointer;
+    color:#fff;
+    background: var(--black);
+    border-radius: .5rem;
+}
+
+.btn:hover{
+    background: var(--blue);
+}
+
+.
+.services .box-container{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(27rem, 1fr));
+    gap:1.5rem;
+}
+
+.services .box-container .box{
+    text-align: center;
+    border:var(--border);
+    box-shadow: var(--box-shadow);
+    border-radius: .5rem;
+    padding:2.5rem;
+}
+
+.services .box-container .box img{
+    height: 11rem;
+}
+
+.services .box-container .box h3{
+    font-size: 2.3rem;
+    color:var(--black);
+}
+
+.services .box-container .box p{
+    font-size: 1.4rem;
+    color:var(--light-color);
+    padding:1rem 0;
+    line-height: 1.8;
+}
+</style>
+</head>
+<body>
+
+<section class="services" id="services">
+
+  
+
+    <div class="box-container">
+
+       <div class="box">
+                   <img src="https://l.top4top.io/p_2304teq7c1.jpg" alt="">
+            <h3>Code Editor</h3>
+            <p>edit source & link it </p>
+            <a href="editor" class="btn">Run</a>
+        </div>
+        <br>
+
+        <div class="box">
+              <img src="https://a.top4top.io/p_2304u6myv1.jpg" alt="">
+            <h3>Privacy Generator</h3>
+            <p>this tool make privacy policy in html </p>
+            <a href="privacyp" class="btn">Run</a>
+        </div>
+<br>
+        <div class="box">
+                   <img src="https://g.top4top.io/p_2304gyg0e1.png" alt="">
+            <h3>Encrypt</h3>
+            <p>encypt your code with password</p>
+             <a href="encrypted" class="btn">Run</a>
+      </div>
+ <br>
+          <div class="box">
+              <img src="https://j.top4top.io/p_2308y3wkg1.jpg" alt="">
+            <h3>Translator</h3>
+            <p>this tool can translate your text for all languages</p>
+            <a href="translate.html" class="btn">Run</a>
+        </div>
+        <br>
+     <div class="box">
+                   <img src="https://i.top4top.io/p_23043srzx1.jpg" alt="">
+            <h3>Vip Souce code </h3>
+            <p>top & usefull source code</p>
+            <a href="vip" class="btn">Run</a>
+        </div>
+    </div>
+
+</section>
+</html>
