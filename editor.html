@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>editor</title>
+
+    <style>
+    * {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
+body {
+    font-family:arial;
+  height: 500px;
+  background-color:#fff;
+  color:white;
+}
+
+
+/* Style the tab */
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: black;
+  color:white
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+  background-color: #000;
+  color:white;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #fff;
+  color:white;
+  font-weight:600;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #ccc;
+  color:black;
+  font-weight:600;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border: none;
+  border-top: none;
+  height:84vh;
+}
+
+header{
+    width:100%;
+    position:fixed;
+    top:0;
+    height:45px;
+    z-index:99;
+    background-color:#fff;
+    color:white;
+    border-bottom:1px solid white;
+}
+
+.content{
+    margin-top:45px;
+}
+
+.tabcontent textarea {
+  resize: vertical;
+outline:none;
+  width: 340px;
+  height:450px;
+  font-size: 10px;
+  padding: 10px;
+  background-color:#999;
+  color:lightgrey;
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: lightgrey;
+  opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: lightgrey;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+  color: lightgrey;
+}
+
+.preview-area iframe {
+  width: 335px;
+  height: 450px;
+  border: none;
+  background-color:white;
+  color:black;
+}
+</style>
+</head>
+<body onload="defaulttext()">
+
+    <header>
+        <table border=0 width="100%" height="45px">
+            <tr>
+                <td style='font-size:22px;'>  <a target="_blank" href='#' style='text-decoration :none;color:white;'><b><font color="yellow">© </font> <font color="black"> gitwb </font></b></a></td>
+                <td width="150px"><center><button onclick='saveTextAsFile()' style="background-color:#000;color:white;padding:8px;cursor:pointer;border-radius:8px;width:100%;border:2px solid black;"><i class="fa fa-download"></i>   Convert </button></center></td>
+            </tr>
+        </table>
+    </header>
+
+<div class='content'>    
+<div class="tab">
+  <button class="tablinks" style='width:20%;' id='open' onclick="openCity(event, 'London')">HTML</button>
+  <button class="tablinks" style='width:20%;'  onclick="openCity(event, 'Paris')">CSS</button>
+  <button class="tablinks"style='width:20%;'  onclick="openCity(event, 'Tokyo')">JS</button>
+  <button style='background-color:#0abde3 ;font-weight: 700;color:white;width:40%;' class="tablinks" onclick="openCity(event, 'Preview')">Preview</button>
+</div>
+
+<div id="London" class="tabcontent">
+    <textarea id="htmlCode" style='font-style: italic;color:#000;' spellcheck="false" placeholder="<!DOCTYPE html><html><head><title>editor </title></head><body><h1>My First Heading</h1><p>My first paragraph.</p></body></html>" 
+    oninput="showPreview()"></textarea>
+</div>
+
+<div id="Paris" class="tabcontent">
+    <textarea id="cssCode" style='font-style: italic;color:#000;' spellcheck="false" placeholder="CSS Code" 
+    oninput="showPreview()"></textarea>
+</div>
+
+<div id="Tokyo" class="tabcontent">
+    <textarea style='font-style: italic;color:#130f40;' id="jsCode" spellcheck="false" placeholder="JavaScript Code" 
+    oninput="showPreviewJavascript()"></textarea>
+</div>
+
+<div id="Preview" class="tabcontent">
+    <div class="preview-area">
+        <iframe id="preview-window"></iframe>
+      </div>
+</div>
+
+</div>
+
+<script>
+function openCity(evt, cityName) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  document.getElementById(cityName).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+
+document.getElementById("open").click();
+
+        function defaulttext()
+        {
+            var cssCode= "body{font-family: system-ui;background:#121212;color: white;text-align: center;font-size:3vw;display:flex;align-items: center;justify-content: center;}";
+            var frame = document.getElementById("preview-window").contentWindow.document;
+            frame.open();
+            frame.write("<h1>© 2022 gitwb All right reserved </h1>"+"<style>"+cssCode+"</style>");
+            frame.close();
+            if (window.innerWidth > 450 ){
+                window.location.replace('index.html');
+            }
+        }
+      
+          function showPreview(){
+            var htmlCode = document.getElementById("htmlCode").value;
+            var cssCode = document.getElementById("cssCode").value;
+            var frame = document.getElementById("preview-window").contentWindow.document;
+            frame.open();
+            frame.write(htmlCode+"<style>"+cssCode+"</style>");
+            frame.close();
+        }
+
+        function saveTextAsFile() {
+
+            var name = prompt("Please Enter File Name :");
+            if (name != null && name != "") {
+                var fileNameToSaveAs = name+".html";
+                var htmlCode = document.getElementById("htmlCode").value;
+                var cssCode = document.getElementById("cssCode").value;
+                var jsCode = document.getElementById("jsCode").value;
+
+                textToWrite = '<!DOCTYPE html>\n<html lang="en">\n<head><meta charset="UTF-8">\n<meta name="viewport" content="width=device-width, initial-scale=1.0">\n<title>Document</title>\n'+'<style>\n'+cssCode+'\n</style>\n'+'</head>\n<body>\n'+htmlCode+'\n\<script>\n'+jsCode+'\n\<\/script>\n</body>\n</html>';
+
+                var textFileAsBlob = new Blob([textToWrite], {type:'text/plain'});
+                var downloadLink = document.createElement("a");
+                downloadLink.download = fileNameToSaveAs;
+                downloadLink.innerHTML = "Download File";
+                if (window.webkitURL != null) {
+                  downloadLink.href = window.webkitURL.createObjectURL(textFileAsBlob);
+                }
+                else {
+                  downloadLink.href = window.URL.createObjectURL(textFileAsBlob);
+                  downloadLink.onclick = destroyClickedElement;
+                  downloadLink.style.display = "none";
+                  document.body.appendChild(downloadLink);
+                }
+                downloadLink.click();
+                }
+        }
+
+        function showPreviewJavascript(){
+            var htmlCode = document.getElementById("htmlCode").value;
+            var cssCode = document.getElementById("cssCode").value;
+            var jsCode = document.getElementById("jsCode").value;
+            var frame = document.getElementById("preview-window").contentWindow.document;
+            frame.open();
+            frame.write(htmlCode+"<style>"+cssCode+"</style>"+"\<script>"+jsCode+"\<\/script>");
+            frame.close();
+        }
+</script>
+   
+</body>
+</html>  
+
+
+
