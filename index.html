@@ -24,35 +24,33 @@
                 <button id="signup">SignUp</button>
             </a>
         </div>
-       <div class="loggedin-div" id="user_div">
-        <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <!-- <meta http-equiv="refresh" content="0; url=http://gitwb.cf/home"> -->
-    <title>Document</title>
-</head>
-<body>
-    
-    <h1 style="text-align: center">Counter</h1>
 
-    <script>
-let counter = document.querySelector('h1');
-let count = 1;
+        <div class="loggedin-div" id="user_div">
+            <h3>Welcome User !!</h3>
 
-setInterval(()=>{
+            <img id="profilepic" />
+            <br>
 
-    counter.innerText = count;
-    count++
-    
-    if(count > 5) location.replace('https://www.google.com/')
-    
-},1000)
-</script>
-</body>
-</html>
+            Email Address:
+            <input type="text" id="user_email_from_database" disabled>
+            
+            UserName:
+            <input type="text" id="user_name_from_database" disabled>
+
+            <button onclick="logout()">Logout</button>
+            <br>
+            <a href="profile">
+                <button id="signup">Update Profile</button>
+<br>
+            <a href="home.html">
+                <button id="signup">Get started </button>
+            </a>
+        </div>
+        
+
+    </section>
+
+
 <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-analytics.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
