@@ -15,7 +15,7 @@ body{
 
 a{
     text-decoration: none;
-    color:black;
+    color:#FFD36A;
 }
 
 input, button{
@@ -100,8 +100,8 @@ div button:hover{
 }
 
 #signup{
-    background: slateblue;
-    color: snow;
+    background: #FFD36A;
+    color: #000;
     border: 1px solid snow;
 }
 
