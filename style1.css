@@ -84,7 +84,7 @@
   --fs-5: 15px;
   --fs-6: 14px;
   --fs-7: 13px;
-  --fs-8: 11px;
+  --fs-8: 14px;
 
   /* font-weight */
   --fw-300: 300;
@@ -555,6 +555,15 @@ main {
   line-height: 1.6;
 }
 
+.btn{
+    margin-top: 1rem;
+    display: inline-block;
+    font-size: 1.rem;
+    cursor: pointer;
+    color:#FFD36A;
+    
+    border-radius: .5rem;
+   } 
 
 /**
  * #testimonials 
