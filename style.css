@@ -28,6 +28,7 @@ input, button{
     position: relative;
     padding-left: 10px;
     margin-left: 120px;
+    color: #fff;
 }
 
 
@@ -68,6 +69,7 @@ div h3{
     background-color: #121212;
     padding: 15px;
     outline: none;
+    color:white;
     width: 100%;
     margin-bottom: 20px;
 
