@@ -1,398 +1,1344 @@
 <!DOCTYPE html>
+<html>
+<head>
+  <style>
+      @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: 'Poppins', sans-serif;
+}
+
+li {
+	list-style: none;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+	color: var(--black);
+}
+
+a {
+	text-decoration: none;
+
+}
+
+:root {
+	--black: #333;
+	--white: #FFF;
+	--light: #F5F5F5;
+	--grey: #AAA;
+	--dark: #1B1C30;
+	--dark-l-1: #262848;
+	--dark-l-2: #545679;
+	--green: #47BE7D;
+	--red: #D9214E;
+	--blue: #000;
+}
+
+i[class^="ph"] {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+body {
+	background: var(--light);
+}
+
+
+
+
+
+
+
+/* start: SIDEBAR */
+#sidebar {
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 5rem;
+	background: var(--dark);
+	height: 100%;
+	z-index: 999;
+}
+.sidebar-overlay {
+	position: fixed;
+	inset: 0;
+	background: rgba(0, 0, 0, .7);
+	z-index: 998;
+	display: none;
+}
+#sidebar .brand {
+	display: block;
+	padding: 1rem 0;
+	text-align: center;
+	font-size: 2rem;
+	color: var(--blue);
+}
+#sidebar .sidebar__menu > li > a {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 3rem;
+	height: 3rem;
+	border-radius: 10px;
+	margin: .25rem auto;
+	font-size: 1.25rem;
+	color: var(--dark-l-2);
+	position: relative;
+}
+#sidebar .sidebar__menu > li > a::before {
+	content: '';
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	border: 8px solid;
+	border-color: transparent var(--white) transparent transparent;
+	right: -16px;
+	display: none;
+}
+#sidebar .sidebar__menu > li > a.clicked::before {
+	display: block;
+}
+#sidebar .sidebar__menu > li > a.active,
+#sidebar .sidebar__menu > li > a:hover,
+#sidebar .sidebar__menu li > a.clicked {
+	background: var(--dark-l-1);
+}
+#sidebar .sidebar__menu li > a.active {
+	color: var(--blue);
+}
+#sidebar .divider {
+	height: 1px;
+	width: 2rem;
+	background: var(--dark-l-1);
+	margin: .5rem auto;
+}
+#sidebar .sidebar__menu > li > a.logout {
+	color: var(--red);
+}
+
+#sidebar .sidebar__submenu {
+	position: fixed;
+	left: 5rem;
+	width: 220px;
+	background: var(--white);
+	box-shadow: 8px 0 20px rgba(0, 0, 0, .05);
+	height: 100%;
+	top: 0;
+	opacity: 0;
+	visibility: hidden;
+	padding: 1.25rem;
+	transition: all .2s;
+}
+#sidebar .sidebar__submenu.active {
+	opacity: 1;
+	visibility: visible;
+}
+#sidebar .sidebar__submenu .title {
+	font-size: 1.25rem;
+	font-weight: 500;
+	color: var(--dark);
+	margin-bottom: .75rem;
+}
+#sidebar .sidebar__submenu > li:not(.title) {
+	margin: .5rem 0;
+}
+#sidebar .sidebar__submenu > li:not(.title) > a {
+	color: var(--grey);
+	font-size: .875rem;
+	font-weight: 500;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	position: relative;
+	padding-left: .75rem;
+}
+#sidebar .sidebar__submenu > li:not(.title) > a::before {
+	content: '';
+	position: absolute;
+	top: 50%;
+	left: 0;
+	width: .25rem;
+	height: .25rem;
+	border-radius: 50%;
+	transform: translateY(-50%);
+	background: var(--grey);
+}
+#sidebar .sidebar__submenu > li:not(.title) > a.active::before,
+#sidebar .sidebar__submenu > li:not(.title) > a:hover::before {
+	background: var(--blue);	
+}
+#sidebar .sidebar__submenu > li:not(.title) > a:hover,
+#sidebar .sidebar__submenu > li:not(.title) > a.active {
+	color: var(--blue);
+}
+#sidebar .sidebar__submenu > li:not(.title) > a.active i {
+	transform: rotateZ(90deg);
+}
+#sidebar .sidebar__dropdown-menu {
+	padding-left: .75rem;
+	display: none;
+}
+#sidebar .sidebar__dropdown-menu.active {
+	display: block;
+}
+#sidebar .sidebar__dropdown-menu li {
+	margin: .25rem 0;
+}
+#sidebar .sidebar__dropdown-menu li a {
+	font-size: .875rem;
+	color: var(--grey);
+}
+#sidebar .sidebar__dropdown-menu li a:hover {
+	color: var(--blue);
+}
+/* end: SIDEBAR */
+
+
+
+
+
+
+
+/* start: SIDEBAR MOBILE */
+#sidebar-mobile {
+	width: 100%;
+	background: var(--dark);
+	align-items: center;
+	padding: .75rem 1.25rem;
+	grid-gap: 1.5rem;
+	display: none;
+}
+#sidebar-mobile .toggle-sidebar {
+	color: var(--dark-l-2);
+	cursor: pointer;
+	font-size: 1.25rem;
+}
+#sidebar-mobile .brand {
+	display: flex;
+	align-items: center;
+	grid-gap: .5rem;
+	color: var(--white);
+	text-transform: uppercase;
+	font-size: 1.25rem;
+	font-weight: 600;
+	letter-spacing: 1px;
+}
+#sidebar-mobile .brand i {
+	font-size: 1.5rem;
+	color: var(--blue);
+}
+/* end: SIDEBAR MOBILE */
+
+
+
+
+
+
+
+/* start: MAIN */
+#main {
+	position: relative;
+	left: 5rem;
+	width: calc(100% - 5rem);
+}
+
+/* start: MAIN TOP */
+#main .main__top {
+	background: var(--dark-l-1);
+	padding: 1.25rem;
+	display: flex;
+	grid-gap: 1.5rem;
+	align-items: center;
+	justify-content: space-between;
+	flex-wrap: wrap-reverse;
+}
+#main .main__top .main__top__title h3 {
+	font-size: 1.25rem;
+	font-weight: 600;
+	color: var(--white);
+	margin-bottom: .5rem;
+}
+#main .main__top .main__top__title .breadcrumbs {
+	display: flex;
+	grid-gap: .5rem;
+	align-items: center;
+}
+#main .main__top .main__top__title .breadcrumbs :is(li, a) {
+	font-size: .875rem;
+	color: var(--white);
+}
+#main .main__top .main__top__title .breadcrumbs li a:hover {
+	text-decoration: underline;
+}
+#main .main__top .main__top__title .breadcrumbs .divider {
+	color: var(--grey);
+}
+#main .main__top .main__top__title .breadcrumbs li a.active {
+	pointer-events: none;
+	color: var(--grey);
+}
+#main .main__top .main__top__menu {
+	display: flex;
+	align-items: center;
+	grid-gap: 2rem;
+}
+#main .main__top .main__top__menu > li {
+	position: relative;
+}
+#main .main__top .main__top__menu .profile img {
+	width: 2.5rem;
+	height: 2.5rem;
+	border-radius: 50%;
+	object-fit: cover;
+}
+#main .main__top .main__top__menu > li > a {
+	font-size: 1.25rem;
+	color: var(--dark-l-2);
+}
+#main .main__top .main__top__menu > li > a:hover {
+	color: var(--light);
+}
+#main .main__top .main__top__menu .main__dropdown {
+	position: absolute;
+	top: 100%;
+	right: 0;
+	width: 300px;
+	background: var(--white);
+	box-shadow: 4px 4px 16px rgba(0, 0, 0, .1);
+	padding: 1.25rem;
+	border-radius: 5px;
+	opacity: 0;
+	visibility: hidden;
+	transition: all .2s;
+	z-index: 900;
+}
+#main .main__top .main__top__menu .main__dropdown.active {
+	opacity: 1;
+	visibility: visible;
+}
+#main .main__top .main__top__menu .main__dropdown form {
+	padding-bottom: .5rem;
+	border-bottom: 1px solid var(--light);
+}
+#main .main__top .main__top__menu .main__dropdown form input {
+	width: 100%;
+	outline: none;
+	border: none;
+}
+#main .main__top .main__top__menu .main__dropdown span {
+	font-weight: 500;
+	color: var(--grey);
+	margin: 1rem 0;
+	display: inline-block;
+}
+#main .main__top .main__top__menu .main__dropdown .recent-search li a h5 {
+	font-size: 1rem;
+	font-weight: 600;
+}
+#main .main__top .main__top__menu .main__dropdown .recent-search li a:hover h5 {
+	color: var(--blue);
+}
+#main .main__top .main__top__menu .main__dropdown .recent-search li a p {
+	font-size: .75rem;
+	font-weight: 400;
+	color: var(--grey);
+}
+#main .main__top .main__top__menu .main__dropdown .recent-search li:not(:last-child) {
+	margin-bottom: .75rem;
+}
+#main .main__top .main__top__menu .main__dropdown .recent-search {
+	max-height: 300px;
+	overflow-y: auto;
+}
+
+#main .main__top .main__top__menu .main__dropdown .notification__top {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+#main .main__top .main__top__menu .main__dropdown .notification__top h4 {
+	font-size: 1.25rem;
+	font-weight: 500;
+}
+#main .main__top .main__top__menu .main__dropdown .notification__top span {
+	color: var(--white);
+	padding: .25rem .5rem;
+	display: inline-block;
+	border-radius: 2px;
+	background: var(--green);
+	font-size: .75rem;
+	font-weight: 500;
+}
+#main .main__top .main__top__menu .main__dropdown .notification__top {
+	border-bottom: 1px solid var(--light);
+	margin-bottom: 1rem;
+}
+#main .main__top .main__top__menu .main__dropdown .notification__item li a {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	grid-gap: .5rem;
+}
+#main .main__top .main__top__menu .main__dropdown .notification__item li a h5 {
+	font-size: 1rem;
+	font-weight: 500;
+}
+#main .main__top .main__top__menu .main__dropdown .notification__item li a p {
+	font-size: .75rem;
+	color: var(--grey);
+}
+#main .main__top .main__top__menu .main__dropdown .notification__item li a span {
+	font-size: .75rem;
+	color: var(--grey);
+	background: var(--light);
+	padding: .25rem .5rem;
+	white-space: nowrap;
+	border-radius: 2px;
+}
+#main .main__top .main__top__menu .main__dropdown .notification__item li:not(:last-child) {
+	margin-bottom: .75rem;
+}
+#main .main__top .main__top__menu .main__dropdown .notification__item li a:hover h5 {
+	color: var(--blue);
+}
+#main .main__top .main__top__menu .main__dropdown .notification__item {
+	max-height: 300px;
+	overflow-y: auto;
+}
+
+#main .main__top .main__top__menu .inbox span {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: .5rem;
+	height: .5rem;
+	border-radius: 50%;
+	background: var(--red);
+}
+
+#main .main__top .main__top__menu .main__dropdown .profile__top {
+	display: flex;
+	align-items: center;
+	grid-gap: 1rem;
+}
+#main .main__top .main__top__menu .main__dropdown .profile__top img {
+	width: 3.5rem;
+	height: 3.5rem;
+	border-radius: 5px;
+	object-fit: cover;
+}
+#main .main__top .main__top__menu .main__dropdown .profile__top .name h5 {
+	font-size: 1.25rem;
+	font-weight: 500;
+}
+#main .main__top .main__top__menu .main__dropdown .profile__top .name p {
+	font-size: .875rem;
+	color: var(--grey);
+}
+#main .main__top .main__top__menu .main__dropdown .profile__top {
+	padding-bottom: 1rem;
+	margin-bottom: 1rem;
+	border-bottom: 1px solid var(--light);
+}
+#main .main__top .main__top__menu .main__dropdown .profile__menu li a {
+	display: flex;
+	align-items: center;
+	grid-gap: .75rem;
+	color: var(--grey);
+	font-weight: 500;
+	padding: .5rem .75rem;
+	font-size: .875rem;
+}
+#main .main__top .main__top__menu .main__dropdown .profile__menu li a i {
+	font-size: 1.25rem;
+}
+#main .main__top .main__top__menu .main__dropdown .profile__menu li a:hover {
+	background: var(--light);
+	color: var(--blue);
+}
+/* end: MAIN TOP */
+
+/* start: MAIN BODY */
+#main .main__body {
+	padding: 1.25rem;
+	box-shadow: inset 0 8rem 0 var(--dark-l-1);
+}
+#main .main__body .main__body__box-info {
+	display: flex;
+	grid-gap: 1.25rem;
+	flex-wrap: wrap;
+}
+#main .main__body .main__body__box-info li {
+	flex: 1 0 260px;
+	background: var(--white);
+	padding: 1.25rem 1.5rem;
+	border-radius: 5px;
+	box-shadow: 4px 4px 16px rgba(0, 0, 0, .05);
+}
+#main .main__body .main__body__box-info li i {
+	justify-content: flex-start;
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+#main .main__body .main__body__box-info li:nth-child(1) i {
+	color: var(--blue);
+}
+#main .main__body .main__body__box-info li:nth-child(2) i {
+	color: var(--green);
+}
+#main .main__body .main__body__box-info li:nth-child(3) i {
+	color: var(--red);
+}
+#main .main__body .main__body__box-info li h5 {
+	font-size: 1.25rem;
+	font-weight: 600;
+	margin-bottom: .5rem;
+}
+#main .main__body .main__body__box-info li p {
+	font-size: .875rem;
+	font-weight: 500;
+	color: var(--grey);
+}
+
+#main .main__body .main__body__data {
+	display: flex;
+	grid-gap: 1.25rem;
+	margin-top: 1.25rem;
+	flex-wrap: wrap;
+}
+#main .main__body__data > div {
+	flex: 1 0 360px;
+	background: var(--white);
+	padding: 1.25rem 1.5rem;
+	border-radius: 5px;
+	box-shadow: 4px 4px 16px rgba(0, 0, 0, .05);
+}
+#main .main__body :is(.sales-summary__top, .members__top) {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 2rem;
+}
+#main .main__body :is(.sales-summary__top, .members__top) h4 {
+	font-size: 1.125rem;
+	font-weight: 500;
+}
+#main .main__body .sales-summary__info {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	grid-gap: 1rem;
+	margin-bottom: 1rem;
+}
+#main .main__body .sales-summary__info li p {
+	font-size: .75rem;
+	font-weight: 500;
+	color: var(--grey);
+}
+#main .main__body .sales-summary__info li h5 {
+	font-size: 1.125rem;
+	font-weight: 600;
+}
+
+#main .main__body .members__user {
+	max-height: 500px;
+	overflow-y: auto;
+}
+#main .main__body .members__user li {
+	display: flex;
+	grid-gap: .5rem;
+	align-items: center;
+}
+#main .main__body .members__user li:not(:last-child) {
+	margin-bottom: 1rem;
+}
+#main .main__body .members__user li img {
+	width: 3rem;
+	height: 3rem;
+	border-radius: 2px;
+	object-fit: cover;
+}
+#main .main__body .members__user li .profile h5 {
+	font-size: 1rem;
+	font-weight: 500;
+}
+#main .main__body .members__user li .profile p {
+	font-size: .75rem;
+	font-weight: 500;
+	color: var(--grey);
+}
+#main .main__body .members__user li span {
+	font-size: .75rem;
+	display: inline-block;
+	margin-left: auto;
+	padding: .25rem .75rem;
+	border-radius: 2px;
+	background: var(--light);
+	font-weight: 500;
+}
+#main .main__body :is(.members__menu, .sales-summary__menu) {
+	position: relative;
+}
+#main .main__body :is(.members__menu, .sales-summary__menu) i {
+	cursor: pointer;
+}
+#main .main__body :is(.members__menu, .sales-summary__menu) .menu {
+	position: absolute;
+	top: 100%;
+	right: 0;
+	width: 160px;
+	background: var(--white);
+	padding: 5px 0;
+	border-radius: 5px;
+	box-shadow: 4px 4px 16px rgba(0, 0, 0, .1);
+	opacity: 0;
+	visibility: hidden;
+	transition: all .2s;
+}
+#main .main__body :is(.members__menu, .sales-summary__menu) .menu.active {
+	opacity: 1;
+	visibility: visible;
+}
+#main .main__body :is(.members__menu, .sales-summary__menu) .menu li a {
+	display: block;
+	padding: .5rem .75rem;
+	font-size: .75rem;
+	color: var(--grey);
+	font-weight: 500;
+}
+#main .main__body :is(.members__menu, .sales-summary__menu) .menu li a:hover {
+	background: var(--light);
+	color: var(--blue);
+}
+/* end: MAIN BODY */
+
+/* end: MAIN */
+
+
+
+
+
+
+
+/* start: BREAKPOINTS */
+@media screen and (max-width: 576px) {
+	#sidebar-mobile {
+		display: flex;
+	}
+
+
+
+
+
+
+
+
+	#sidebar {
+		left: -5rem;
+	}
+	#sidebar.active {
+		left: 0;
+	}
+	#sidebar.active + .sidebar-overlay {
+		display: block;
+	}
+
+
+
+
+
+
+
+	#main {
+		position: relative;
+		left: 0;
+		width: 100%;
+	}
+
+	#main .main__top .main__top__menu .main__dropdown {
+		position: fixed;
+		top: 7.5rem;
+		right: 1.25rem;
+		left: 1.25rem;
+		width: unset;
+	}
+
+	#main .main__body__data > div {
+		flex: 1 0 0;
+	}
+	.footer__container {
+  background-color: #F5F5F5;
+  padding:  0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin:0px;
+}
+
+#footer__logo {
+  color: #000;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 2rem;
+}
+
+.footer__links {
+  width: 300px;
+  max-width: 1000px;
+  display: flex;
+  justify-content: center;
+}
+
+.footer__link--wrapper {
+  display: flex;
+}
+
+.footer__link--items {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 0px;
+  text-align: left;
+  width: 160px;
+  box-sizing: border-box;
+}
+
+.footer__link--items h2 {
+  margin-bottom: 1px;
+  color: #000;
+  font-size: 15px;
+}
+
+.footer__link--items a {
+  color: #000;
+  text-decoration: none;
+  margin-bottom: 0.5rem;
+  transition: 0.3 ease-out;
+  font-size: 15px;
+}
+
+.footer__link--items a:hover {
+  color: #e9e9e9;
+  transition: 0.3 ease-out;
+}
+
+.social__icon--link {
+  color: #000;
+  font-size: 30px;
+}
+
+.social__media {
+  max-width: 1000px;
+  width: 100%;
+}
+
+.social__media--wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
+  max-width: 1000px;
+  margin: 0px auto 0 auto;
+}
+
+.social__icons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 240px;
+}
+
+.website__rights {
+  color: #000;
+  margin:0px;
+}
+
+@media screen and (max-width: 820px) {
+  .footer__links {
+    padding-top: 2rem;
+  }
+
+  #footer__logo {
+    margin-bottom: 2rem;
+  }
+
+  .website__rights {
+    font-size: 15px;
+    
+  }
+
+  .footer__link--wrapper {
+    flex-direction: column;
+  }
+
+  .social__media--wrap {
+    flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .footer__link--items {
+    margin: 0px;
+    padding: 10px;
+    width: 100%;
+  }
+}
+
+.footer{
+    text-align: center;
+    padding-bottom: 0px;
+}
+
+.footer .share{
+    padding:1rem 0;
+}
+
+.footer .share a{
+    color:var(--black);
+    font-size: 4rem;
+    margin:0px;
+}
+
+.footer .share a:hover{
+    color:var(--blue);
+}
+
+.footer .credit{
+    padding:2rem 1rem;
+    text-align: center;
+    font-size: 2rem;
+    color:var(--black);
+}
+
+.footer .credit span{
+    color:var(--blue);
+} 
+
+}
+/* end: BREAKPOINTS */
+  </style>
+</head>
+<body>
+    
+     <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta name="google-site-verification" content="AenwehzIlm2b2GZBhCZC0W5ftKwbloftWJN88iBFW88" />
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>gitwb</title>
-</head>
-<body>
-	<style>
-<br>
-	
-		:root{
-    --blue:#0abde3;
-    --black:#130f40;
-    --light-color:#666;
-    --border:.1rem solid rgba(0,0,0,.1);
-    --box-shadow:0 .5rem 1rem rgba(0,0,0,.1);
-}
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- ICON -->
+	<script src="https://unpkg.com/phosphor-icons"></script>
+	<!-- MY CSS -->
+	<link rel="stylesheet" href="style.css">
 
-*{
-    font-family: 'Poppins', sans-serif;
-    margin:0; padding:0;
-    box-sizing: border-box;
-    outline: none; border:none;
-    text-decoration: none;
-    text-transform: capitalize;
-    transition: all .2s linear;
-}
-
-html{
-    font-size: 62.5%;
-    overflow-x: hidden;
-    scroll-padding-top: 7rem;
-    scroll-behavior: smooth;
-}
-
-section{
-    padding:2rem 9%;
-}
-
-html::-webkit-scrollbar{
-    width:1rem;
-}
-
-html::-webkit-scrollbar-track{
-    background: #fff;
-}
-
-html::-webkit-scrollbar-thumb{
-    background: var(--blue);
-    border-radius: 5rem;
-}
-
-.heading{
-    text-align: center;
-    padding-bottom: 2rem;
-    font-size: 5rem;
-    color:var(--black);
-}
-
-.heading span{
-    position: relative;
-    z-index: 0;
-}
-
-.heading span::before{
-    content: '';
-    position: absolute;
-    bottom: 1.2rem; left:0;
-    height: 100%;
-    width:100%;
-    background: var(--blue);
-    clip-path: polygon(0 90%, 100% 83%, 100% 100%, 0% 100%);
-    z-index: -1;
-}
-
-.btn{
-    margin-top: 1rem;
-    display: inline-block;
-    padding:.9rem 3rem;
-    font-size: 1.7rem;
-    cursor: pointer;
-    color:#fff;
-    background: var(--black);
-    border-radius: .5rem;
-}
-
-.btn:hover{
-    background: var(--blue);
-}
-
-.
-.services .box-container{
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(27rem, 1fr));
-    gap:1.5rem;
-}
-
-.services .box-container .box{
-    text-align: center;
-    border:var(--border);
-    box-shadow: var(--box-shadow);
-    border-radius: .5rem;
-    padding:2.5rem;
-}
-
-.services .box-container .box img{
-    height: 10rem;
-}
-
-.services .box-container .box h3{
-    font-size: 2.3rem;
-    color:var(--black);
-}
-
-.services .box-container .box p{
-    font-size: 1.4rem;
-    color:var(--light-color);
-    padding:1rem 0;
-    line-height: 1.8;
-}
-#footer {
-  background-color: #fff;
-  padding: 2% 15%;
-  color: #000;
-  text-align: center;
-}
-
-.social-icon {
-  margin: 20px 10px;
-  cursor: pointer;
-}
-
-.social-icon:hover {
-  color: cadetblue;
-}
-
-.footername {
-  color: coral;
-}
-.footername:hover {
-  text-decoration: none;
-  color: crimson;
-}
-
-/* ************ */
-.scroll-to-top {
-  position: fixed;
-  right: 15px;"
-  bottom: 15px;
-  width: 50px;
-  height: 50px;
-  text-align: center;
-  color: #fff;
-  background: rgba(52, 58, 64, 0.5);
-  line-height: 45px;
-  display: none;
-}
-
-.scroll-to-top:focus,
-.scroll-to-top:hover {
-  color: whitesmoke;
-}
-.scroll-to-top:hover {
-  background: #000;
-}
-.scroll-to-top i {
-  font-weight: 800;
-}
-</style>
+	<title>AdminWeb</title>
 </head>
 <body>
 
-<section class="services" id="services">
+	<!-- start: SIDEBAR -->
+	<section id="sidebar">
+		
+		<ul class="sidebar__menu">
+			<li>
+				<a href="#" class="active"><i class="ph-house-fill"></i></a>
+				<ul class="sidebar__submenu">
+					<li class="title">Dashboard</li>
+					<li><a href="#"> Our Services</a></li>
+					<li><a href="#">Analytics</a></li>
+				</ul>
+			</li>
+			<li>
+				<a href="#"><i class="ph-airplay-fill"></i></a>
+				<ul class="sidebar__submenu">
+					<li class="title">Source code</li>
+					<li><a href="#">login</a></li>
+					<li><a href="#">profile</a></li>
+					<li><a href="#">editor</a></li>
+					<li><a href="#">game</a></li>
+					<li><a href="#">cards</a></li>
+				</ul>
+			</li>
+			<li>
+				<a href="#"><i class="ph-clipboard-fill"></i></a>
+				<ul class="sidebar__submenu">
+					<li class="title">source code'</li>
+					<li><a href="#">music player</a></li>
+					<li><a href="#">video player</a></li>
+					<li><a href="#">landing page</a></li>
+					<li><a href="#">other</a></li>
+				</ul>
+			</li>
+			<li>
+				<a href="#"><i class="ph-file-fill"></i></a>
+				<ul class="sidebar__submenu">
+					<li class="title">Our Tools </li>
+					<li>
+						<a href="#">tools <i class="ph-caret-right-fill"></i></a>
+						<ul class="sidebar__dropdown-menu">
+							<li><a href="#">Privacy P/ generator</a></li>
+							<li><a href="#">Code editor </a></li>
+							<li><a href="#">Encrypte tool</a></li>
+						</ul>
+					</li>
+					<li><a href="#">soon</a></li>
+					<li><a href="#">soon </a></li>
+					<li>
+						<a href="#">vip tools' <i class="ph-caret-right-fill"></i></a>
+						<ul class="sidebar__dropdown-menu">
+							<li><a href="#">checker Visa /soon</a></li>
+							<li><a href="#">YouTube download /soon</a></li>
+							<li><a href="#">Instagram download /soon</a></li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<a href="#"><i class="ph-user-circle-fill"></i></a>
+				<ul class="sidebar__submenu">
+					<li class="title">Accounts</li>
+					<li><a href="#">SignIn</a></li>
+					<li><a href="#">SignUp</a></li>
+				</ul>
+			</li>
+			<li class="divider"></li>
+			<li>
+				<a href="signin"><i class="ph-gear-fill"></i></a>
+			</li>
+			
+		</ul>
+	</section>
 
-  
+	<!-- start: SIDEBAR OVERLAY -->
+	<div class="sidebar-overlay"></div>
+	<!-- end: SIDEBAR OVERLAY -->
+	<!-- end: SIDEBAR -->
 
-    <div class="box-container">
+	<!-- start: SIDEBAR MOBILE -->
+	<section id="sidebar-mobile">
+		<i class="ph-squares-four-fill toggle-sidebar"></i>
+		<a href="#" class="brand">
+			<i class="ph-flame-fi"></i>
+			Gitwb
+		</a>
+	</section>
+	<!-- end: SIDEBAR MOBILE -->
 
-       <div class="box">
-                   <img src="https://l.top4top.io/p_23200ck361.jpg" alt="">
-            <h3>GITWB</h3>
-            <p>Hello soon our site is available with new features and ideas so that it helps programmers learn programming in the best way and we offer you software codes to help you build your site and applications And there are also many features Added </p>
-    
-        </div>
-        <br>
-        	
-	<div algin="center" style="width:100%;height :30%;">
-		<video style="width:298px" controls autoplay >
-			<source src="https://j.top4top.io/m_2319xht7r1.mp4" >
-			</video>
+	<!-- start: MAIN -->
+	<section id="main">
+		
+		<!-- start: MAIN TOP -->
+		<div class="main__top">
+			<div class="main__top__title">
+				<h3>html</h3>
+				<ul class="breadcrumbs">
+					<li><a href="#">css</a></li>
+					<li class="divider">/</li>
+					<li><a href="#" class="active">js</a></li>
+				</ul>
 			</div>
-			  <!-- footer section start -->
-    <footer id="footer">
-          <p>© 2022 Gitwb All right reserved</p>
-    </footer>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta name="google-site-verification" content="AenwehzIlm2b2GZBhCZC0W5ftKwbloftWJN88iBFW88" />
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>gitwb</title>
-</head>
-<body>
-	<style>
-<br>
+			<ul class="main__top__menu">
+				<li class="search">
+					<a href="#">
+						<i class="ph-magnifying-glass"></i>
+					</a>
+					<div class="main__dropdown">
+						<form action="#">
+							<input type="text" name="" placeholder="Search">
+						</form>
+						<span>Recent Search</span>
+						<ul class="recent-search">
+							<li>
+								<a href="#">
+									<h5>SOURCE Code</h5>
+									<p>login form using html css</p>
+								</a>
+							</li>
+							<li>
+								<a href="editor">
+									<h5>Code editor </h5>
+									<p>Tool linking html code css js to each other</p>
+								</a>
+							</li>
+							<li>
+								<a href="privacyp">
+									<h5>Privacy p generator</h5>
+									<p>A great and special tool</p>
+								</a>
+							</li>
+							
+							<li>
+								<a href="encrypted">
+									<h5>Encrypte tool</h5>
+									<p>You encrypt the code and put a passward on it.</p>
+								</a>
+							</li>
+							
+						</ul>
+					</div>
+				</li>
+				<li class="notification">
+					<a href="#">
+						<i class="ph-bell"></i>
+					</a>
+					<div class="main__dropdown">
+						<div class="notification__top">
+							<h4>Notifications</h4>
+							<span>1</span>
+						</div>
+						<ul class="notification__item">
+							<li>
+								<a href="#">
+									<div class="left">
+										<h5>Welcome </h5>
+										<p> hope you like the codes </p>
+									</div>
+									<span>3 hours</span>
+								</a>
+							</li>
+							
+						</ul>
+					</div>
+				</li>
+				<li class="inbox">
+					<a href="contactus">
+						<i class="ph-chat-circle-dots"></i>
+					</a>
+					<span></span>
+				</li>
+				<li class="profile">
+					<a href="#">
+						<img src="https://l.top4top.io/p_23200ck361.jpg" alt="">
+					</a>
+					<div class="main__dropdown">
+						<div class="profile__top">
+							<img src="https://l.top4top.io/p_23200ck361.jpg" alt="">
+							<div class="name">
+								<h5>Gitwb</h5>
+								<p>Follow us on accounts to find out everything new</p>
+							</div>
+						</div>
+						<ul class="profile__menu">
+							<li><a href=""><i class="ph-user-fil"></i> Facebook</a></li>
+							<li><a href="https://instagram.com/gitwb.cf"><i class="ph-i-fill"></i> Instagram</a></li>
+						</ul>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<!-- end: MAIN TOP -->
+
+		<!-- start: MAIN BODY -->
+		<div class="main__body">
+			<ul class="main__body__box-info">
+				<li>
+					<i class="ph-services-fill"></i>
+					<h5>Welcome</h5>
+					<p>We offer  many code codes and tools that help you in your daily life and make it easier for you </p>
+				</li>
+				<li>
+					<i class="ph-code-fill"></i>
+					<h5>120 source code& tools  </h5>
+					<p>Special and wonderful glasses</p>
+				</li>
+				<li>
+					<i class="ph-users-fill"></i>
+					<h5>1024 users</h5>
+					<p>Today it's our number. </p>
+				</li>
+			</ul>
+			<div class="main__body__data">
+				<div class="sales-summary">
+					<div class="sales-summary__top">
+						<h4>Sales Summary</h4>
+						<div class="sales-summary__menu">
+							<i class="ph-dots-three-outline-vertical-fill"></i>
+							<ul class="menu">
+								<li>
+									<a href="tools">Tools</a>
+								</li>
+								<li>
+									<a href="codes">Codes</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<ul class="sales-summary__info">
+						<li>
+							<p>May</p>
+							<h5>76</h5>
+						</li>
+						<li>
+							<p>Jun</p>
+							<h5>80</h5>
+						</li>
+						<li>
+							<p>July</p>
+							<h5>99</h5>
+						</li>
+						<li>
+							<p>April</p>
+							<h5>120</h5>
+						</li>
+					</ul>
+					<div id="chart"></div>
+				</div>
+				
+					<section class="footer">
 	
-		:root{
-    --blue:#0abde3;
-    --black:#130f40;
-    --light-color:#666;
-    --border:.1rem solid rgba(0,0,0,.1);
-    --box-shadow:0 .5rem 1rem rgba(0,0,0,.1);
-}
-
-*{
-    font-family: 'Poppins', sans-serif;
-    margin:0; padding:0;
-    box-sizing: border-box;
-    outline: none; border:none;
-    text-decoration: none;
-    text-transform: capitalize;
-    transition: all .2s linear;
-}
-
-html{
-    font-size: 62.5%;
-    overflow-x: hidden;
-    scroll-padding-top: 7rem;
-    scroll-behavior: smooth;
-}
-
-section{
-    padding:2rem 9%;
-}
-
-html::-webkit-scrollbar{
-    width:1rem;
-}
-
-html::-webkit-scrollbar-track{
-    background: #fff;
-}
-
-html::-webkit-scrollbar-thumb{
-    background: var(--blue);
-    border-radius: 5rem;
-}
-
-.heading{
-    text-align: center;
-    padding-bottom: 2rem;
-    font-size: 5rem;
-    color:var(--black);
-}
-
-.heading span{
-    position: relative;
-    z-index: 0;
-}
-
-.heading span::before{
-    content: '';
-    position: absolute;
-    bottom: 1.2rem; left:0;
-    height: 100%;
-    width:100%;
-    background: var(--blue);
-    clip-path: polygon(0 90%, 100% 83%, 100% 100%, 0% 100%);
-    z-index: -1;
-}
-
-.btn{
-    margin-top: 1rem;
-    display: inline-block;
-    padding:.9rem 3rem;
-    font-size: 1.7rem;
-    cursor: pointer;
-    color:#fff;
-    background: var(--black);
-    border-radius: .5rem;
-}
-
-.btn:hover{
-    background: var(--blue);
-}
-
-.
-.services .box-container{
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(27rem, 1fr));
-    gap:1.5rem;
-}
-
-.services .box-container .box{
-    text-align: center;
-    border:var(--border);
-    box-shadow: var(--box-shadow);
-    border-radius: .5rem;
-    padding:2.5rem;
-}
-
-.services .box-container .box img{
-    height: 10rem;
-}
-
-.services .box-container .box h3{
-    font-size: 2.3rem;
-    color:var(--black);
-}
-
-.services .box-container .box p{
-    font-size: 1.4rem;
-    color:var(--light-color);
-    padding:1rem 0;
-    line-height: 1.8;
-}
-#footer {
-  background-color: #fff;
-  padding: 2% 15%;
-  color: #000;
-  text-align: center;
-}
-
-.social-icon {
-  margin: 20px 10px;
-  cursor: pointer;
-}
-
-.social-icon:hover {
-  color: cadetblue;
-}
-
-.footername {
-  color: coral;
-}
-.footername:hover {
-  text-decoration: none;
-  color: crimson;
-}
-
-/* ************ */
-.scroll-to-top {
-  position: fixed;
-  right: 15px;"
-  bottom: 15px;
-  width: 50px;
-  height: 50px;
-  text-align: center;
-  color: #fff;
-  background: rgba(52, 58, 64, 0.5);
-  line-height: 45px;
-  display: none;
-}
-
-.scroll-to-top:focus,
-.scroll-to-top:hover {
-  color: whitesmoke;
-}
-.scroll-to-top:hover {
-  background: #000;
-}
-.scroll-to-top i {
-  font-weight: 800;
-}
-</style>
-</head>
-<body>
-
-<section class="services" id="services">
-
-  
-
-    <div class="box-container">
-
-       <div class="box">
-                   <img src="https://l.top4top.io/p_23200ck361.jpg" alt="">
-            <h3>GITWB</h3>
-            <p>Hello soon our site is available with new features and ideas so that it helps programmers learn programming in the best way and we offer you software codes to help you build your site and applications And there are also many features Added </p>
-    
+    <!-- Footer Section -->
+    <div class="footer__container">
+      <div class="footer__links">
+        <div class="footer__link--wrapper">
+          <div class="footer__link--items">
+            <h2>About Us</h2>
+            <a href="#tools">How it works</a> <a href="https://pages.flycricket.io/m-yae-0/terms.html">Terms of Service</a>
+            <a href="Privacy-policy">Privacy policy</a>
+          </div>
+          <div class="footer__link--items">
+            <h2>Contact Us</h2>
+            <a href="https://api.whatsapp.com/send?phone=+96181112046">Contact</a> <a href="#contact">Support</a>
+          </div>
         </div>
-        <br>
-        	
-	<div algin="center" style="width:100%;height :30%;">
-		<video style="width:298px" controls autoplay >
-			<source src="https://j.top4top.io/m_2319xht7r1.mp4" >
-			</video>
-			</div>
-			  <!-- footer section start -->
-    <footer id="footer">
-          <p>© 2022 Gitwb All right reserved</p>
-    </footer>
+        <div class="footer__link--wrapper">
+          <div class="footer__link--items">
+            <h2>Tools</h2>
+            <a href="editor">Editor/code linking </a> <a href="privacyp">Privacy policy generator</a>
+            <a href="encrypted">Encrypt </a>
+          </div>
+     
+          <div class="footer__link--items">
+            <h2>Source codes</h2>
+            <a href="https://instagram.com/myae.tk">Coming soon </a> <a href="https://www.facebook.com/profile.php?id=100055706470013">Coming soon </a>
+            <a href="https://youtube.com/channel/UCWMnleE24IIxhVBXEXsLqDw">Coming soon</a>
+          </div>
+        </div>
+      </div>
+      <section class="social__media">
+        <div class="social__media--wrap">
+          <div class="footer__logo">
+            <a href="/" id="footer__logo"></a>
+          </div>
+          <p class="website__rights"> 2022 Gitwb All rights reserved</p>
+          <div class="social__icons">
+            <a href="https://www.facebook.com/profile.php?id=100055706470013" class="social__icon--link" target="_blank"
+              ><i class="fab fa-facebook"></i
+            ></a>
+            <a href="https://instagram.com/myae.tk" class="social__icon--link"
+              ><i class="fab fa-instagram"></i
+            ></a>
+            <a href="https://youtube.com/channel/UCWMnleE24IIxhVBXEXsLqDw" class="social__icon--link"
+              ><i class="fab fa-youtube"></i
+            ></a>
+          </div>
+        </div>
+      </section>
+    </div>
+
+
+</section>
+		<!-- end: MAIN BODY -->
+
+	</section>
+	<!-- end: MAIN -->
+	
+	<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+	
+    <script> 
+         // SIDEBAR: SUBMENU
+const allSidebarSubmenu = document.querySelectorAll('#sidebar .sidebar__submenu')
+
+allSidebarSubmenu.forEach(item => {
+    const a = item.previousElementSibling
+
+    a.addEventListener('click', function(e) {
+        e.preventDefault()
+
+        if (this.classList.contains('clicked')) {
+            this.classList.remove('clicked')
+            item.classList.remove('active')
+        } else {
+            allSidebarSubmenu.forEach(i => {
+                i.previousElementSibling.classList.remove('clicked')
+                i.classList.remove('active')
+            })
+
+            this.classList.add('clicked')
+            item.classList.add('active')
+        }
+    })
+})
+
+
+
+
+
+
+
+// SIDEBAR: DROPDOWN MENU
+const allSidebarDropdownMenu = document.querySelectorAll('#sidebar .sidebar__dropdown-menu')
+
+allSidebarDropdownMenu.forEach(item => {
+    const a = item.previousElementSibling
+
+    a.addEventListener('click', function(e) {
+        e.preventDefault()
+
+        if (item.classList.contains('active')) {
+            item.classList.remove('active')
+            this.classList.remove('active')
+        } else {
+            allSidebarDropdownMenu.forEach(i => {
+                i.previousElementSibling.classList.remove('active')
+                i.classList.remove('active')
+            })
+
+            item.classList.add('active')
+            this.classList.add('active')
+        }
+    })
+})
+
+
+
+
+
+
+
+// SIDEBAR MOBILE: TOGGLE SIDEBAR
+const toggleSidebar = document.querySelector('#sidebar-mobile .toggle-sidebar')
+const sidebar = document.querySelector('#sidebar')
+
+toggleSidebar.addEventListener('click', function() {
+    sidebar.classList.add('active')
+})
+
+
+
+
+
+
+
+// MAIN: DROPDOWN
+const allMainDropdown = document.querySelectorAll('#main .main__top .main__top__menu .main__dropdown')
+
+allMainDropdown.forEach(item => {
+    const a = item.previousElementSibling
+
+    a.addEventListener('click', function(e) {
+        e.preventDefault()
+
+        if (item.classList.contains('active')) {
+            item.classList.remove('active')
+        } else {
+            allMainDropdown.forEach(i => {
+                i.classList.remove('active')
+            })
+
+            item.classList.add('active')
+        }
+    })
+})
+
+
+
+
+
+
+
+// MAIN: MAIN BODY MENU
+const allMainBodyMenu = document.querySelectorAll('#main .main__body :is(.members__menu, .sales-summary__menu) .menu')
+
+allMainBodyMenu.forEach(item=> {
+    const icon = item.previousElementSibling
+
+    icon.addEventListener('click', function () {
+        if(item.classList.contains('active')) {
+            item.classList.remove('active')
+        } else {
+            allMainBodyMenu.forEach(i=> {
+                i.classList.remove('active')
+            })
+
+            item.classList.add('active')
+        }
+    })
+})
+
+
+
+
+
+
+
+// DOCUMENT EVENT
+document.addEventListener('click', function(e) {
+    if (!e.target.matches('#sidebar, #sidebar *')) {
+        allSidebarSubmenu.forEach(item => {
+            item.previousElementSibling.classList.remove('clicked')
+            item.classList.remove('active')
+        })
+    }
+
+    if (!e.target.matches('#sidebar, #sidebar *, #sidebar-mobile .toggle-sidebar')) {
+        sidebar.classList.remove('active')
+    }
+
+    if (!e.target.matches('#main .main__top .main__top__menu, #main .main__top .main__top__menu *')) {
+        allMainDropdown.forEach(item => {
+            item.classList.remove('active')
+        })
+    }
+
+    if (!e.target.matches('#main .main__body :is(.members__menu, .sales-summary__menu), #main .main__body :is(.members__menu, .sales-summary__menu) *')) {
+        allMainBodyMenu.forEach(item => {
+            item.classList.remove('active')
+        })
+    }
+})
+
+
+
+
+
+
+
+// CHART: APEXCHART
+var options = {
+    series: [{
+        name: 'series1',
+        data: [31, 40, 28, 51, 42, 109, 100]
+    }, {
+        name: 'series2',
+        data: [11, 32, 45, 32, 34, 52, 41]
+    }],
+    chart: {
+        height: 350,
+        type: 'area'
+    },
+    dataLabels: {
+        enabled: false
+    },
+    stroke: {
+        curve: 'smooth'
+    },
+    xaxis: {
+        type: 'datetime',
+        categories: ["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"]
+    },
+    tooltip: {
+        x: {
+            format: 'dd/MM/yy HH:mm'
+        },
+    },
+};
+
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+    </script>
 </body>
 </html>
