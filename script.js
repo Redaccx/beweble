@@ -1,4 +1,3 @@
-
 function updateProfile(){
     var user = firebase.auth().currentUser;
     
@@ -55,7 +54,6 @@ function login(){
     firebase.auth().signInWithEmailAndPassword(email_address, password).catch(function(error){
         console.log(error);
 
-        
     });
     
 }
