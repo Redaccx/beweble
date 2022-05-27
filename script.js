@@ -50,10 +50,9 @@ firebase.auth().onAuthStateChanged(function(user) {
 function login(){
     var email_address = document.getElementById("email_field").value;
     var password = document.getElementById("password_field").value;
-    window.location.herf="index.html";
+
     firebase.auth().signInWithEmailAndPassword(email_address, password).catch(function(error){
         console.log(error);
-        window.location.herf="index.html";
 
     });
     
