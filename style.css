@@ -1,11 +1,10 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&display=swap');
 
 body{
     font-family: 'Noto Sans JP', sans-serif;
     padding: 0px;
-    margin: 0px;
+    margin: 25px;
     font-size: 16px;
     color: #fff;
     
@@ -20,8 +19,10 @@ a{
 }
 
 input, button{
+	
     font-family: 'Noto Sans JP', sans-serif;
     font-weight: 700;
+    
 }
 
 .loggedin-div input[type="text"]{
@@ -29,14 +30,17 @@ input, button{
     padding-left: 10px;
     margin-left: 120px;
     color: #fff;
+    
+    
 }
 
 
 div{
-    width: 60%;
-    margin: 0 auto;
-    margin-top: 20px;
-    padding: 20px;
+    width: 85%;
+    margin: 0px auto;
+    margin-top: 0px;
+    padding: 0px;
+    
 }
 
 .main-div, .loggedin-div{
@@ -64,14 +68,14 @@ div h3{
 
 .signup_div input, .main-div input, .loggedin-div input{
     display: block;
-    border: 1px solid #ccc;
+    border: 1px solid #FFD36A;
     border-radius: 5px;
     background-color: #121212;
-    padding: 15px;
+    padding: 12px;
     outline: none;
     color:white;
-    width: 100%;
-    margin-bottom: 20px;
+    width: 260px;
+    margin-bottom: 15px;
 
     transition: 0.3s;
     -webkit-transition: 0.3s;
@@ -79,7 +83,7 @@ div h3{
 }
 
 .main-div input:focus,  .loggedin-div input:focus{
-    border: 1px solid #999;
+    border: 1px solid #FFD36A;
 }
 
 div button{
@@ -87,7 +91,7 @@ div button{
     color: #FFD36A;
     border: 0px  black;
     border-radius: 5px;
-    padding: 15px;
+    padding: 12px;
     display: block;
     width: 100%;
 
@@ -113,3 +117,11 @@ div button:hover{
     color: slateblue;
     border: 1px solid slateblue;
 }
+img {
+    width: 100px;
+    height: 100px;
+    margin: auto;
+    display: block;
+    border: 1px solid #FFD36A;
+    border-radius: 360px;
+    }
