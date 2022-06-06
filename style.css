@@ -22,13 +22,15 @@ input, button{
 	
     font-family: 'Noto Sans JP', sans-serif;
     font-weight: 700;
-    
+    border: 1px solid #FFD36A;
+    border-radius: 5px;
+
 }
 
 .loggedin-div input[type="text"]{
     position: relative;
     padding-left: 10px;
-    margin-left: 120px;
+    margin-left: 0px;
     color: #fff;
     
     
@@ -55,8 +57,8 @@ div{
     margin-left: auto;
     margin-right: auto;
 
-    border: 2px solid white;
-    border-radius: 50%;
+    border: 1px solid #FFD36A;
+    border-radius: 360px;
 }
 
 
@@ -69,8 +71,8 @@ div h3{
 .signup_div input, .main-div input, .loggedin-div input{
     display: block;
     border: 1px solid #FFD36A;
+    border: 1px solid #FFD36A;
     border-radius: 5px;
-    background-color: #121212;
     padding: 12px;
     outline: none;
     color:white;
