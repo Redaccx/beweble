@@ -32,14 +32,14 @@ input, button{
     position: relative;
     padding-left: 10px;
     margin-left: 0px;
-    color: #fff;
+    color: #000;
     
     
 }
 
 
 div{
-    width: 85%;
+    width: 87%;
     margin: 0px auto;
     margin-top: 0px;
     padding: 0px;
@@ -71,13 +71,13 @@ div h3{
 
 .signup_div input, .main-div input, .loggedin-div input{
     display: block;
-    border: 1px solid #FFD36A;
-    border: 1px solid #FFD36A;
+    border: 1px solid #FFD36A ;
     border-radius: 5px;
+    background:white;
     padding: 12px;
     outline: none;
     color:black;
-    width: 240px;
+    width: 250px;
     margin-bottom: 15px;
 
     transition: 0.3s;
@@ -96,7 +96,7 @@ div button{
     border-radius: 5px;
     padding: 12px;
     display: block;
-    width: 100%;
+    width: 99%;
 
     transition: 0.3s;
     -webkit-transition: 0.3s;
