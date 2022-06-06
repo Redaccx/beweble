@@ -25,7 +25,7 @@ input, button{
     font-weight: 700;
     border: 1px solid #FFD36A;
     border-radius: 5px;
-
+    color:#000;
 }
 
 .loggedin-div input[type="text"]{
@@ -39,7 +39,7 @@ input, button{
 
 
 div{
-    width: 92%;
+    width: 85%;
     margin: 0px auto;
     margin-top: 0px;
     padding: 0px;
@@ -51,7 +51,7 @@ div{
 }
 
 #profilepic{
-    display: block;
+display: block;
     width: 100px;
     height: 100px;
 
