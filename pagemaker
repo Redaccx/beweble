@@ -1,0 +1,47 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+</head>
+  <style>
+  	body{
+  	background:#121212;
+ } 
+  	h3{
+  	text-align:center;
+      color: white;
+ } 
+ img{
+      height:100px; 
+       width:100px;
+       margin-left:120px;
+       margin-right:auto;
+} 
+  </style>
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<div id="editor">
+  <img alt="" src="https://k.top4top.io/p_23228fnpz1.png"  style="height:100px; width:100px"/>
+
+
+
+  <h3>Welcome letter</h3>
+
+
+    </tbody>
+  </table>
+</div>
+<!-- partial -->
+  <script src='https://nightly.ckeditor.com/full/ckeditor.js'></script>
+<script>
+
+CKEDITOR.replace( 'editor' );
+</script>
+
+
+</body>
+</html>
+. 
