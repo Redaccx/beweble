@@ -1344,7 +1344,7 @@ firebase.auth().onAuthStateChanged(function(user)
             {
                 if(!user) 
                 {
-                    window.location.href = "main";
+                    window.location.href = "index";
                 }
             });
 
@@ -1353,7 +1353,7 @@ function logout(){
     firebase.auth().signOut();
   
 
-          window.open('main');
+          window.open('index');
 } 
 
 
