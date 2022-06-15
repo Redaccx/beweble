@@ -342,11 +342,11 @@ main {
 }
 @keyframes stroke-draw {
   from {
-    stroke: #fff;
+    stroke: #FFD36A;
     stroke-dasharray: 1;
   }
   to {
-    stroke: #000 ;
+    stroke: #FFD36A ;
     transform: rotate(180deg);
     stroke-dasharray: 8;
   }
