@@ -1,0 +1,63 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+	   
+
+        <div class="main-div" id="login_div">
+             <img src="https://k.top4top.io/p_23228fnpz1.png">
+	      
+            <h3>SignIn</h3>
+            <input type="email" id="email_field" placeholder="Enter Your Email ..." />
+            <input type="password" id="password_field" placeholder="Enter Your Password ..." />
+       <a href="reset">Forgot Password ?</a>
+      
+      <br>
+      <br>
+            <button onclick="login()">Login</button>
+
+            <h3>Don't have an Account ?</h3>
+            <a href="signup">
+                <button id="signup">SignUp</button>
+            </a>
+        </div>
+        <div class="loggedin-div" id="user_div">
+          
+
+            <img id="profilepic" />
+  <h3>Profile</h3>
+            
+
+            Email Address:
+            <input type="text" id="user_email_from_database" disabled>
+            
+            UserName:
+            <input type="text" id="user_name_from_database" disabled>
+
+           
+            <a href="profile">
+                <button id="signup">Update Profile</butto>
+        </div>
+        
+
+    </section>
+
+
+<script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-analytics.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
+
+<script src="init.js"></script>
+
+<script src="test.js"></script>
+
+<script src="script.js"></script>
+
+</body>
+</html>
