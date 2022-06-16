@@ -346,7 +346,7 @@ main {
     stroke-dasharray: 1;
   }
   to {
-    stroke: #FFD36A ;
+    stroke: #121212;
     transform: rotate(180deg);
     stroke-dasharray: 8;
   }
