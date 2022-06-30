@@ -27,7 +27,7 @@ a {
 .container {
   display: grid;
   place-items: center;
-  height: 95vh;
+  height: 93vh;
   width: 100vw;
 }
 
