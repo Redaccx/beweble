@@ -33,7 +33,7 @@ a {
   border-radius: 4px;
   border: 1px solid #FFD36A ;
   box-shadow: 0 0 50px #000;
-  margin: 15px;
+  margin: 25px;
   overflow: scroll;
   scroll-snap-type: y mandatory;
   scroll-snap-align: center;
