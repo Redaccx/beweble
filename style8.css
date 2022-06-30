@@ -1,4 +1,4 @@
-/* core styling */
+
 *,
 *:before,
 *:after {
@@ -305,7 +305,7 @@ video.post-video {
 /* follow me */
 
 body {
-  background: linear-gradient(-45deg, #FFD36A , #121212 , #FFD36A , #23d5ab);
+  background: linear-gradient(-45deg, #FFD36A , #121212 , #FFD36A , #000);
   background-size: 300% 300%;
   display: grid;
   place-items: center;
