@@ -305,7 +305,7 @@ video.post-video {
 /* follow me */
 
 body {
-  background: linear-gradient(-45deg, #FFD36A , #121212 , #FFD36A , #23d5ab);
+  background:#121212;
   background-size: 250% 250%;
   display: grid;
   place-items: center;
