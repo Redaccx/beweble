@@ -5,7 +5,140 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&display=swap');
 
+body{
+    font-family: 'Noto Sans JP', sans-serif;
+    padding: 0px;
+    margin: 25px;
+    font-size: 16px;
+    color: #fff;
+    
+    
+    background-color: #121212;
+    background-size: cover;
+}
+
+a{
+    text-decoration: none;
+    color:#FFD36A;
+
+}
+
+input, button{
+	
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 700;
+    border: 1px solid #FFD36A;
+    border-radius: 5px;
+    color:#000;
+}
+
+.loggedin-div input[type="text"]{
+    position: relative;
+    padding-left: 10px;
+    margin-left: 0px;
+    color: #000;
+    
+    
+}
+
+
+div{
+    width: 85%;
+    margin: 0px auto;
+    margin-top: 0px;
+    padding: 0px;
+    
+}
+
+.main-div, .loggedin-div{
+    display: none;
+}
+
+#profilepic{
+display: block;
+    width: 100px;
+    height: 100px;
+
+    margin-left: auto;
+    margin-right: auto;
+
+    border: 1px solid #FFD36A;
+    border-radius: 360px;
+}
+
+
+div h3{
+    text-align: center;
+    font-family:  'Oswald', sans-serif;
+}
+
+
+.signup_div input, .main-div input, .loggedin-div input{
+    display: block;
+    border: 1px solid #FFD36A ;
+    border-radius: 5px;
+    background:white;
+    padding: 12px;
+    outline: none;
+    color:black;
+    width: 260px;
+    margin-bottom: 15px;
+
+    transition: 0.3s;
+    -webkit-transition: 0.3s;
+    -moz-transition: 0.3s;
+}
+
+.main-div input:focus,  .loggedin-div input:focus{
+    border: 1px solid #FFD36A;
+}
+
+div button{
+    background-color: #000;
+    color: #FFD36A;
+    border: 0px  black;
+    border-radius: 5px;
+    padding: 12px;
+    display: block;
+    width: 100%;
+
+    transition: 0.3s;
+    -webkit-transition: 0.3s;
+    -moz-transition: 0.3s;
+}
+
+div button:hover{
+    background-color: #000;
+    color: #FFD36A;
+    border: 1px solid white;
+}
+
+#signup{
+    background: #FFD36A;
+    color: #000;
+    border: 1px solid snow;
+}
+
+#signup:hover{
+    background: snow;
+    color: slateblue;
+    border: 1px solid slateblue;
+}
+img {
+    width: 100px;
+    height: 100px;
+    margin: auto;
+    display: block;
+    border: 1px solid #FFD36A;
+    border-radius: 360px;
+    }
+
+
+</style>
 </head>
 <body>
 	   
