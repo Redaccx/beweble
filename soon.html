@@ -1,158 +1,256 @@
+
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>soon-قريبا</title>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
 <style>
-	.content-area {
-	height: 100vh;
-	width: 100%;
-	text-align: center;
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&display=swap');
+
+body{
+    font-family: 'Noto Sans JP', sans-serif;
+    padding: 0px;
+    margin: 25px;
+    font-size: 16px;
+    color: #fff;
+    
+    
+    background-color: #121212;
+    background-size: cover;
 }
 
-.d-flex {
-	display: flex;
-}
-.align-items-center {
-	align-items: center;
-}
-.justify-content-center {
-	justify-content: center;
+a{
+    text-decoration: none;
+    color:#FFD36A;
+
 }
 
-/* make keyframes that tell the start state and the end state of our object */
-@-webkit-keyframes fadeIn {
-	from {
-		opacity: 0;
-	}
-	to {
-		opacity: 1;
-	}
+input, button{
 	
-}
-@-moz-keyframes fadeIn {
-	from {
-		opacity: 0;
-	}
-	to {
-		opacity: 1;
-	}
-}
-@keyframes fadeIn {
-	from {
-		opacity: 0;
-	}
-	to {
-		opacity: 1;
-	}
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 700;
+    border: 1px solid #FFD36A;
+    border-radius: 5px;
+    color:#000;
 }
 
-.fade-in {
-	opacity: 0; /* make things invisible upon start */
-	-webkit-animation: fadeIn ease-in 1; /* call our keyframe named fadeIn, use animattion ease-in and repeat it only 1 time */
-	-moz-animation: fadeIn ease-in 1;
-	animation: fadeIn ease-in 1;
-	
-
-	-webkit-animation-fill-mode: forwards; /* this makes sure that after animation is done we remain at the last keyframe value (opacity: 1)*/
-	-moz-animation-fill-mode: forwards;
-	animation-fill-mode: forwards;
-
-	-webkit-animation-duration: 1s;
-	-moz-animation-duration: 1s;
-	animation-duration: 1s;
-	&.one {
-		-webkit-animation-delay: 0.7s;
-		-moz-animation-delay: 0.7s;
-		animation-delay: 0.7s;
-	}
-
-	&.two {
-		-webkit-animation-delay: 1.2s;
-		-moz-animation-delay: 1.2s;
-		animation-delay: 1.2s;
-	}
-	&.three {
-		-webkit-animation-delay: 1.7s;
-		
-		-moz-animation-delay: 1.7s;
-		animation-delay: 1.7s;
-	}
+.loggedin-div input[type="text"]{
+    position: relative;
+    padding-left: 10px;
+    margin-left: 0px;
+    color: #000;
+    
+    
 }
 
-.logo {
-	max-width: 480px;
-	width: 80%;
-	display: block;
-	margin: 0 auto;
+
+div{
+    width: 80%;
+    margin: 0px auto;
+    margin-top: 0px;
+    padding: 0px;
+    
 }
 
-h3 {
-	font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
-		"Courier New", monospace;
-	letter-spacing: 5px;
-	text-transform: uppercase;
-	font-weight: 100;
-	color: rgba(#000, 0.8);
-}
-.social {
-	ul {
-		list-style-type: none;
-		
-		padding: 0;
-		li {
-			display: inline-block;
-			margin: 5px;
-			a {
-				img {
-					width: 28px;
-					&:hover {
-						opacity: 0.7;
-					}
-				}
-			}
-		}
-	}
-}
-.copy-right {
-	position: absolute;
-	bottom: 0;
-	right: 0;
-	left: 0;
-	text-align: center;
-	padding-bottom: 15px;
-	font-size: 12px;
-	
-	color: rgba(#000, 0.5);
+.main-div, .loggedin-div{
+    display: none;
 }
 
-	</style>
-	</head>
-<body> 
-	<div class="content-area d-flex align-items-center justify-content-center">
-	<div>
-		<img src="https://k.top4top.io/p_23228fnpz1.png" alt="" class="logo fade-in one">
-		<h3 class="fade-in two">Coming Soon</h3>
-		<div class="social fade-in three">
-			<ul>
-				<li>
-						<a href="https://facebook.com/" taget="_blank">
-							<img src="" alt="">
-					</a>
-				</li>
-				
-					</a>
-				</li>
-			</ul>
-		</div>
-		
-	</div>
-</div>
-<div class="copy-right">
-	&copy; 2022 Gitwb
-</div>
-	
+#profilepic{
+display: block;
+    width: 100px;
+    height: 100px;
+
+    margin-left: auto;
+    margin-right: auto;
+
+    border: 1px solid #FFD36A;
+    border-radius: 360px;
+}
+
+
+div h3{
+    text-align: center;
+    font-family:  'Oswald', sans-serif;
+}
+
+
+.signup_div input, .main-div input, .loggedin-div input{
+    display: block;
+    border: 1px solid #FFD36A ;
+    border-radius: 5px;
+    background:white;
+    padding: 12px;
+    outline: none;
+    color:black;
+    width: 260px;
+    margin-bottom: 15px;
+
+    transition: 0.3s;
+    -webkit-transition: 0.3s;
+    -moz-transition: 0.3s;
+}
+
+.main-div input:focus,  .loggedin-div input:focus{
+    border: 1px solid #FFD36A;
+}
+
+div button{
+    background-color: #000;
+    color: #FFD36A;
+    border: 0px  black;
+    border-radius: 5px;
+    padding: 12px;
+    display: block;
+    width: 100%;
+
+    transition: 0.3s;
+    -webkit-transition: 0.3s;
+    -moz-transition: 0.3s;
+}
+
+div button:hover{
+    background-color: #000;
+    color: #FFD36A;
+    border: 1px solid white;
+}
+
+#signup{
+    background: #FFD36A;
+    color: #000;
+    border: 1px solid snow;
+}
+
+#signup:hover{
+    background: snow;
+    color: slateblue;
+    border: 1px solid slateblue;
+}
+img {
+    width: 100px;
+    height: 100px;
+    margin: auto;
+    display: block;
+    border: 1px solid #FFD36A;
+    border-radius: 360px;
+    }
+
+</style>
+</head>
+<body>
+	   
+
+        <div class="main-div" id="login_div">
+             <img src="https://k.top4top.io/p_23228fnpz1.png">
+	      
+            <h3>welcome to the vip page</h3>
+            <input type="email" id="email_field" placeholder=" Username ..." />
+            <input type="password" id="password_field" placeholder=" Password ..." />
+       <a href="change-password">Change password ?</a>
+      
+      <br>
+      <br>
+            <button onclick="login()">Login</button>
+
+            <h3></h3>
+            <a href="buy-acc">
+                <button>✴️Buy Vip  Acc✴️</button>
+            </a>
+            
+         
+            
+   
+        <a href="about-vip-page" >
+             <h3>‼️</h3>
+             </a>
+             
+        <div class="loggedin-div" id="user_div">
+          
+
+  
+
+
+<script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-analytics.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
+
+<script >var firebaseConfig = { apiKey: "AIzaSyBmQebUmPyy79z51kb6YKkAurZ11yehXIk",
+ authDomain: "vip-page.firebaseapp.com", 
+projectId: "vip-page", 
+storageBucket: "vip-page.appspot.com",
+ messagingSenderId: "809627494181", 
+appId: "1:809627494181:web:0df989d623d1cb6e119ccc",
+ measurementId: "G-Q7H13D1YFC" }; 
+firebase.initializeApp(firebaseConfig); firebase.analytics();
+</script>
+
+
+<script>
+function updateProfile(){
+    var user = firebase.auth().currentUser;
+    
+
+    user.updateProfile({
+        displayName: document.getElementById("username_updated_val").value,
+        photoURL: document.getElementById("image_file_field").value
+
+    }).then(function(){
+        window.alert('Profile Updated !!!');
+
+    }).catch(function(error){
+
+        window.alert('Error in Updating  Profile!!')
+        console.log(error);
+    });
+
+}
+
+
+firebase.auth().onAuthStateChanged(function(user) {
+    if(user){
+        window.open("vip-page")
+
+        
+
+        var user = firebase.auth().currentUser;
+
+        if (user != null) {
+            var email_id = user.email;
+            var uname = user.displayName;
+            var dp_url = user.photoURL;
+
+            document.getElementById("user_name_from_database").value = uname;
+            document.getElementById("user_email_from_database").value = email_id;
+            document.getElementById("profilepic").src = dp_url;
+        }
+    }
+
+    else{
+        document.title = "Login Here"
+        document.getElementById("user_div").style.display = "none";
+        document.getElementById("login_div").style.display = "block";
+    }
+});
+
+
+
+function login(){
+    var email_address = document.getElementById("email_field").value;
+    var password = document.getElementById("password_field").value;
+
+    firebase.auth().signInWithEmailAndPassword(email_address, password).catch(function(error){
+        console.log(error);
+
+    });
+    
+}
+
+function logout(){
+    firebase.auth().signOut();
+}
+</script>
+
 </body>
 </html>
