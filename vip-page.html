@@ -120,7 +120,7 @@
 <body>
 	    <div class="container">
         <div class="home-box">
-                <a onclick="logout()"class="contact-link">logout</a>
+       <a onclick="logout()"class="bx bx-log-out">logout</a>
         
             </div>
       
@@ -215,9 +215,37 @@ search.addEventListener("keyup", () =>{
 })
 }
 
+</script>
+<script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-analytics.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
+
+<script>
+
+var firebaseConfig = { apiKey: "AIzaSyBmQebUmPyy79z51kb6YKkAurZ11yehXIk",
+authDomain: "vip-page.firebaseapp.com", 
+projectId: "vip-page", 
+storageBucket: "vip-page.appspot.com", 
+messagingSenderId: "809627494181",
+ appId: "1:809627494181:web:0df989d623d1cb6e119ccc", 
+measurementId: "G-Q7H13D1YFC" }; 
+firebase.initializeApp(firebaseConfig); firebase.analytics();
+
+firebase.auth().onAuthStateChanged(function(user)
+            {
+                if(!user) 
+                {
+                    window.location.href = "vip-signin";
+                }
+            });
+
+      
 function logout(){
     firebase.auth().signOut();
-}
+  
+
+          window.open('vip-signin');
+} 
 </script>
 </body>
 </html>
