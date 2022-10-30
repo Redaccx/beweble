@@ -2,200 +2,466 @@
 <html lang="en">
 <head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>vip</title>
+<title>Document</title>
 <style>
-/* ===== Google Font Import - Poppins ===== */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap');
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-    background:#121212 ;
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap");
+* {
+  box-sizing: border-box;
 }
 
-.container{
-    position: relative;
-    min-height: 100vh;
-    max-width: 1000px;
-    width: 100%;
-    margin: 0 auto;
-    padding: 20px 20px;
+html {
+  font-size: 16px;
 }
 
-.container .search-box{
-    position: relative;
-    height: 42px;
-    max-width: 400px;
-    margin: 0 auto;
-    margin-bottom: 10px;
+body {
+  
+    font-family:  'Oswald', sans-serif;
+  font-size: 1rem;
+  line-height: 1.3;
+  color: #ffd36a;
+  margin: 0;
+  background:#121212;
 }
-.search-box input{
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    outline: none;
-    border: none;
-    background-color: #000 ;
-    padding: 0 15px 0 45px;
+
+h3,
+h4,
+h5 {
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+h3 {
+  font-size: 1.3rem;
+}
+
+h4 {
+  font-size: 1.2rem;
+}
+
+h5 {
+  font-size: 1.1rem;
+}
+
+hr {
+  width: 100%;
+  height: 1px;
+  background-color: #fff;
+  margin-top: 20px;
+  margin-right: auto;
+  margin-bottom: 20px;
+  margin-left: 0;
+  padding: 0;
+  border: 0;
+}
+
+.btn {
+  
+    font-family:  'Oswald', sans-serif;
+  font-size: 1rem;
+  font-weight: 300;
+  color: #fff;
+  background-color: transparent;
+  border-style: solid;
+  border-width: 1px;
+  border-color: transparent;
+  line-height: 1.2;
+  padding: 8px 16px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  transition: background-color 0.4s ease, border-color 0.4s ease;
+  justify-content: space-between;
+}
+
+.btn.btn-block {
+  width: 100%;
+}
+
+.btn.btn-1 {
+  color: #000;
+  background-color: #ffd36a;
+  border-color: #fff;
+  border-radius: 5px;
+}
+
+.btn.btn-1:active, .btn.btn-1:focus, .btn.btn-1:hover {
+  background-color: #0097e6;
+  border-color: #0097e6;
+}
+
+.btn.btn-2 {
+  color: #ffffff;
+  background-color: #487eb0;
+  border-color: #487eb0;
+}
+
+.btn.btn-2:active, .btn.btn-2:focus, .btn.btn-2:hover {
+  background-color: #40739e;
+  border-color: #40739e;
+}
+
+.btn.btn-2.btn-outline {
+  color: #487eb0;
+  background-color: transparent;
+}
+
+.btn.btn-2.btn-outline:active, .btn.btn-2.btn-outline:focus, .btn.btn-2.btn-outline:hover {
+  color: #ffffff;
+  background-color: #40739e;
+  border-color: #40739e;
+}
+
+.border-color-1 {
+  border-color: #e84118 !important;
+}
+
+.hover-shadow:active, .hover-shadow:focus, .hover-shadow:hover {
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.15);
+}
+
+.hover-float:active, .hover-float:focus, .hover-float:hover {
+  transform: translateY(-5px);
+}
+
+.container {
+  padding: 20px 20px 0;
+  
+}
+
+.panel-container {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: -10px;
+  margin-right: -10px;
+ 
+}
+.panel-container .panel {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  flex: 0 0 calc(100% - 20px);
+  max-width: 100%;
+  width: 100%;
+  margin: 0 10px 20px;
+  border: 1px solid #ffd36a;
+  border-radius: 5px;
+  background-color: #000
+  
+}
+.panel-container .panel .panel-header {
+  padding: 20px;
+  margin-bottom: auto;
+  
+}
+.panel-container .panel .panel-logo {
+  display: block;
+  margin: 0 auto;
+  max-width: 45%;
+  height: auto;
+}
+.panel-container .panel .panel-image {
+  display: block;
+  max-width: 90%;
+  height: auto;
+  padding: 20px;
+  margin-left: auto;
+  margin-right: auto;
+
+    
+}
+.panel-container .panel .panel-body {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding: 20px;
+  text-align: center;
+  
+}
+.panel-container .panel .panel-body hr {
+  width: 25%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: auto;
+  
+}
+.panel-container .panel .product-title {
+  font-weight: 300;
+  margin-bottom: 0;
+}
+.panel-container .panel .product-price {
+  font-size: 1.4rem;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+.panel-container .panel .product-details {
+  display: flex;
+  width: 100%;
+  align-items: baseline;
+  justify-content: center;
+  font-size: 0.9rem;
+  line-height: 1;
+  text-transform: uppercase;
+}
+.panel-container .panel .product-details .product-rrp {
+  color: #7f8fa6;
+  background-color: #f5f6fa;
+  font-weight: 300;
+  padding: 10px 10px 8px;
+  margin-bottom: 10px;
+}
+.panel-container .panel .product-details .product-discount {
+  color: #fff;
+  background-color: #e84118;
+  padding: 10px 10px 8px;
+  margin-bottom: 10px;
+}
+.panel-container .panel .product-stock {
+  font-size: 0.9rem;
+  color: #7f8fa6;
+  margin-top: auto;
+}
+.panel-container .panel .product-stock i {
+  margin-right: 5px;
+}
+.panel-container .panel .panel-footer {
+  padding: 20px;
+  margin-top: auto;
+}
+.panel-container .panel .panel-footer .btn-block {
+  justify-content: center;
+}
+.panel-container .panel .panel-footer .btn + .btn {
+  margin-top: 5px;
+}
+.panel-container .panel.panel-type-new:before, .panel-container .panel.panel-type-offer:before, .panel-container .panel.panel-type-sale:before {
+  content: "";
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: top right;
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  top: -1px;
+  right: -1px;
+}
+.panel-container .panel.panel-type-offer {
+  border-color: #e84118;
+}
+.panel-container .panel.panel-type-offer:before {
+  background-image: url("http://aaronflynn.co.uk/img/codepen-products-offer.svg");
+}
+.panel-container .panel.panel-type-new {
+  border-color: #ffd36a;
+}
+.panel-container .panel.panel-type-new:before {
+  background-image: url("http://aaronflynn.co.uk/img/codepen-products-new.svg");
+}
+.panel-container .panel.panel-type-sale {
+  border-color: #ffd36a;
+}
+.panel-container .panel.panel-type-sale:before {
+  background-image: url("http://aaronflynn.co.uk/img/codepen-products-sale.svg");
+}
+@media (min-width: 576px) {
+  .panel-container .panel {
+    flex: 0 0 calc(50% - 20px);
+    max-width: 50%;
+  }
+}
+@media (min-width: 768px) {
+  .panel-container .panel {
+    flex: 0 0 calc(33.333333% - 20px);
+    max-width: 33.333333%;
+  }
+}
+@media (min-width: 992px) {
+  .panel-container .panel {
+    flex: 0 0 calc(25% - 20px);
+    max-width: 25%;
+  }
+}
+@media (min-width: 1200px) {
+  .panel-container .panel {
+    flex: 0 0 calc(20% - 20px);
+    max-width: 20%;
+  }
+}
+@media (min-width: 1600px) {
+  .panel-container .panel {
+    flex: 0 0 calc(16.666667% - 20px);
+    max-width: 16.666667%;
+  }
+}
+@media (min-width: 1920px) {
+  .panel-container .panel {
+    flex: 0 0 calc(14.285714% - 20px);
+    max-width: 14.285714%;
+  }
+}
+.panel-container a.panel {
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.4s ease;
+}
+.panel-container a.panel:active, .panel-container a.panel:focus, .panel-container a.panel:hover {
+  border: 1px solid #a6a6a6;
+}
+.panel-container a.panel:active .btn-1, .panel-container a.panel:focus .btn-1, .panel-container a.panel:hover .btn-1 {
+  background-color: #0097e6;
+  border-color: #0097e6;
+}
+.panel-container [class^=panel-] + [class^=panel-] {
+  padding-top: 0;
+}
+div button{
+    background-color: #000;
+    border: 1px solid #ffd36a;
+    color: #ffd36a;
+    margin:8px;
+    border-radius: 5px;
+    padding: 12px;
+    
+    font-family:  'Oswald', sans-serif;
+    
+
+    
+}
+
+
+div button:hover{
+	
+    font-family:  'Oswald', sans-serif;
+    background-color: #000;
     color: #FFD36A;
-    border-radius: 6px;
-}
-
-.search-box i{
-    position: absolute;
-    z-index: 2;
-    color: #FFD36A;
-    background:#000;
-    top: 50%;
-    left: 15px;
-    font-size: 20px;
-    transform: translateY(-50%);
+    margin:8px;
+border: 1px solid #FFD36A;
+    border: 1px solid white;
+    
 }
 .home-box  {
-	text-align:left ;
+	
     color: #ffd36a;
-    font-size: 15px;
-    word-spacing: 200px;
-    
-	} 
-	a {
-		color:#ffd36a;
-		
-		} 
-
-.container .images .image-box{
-    position: relative;
-    height: 100%;
-    width: 100%;
-    border-radius: 6px;
-    overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-		transition: 0.3s;
-}
-.images{
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-.images .image-box{
-    margin: 8px;
-}
-.images .image-box img{
-    height: 100%;
-    width: 100%;
-    border-radius: 6px;
-    transition: transform 0.2s linear;
-}
-.image-box:hover img{
-    transform: scale(1.05);
-}
-.image-box h6{
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-    color: #FFD36A;
-    border-radius: 2px;
-    background:#121212;
-    font-size: 12px;
-    font-weight: 400;
-    text-transform: capitalize;
-}
-h4{
-	color:#ffd36a;
-	text-align:center;
-	padding:15px;
-	} 
+    word-spacing: 125px;
 
 </style>
 </head>
 <body>
 <!DOCTYPE html>
-<!--=== Coding by CodingLab | www.codinglabweb.com === -->
-<html lang="en">
+<html lang="en" >
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta data-name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!----======== CSS ======== -->
-    <link rel="stylesheet" href="style.s">
-    
-    <!--===== Boxicons CSS =====-->
-    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+  <meta charset="UTF-8">
+  <title>CodePen - Distrelec - Products</title>
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css'><link rel="stylesheet" href="">
 
-    <title>Image Gallery with Search Box</title> 
 </head>
 <body>
-	    <h4>✴️welcome user ✴️</h4>
-	  <div class="container">
-    	
-        <div class="home-box">
-<a onclick="logout()"class="bx bx-log-out">logout</a>
+	    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+<!-- partial:index.partial.html -->
+<div class="container">
+	       <div class="home-box">
+	<button onclick="logout()"class="bx bx-log-out"> logout</button>
+
 <a href="index">
-        	 <h3 class="bx bx-home" >back</h3> 
+             
+              	 <button class="bx bx-home" > back</button> 
         </a>
             </div>
             
-
-  
-
-        <div class="images">
-            <div class="image-box" data-name="april">
-            	    <a href="tweak1">
-                <img src="https://f.top4top.io/p_233199hqw1.jpg" alt="">
-                <h6>April</h6>
-            </div>
-            <div class="image-box" data-name="copypasta">
-            	    <a href="tweak2">
-                <img src="https://j.top4top.io/p_2331gz2yn1.jpg" alt="">
-                <h6>CopyPasta</h6>
-            </div>
-            <div class="image-box" data-name="reprovision">
-            	    <a href="tweak3">
-                <img src="https://e.top4top.io/p_233108rgt1.jpg" alt="">
-                <h6>ReProvisionReborn</h6>
-            </div>
-            <div class="image-box" data-name="chapters">
-            	    <a href="tweak4">
-                <img src="https://j.top4top.io/p_2331ytrlk1.jpg" alt="">
-                <h6>Chapters</h6>
-            </div>
-            <div class="image-box" data-name="sbypass">
-            	    <a href="tweak5">
-                <img src="https://l.top4top.io/p_2331vjivl1.jpg" alt="">
-                <h6>S-ByPass</h6>
-            </div>
-            <div class="image-box" data-name="nopass">
-            	    <a href="tweak6">
-                <img src="https://g.top4top.io/p_2331x1f2y1.jpg" alt="">
-                <h6>NoPass</h6>
-            </div>
-            <div class="image-box" data-name="#magsafe">
-            	    <a href="tweak7">
-                <img src="https://j.top4top.io/p_2331gq5pg1.jpg" alt="">
-                <h6>MagSafeController</h6>
-            </div>
-            <div class="image-box" data-name="cask2 ">
-            	    <a href="tweak8">
-                <img src="https://l.top4top.io/p_2331mdwb71.jpg" alt="">
-                <h6>Cask2</h6>
-            </div>
-            <div class="image-box" data-name="edge">
-            	    <a href="tweak9">
-                <img src="https://k.top4top.io/p_2331yew9x1.jpg" alt="">
-                <h6>Edge</h6>
-            </div>
-            <div class="image-box" data-name="ccmusicartwork">
-            	    <a href="tweak10">
-                <img src="https://f.top4top.io/p_233189d0w1.jpg" alt="">
-                <h6>CCMusicArtwork</h6>
-            </div>
-        </div>
+            
+            
+            
+   
+  <div class="panel-container">
+    <div class="panel">
+      <div class="panel-header">
+      	
+        <img class="panel-logo" src="https://g.top4top.io/p_2493yi2sp1.jpg" alt="Tektronix logo">
+      </div>
+      <img class="panel-image" src="https://j.top4top.io/p_2494xs1bi1.jpg" alt="Tektronix Thermal camera">
+      <div class="panel-body">
+        <h4 class="product-title">Report bot instagram </h4>
+        <hr>
+        <h4 class="product-price">10$</h4>
+        <span class="product-stock"><i class="fas fa-info"></i>monthly </span>
+      </div>
+      <div class="panel-footer">
+        <a href="https://wa.me/96181112046?text=Hello%20I%20want%20to%20subscribe%20to%20the%20reporting%20bot%0A%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%20%D8%A7%D8%B1%D9%8A%D8%AF%20%D8%A7%D9%84%D8%A7%D8%B4%D8%AA%D8%B1%D8%A7%D9%83%20%D9%81%D9%8A%20%D8%A8%D9%88%D8%AA%20%D8%A7%D9%84%D8%A8%D9%84%D8%A7%D8%BA%D8%A7%D8%AA " class="btn btn-block btn-1">order now </a>
+      </div>
     </div>
-
-    <!--<script src="script.js"></script>-->
+    <div class="panel panel-type-sale">
+      <div class="panel-header">
+        <img class="panel-logo" src="https://g.top4top.io/p_2493yi2sp1.jpg" alt="Tektronix logo">
+      </div>
+      <img class="panel-image" src="https://d.top4top.io/p_2494c750t1.jpg" alt="Tektronix Thermal camera">
+      <div class="panel-body">
+        <h4 class="product-title">Instagram likes</h4>
+        <hr>
+        <h4 class="product-price">4$</h4>
+        <div class="product-details">
+          <span class="product-discount">save 2$</span>
+          <span class="product-rrp">was 6$</span>
+        </div>
+        <span class="product-stock"><i class="fas fa-info"></i>Every 10k --> 4$</span>
+      </div>
+      <div class="panel-footer">
+        <a href="https://wa.me/96181112046?text=Hello%20I%20want%20to%20increase%20Instagram%20likes%0A%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%20%D8%A7%D8%B1%D9%8A%D8%AF%20%D8%B2%D9%8A%D8%A7%D8%AF%D8%A9%20%D9%84%D8%A7%D9%8A%D9%83%D8%A7%D8%AA%20%D8%A7%D9%86%D8%B3%D8%AA%D8%BA%D8%B1%D8%A7%D9%85" class="btn btn-block btn-1">Order now</a>
+      </div>
+    </div>
+    <div class="panel panel-type-new">
+      <div class="panel-header">
+        <img class="panel-logo" src="https://g.top4top.io/p_2493yi2sp1.jpg" alt="Tektronix logo">
+      </div>
+      <img class="panel-image" src="https://c.top4top.io/p_24943g7ry1.jpg" alt="Tektronix Thermal camera">
+      <div class="panel-body">
+        <h4 class="product-title">Telegram followers </h4>
+        <hr>
+        <h4 class="product-price">25$</h4>
+        <span class="product-stock"><i class="fas fa-info"></i>10k -->25$</span>
+      </div>
+      <div class="panel-footer">
+        <a href="https://wa.me/96181112046?text=Hello%20I%20want%20to%20increase%20telegram%20followers%20%0A%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%20%D8%A7%D8%B1%D9%8A%D8%AF%20%D8%B2%D9%8A%D8%A7%D8%AF%D8%A9%20%D9%85%D8%AA%D8%A7%D8%A8%D8%B9%D9%8A%D9%86%20%D8%AA%D9%84%D8%AC%D8%B1%D8%A7%D9%85" class="btn btn-block btn-1">Order now</a>
+      </div>
+    </div>
+    <div class="panel panel-type-sale">
+      <div class="panel-header">
+        <img class="panel-logo" src="https://g.top4top.io/p_2493yi2sp1.jpg" alt="Tektronix logo">
+      </div>
+      <img class="panel-image" src="https://b.top4top.io/p_2494fd9v61.jpg" alt="Tektronix Thermal camera">
+      <div class="panel-body">
+        <h4 class="product-title">Instagram followers </h4>
+        <hr>
+        <h4 class="product-price">5$</h4>
+        <div class="product-details">
+          <span class="product-discount">save 3$</span>
+          <span class="product-rrp">was 8$</span>
+        </div>
+        <span class="product-stock"><i class="fas fa-info"></i>Every 10k --> 5$</span>
+      </div>
+      <div class="panel-footer">
+        <a href="https://wa.me/96181112046?text=Hello%20I%20want%20to%20increase%20Instagram%20followers%20%0A%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%20%D8%A7%D8%B1%D9%8A%D8%AF%20%D8%B2%D9%8A%D8%A7%D8%AF%D8%A9%20%D9%85%D8%AA%D8%A7%D8%A8%D8%B9%D9%8A%D9%86%20%D8%A7%D9%86%D8%B3%D8%AA%D8%BA%D8%B1%D8%A7%D9%85" class="btn btn-block btn-1">Order now</a>
+      </div>
+    </div>
+    </a>
+    <a class="panel hover-float">
+      <div class="panel-header">
+        <img class="panel-logo" src="https://g.top4top.io/p_2493yi2sp1.jpg" alt="Tektronix logo">
+      </div>
+      <img class="panel-image" src="https://i.top4top.io/p_2494wcbs11.jpg" alt="Tektronix Thermal camera">
+      <div class="panel-body">
+        <h4 class="product-title">windows server</h4>
+        <hr>
+        <h4 class="product-price">15$</h4>
+        <span class="product-stock"><i class="fas fa-info"></i>monthly </span>
+      </div>
+      <div class="panel-footer">
+        <span href="#" class="btn btn-block btn-1">Order now</span>
+      </div>
+    </a>
+  </div>
+</div>
+<!-- partial -->
+  
 </body>
 </html>
 
