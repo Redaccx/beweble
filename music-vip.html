@@ -1,13 +1,10 @@
-
 <!DOCTYPE html>
 <html lang="en" >
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title></title>
   <link rel='stylesheet' href='https://cdn.plyr.io/3.6.2/plyr.css'>
-<link rel='stylesheet' href='https://cdn.jsdelivr.net/gh/luxonauta/luxa@1.0/dist/compressed/luxa.css'>
-<link rel="stylesheet" href="styleforvips.css">
+<link rel='stylesheet' href='https://cdn.jsdelivr.net/gh/luxonauta/luxa@1.0/dist/compressed/luxa.css'><link rel="stylesheet" href="./style">
 
 </head>
 <body>
@@ -169,6 +166,30 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
+<script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-analytics.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
+
+<script>
+
+var firebaseConfig = { apiKey: "AIzaSyBmQebUmPyy79z51kb6YKkAurZ11yehXIk",
+authDomain: "vip-page.firebaseapp.com", 
+projectId: "vip-page", 
+storageBucket: "vip-page.appspot.com", 
+messagingSenderId: "809627494181",
+ appId: "1:809627494181:web:0df989d623d1cb6e119ccc", 
+measurementId: "G-Q7H13D1YFC" }; 
+firebase.initializeApp(firebaseConfig); firebase.analytics();
+
+firebase.auth().onAuthStateChanged(function(user)
+            {
+                if(!user) 
+                {
+                    window.location.href = "vip-signin";
+                }
+            });
+
+      
 </script>
 </body>
 </html>
