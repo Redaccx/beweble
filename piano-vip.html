@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel='stylesheet' href='https://cdn.plyr.io/3.6.2/plyr.css'>
+<link rel='stylesheet' href='https://cdn.jsdelivr.net/gh/luxonauta/luxa@1.0/dist/compressed/luxa.css'><link rel="stylesheet" href="styleforvips.css">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<main>
+  <section>
+    <div class="lx-container-80">
+      <div class="lx-row">
+        <div id="videoColumn" class="lx-column is-8 is-flex">
+          <div class="lx-row">
+            <div class="video-header">
+            
+              <a class="nav-toggle text-small is-active">Hide navigation</a>
+            </div>
+            <!-- example of how to use with the HTML5 <video> tag -->
+            <video id="player" playsinline controls>
+              <source src="https://j.top4top.io/m_2495ek54f1.mp4" type="video/webm" />
+              <track kind="captions" label="English" src="path/video-en.vtt" srclang="en" default />
+            </video>
+       <div class="container">
+	       <div class="home-box">
+		<a href="piano-download">
+	<button > Download </button>
+	</a>
+
+<a href="index">
+             
+              	 <button > Demo</button> 
+        </a>
+            </div>
+            <div class="lx-card">
+              <a class="accordion">Description</a>
+              <div class="panel">
+                <p> Open Source You Can Change the Rights of Great Features/ follow us on Instagram <a href="https://instagram.com/gitwb_" target="_blank" rel="noopener noreferrer"> https://instagram.com/gitwb_</a>
+                </p>
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="navColumn" class="lx-column is-active">
+          <div class="lx-row">
+            <div class="lx-card">
+
+              <div class="accordions">
+                <a class="accordion">html page maker</a>
+                <div class="panel">
+                  <a class="go-to" data-time="15">
+                    <i class="fas fa-external-link-alt"></i>
+                    <p>html page maker</p>
+                  </a>
+                  <p>It is a tool through which you can create an HTML page easily and there are many buttons you can put you can visit a tool by going back to a home page
+                  </p>
+                </div>
+                <a class="accordion">Code editor</a>
+                <div class="panel">
+                  <a class="go-to" data-time="65">
+                    <i class="fas fa-external-link-alt"></i>
+                    <p>code editor</p>
+                  </a>
+                  <p>A tool with which you can modify a code and also you can link three languages to each other such as html css js 
+                  </p>
+                </div>
+                <a class="accordion">privacy policy generator </a>
+                <div class="panel">
+                  <a class="go-to" data-time="115">
+                    <i class="fas fa-external-link-alt"></i>
+                    <p>privacy policy generator </p>
+                  </a>
+                  <p>A tool with which you can create a site privacy policy page in HTML 
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="lx-card">
+              <div class="title">
+                <h2>Frequently Asked Questions</h2>
+              </div>
+              <div class="accordions">
+                <a class="accordion">Can I change the rights of SourceCode</a>
+                <div class="panel">
+                  <p>Yes, you can change all rights.
+                  </p>
+                  <p></p>
+                </div>
+                <a class="accordion">Does the source code stop after a month or always?</a>
+                <div class="panel">
+                  <p>always with the follow-up updates
+                  </p>
+                </div>
+                <a class="accordion">Can I create a source as an application?</a>
+                <div class="panel">
+                  <p>Yes you can build an application and I will explain in a video soon
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<!-- partial -->
+  <script src='https://cdn.plyr.io/3.6.2/plyr.js'></script>
+<script src='https://use.fontawesome.com/releases/v5.14.0/js/all.js'></script><script  src="./scr"></script>
+
+</body>
+</html>
+
+<script>
+// DOM Loaded
+document.addEventListener("DOMContentLoaded", () => {
+  const player = new Plyr("#player", {
+    title: "Spring",
+    controls: [
+    "play-large",
+    "play",
+    "progress",
+    "current-time",
+    "duration",
+    "mute",
+    "volume",
+    "settings",
+    "pip",
+    "airplay",
+    "fullscreen"] });
+
+
+
+  document.querySelectorAll(".accordion").forEach(acc => {
+    acc.addEventListener("click", () => {
+      acc.classList.toggle("is-active");
+      let panel = acc.nextElementSibling;
+      panel.style.maxHeight ?
+      panel.style.maxHeight = null :
+      panel.style.maxHeight = panel.scrollHeight + "px";
+    });
+  });
+
+  document.querySelector(".nav-toggle").addEventListener("click", e => {
+    e.currentTarget.classList.contains("is-active") ?
+    e.currentTarget.innerHTML = "Show navigation" :
+    e.currentTarget.innerHTML = "Hide navigation";
+
+    e.currentTarget.classList.toggle("is-active");
+
+    document.querySelector("#videoColumn").classList.toggle("is-full");
+    document.querySelector("#navColumn").classList.toggle("is-active");
+  });
+
+  document.querySelectorAll(".go-to").forEach(btn => {
+    btn.addEventListener("click", () => {
+      player.currentTime = parseInt(btn.getAttribute("data-time"));
+      player.play();
+    });
+  });
+});
+</script>
+<script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-analytics.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
+
+<script>
+
+var firebaseConfig = { apiKey: "AIzaSyBmQebUmPyy79z51kb6YKkAurZ11yehXIk",
+authDomain: "vip-page.firebaseapp.com", 
+projectId: "vip-page", 
+storageBucket: "vip-page.appspot.com", 
+messagingSenderId: "809627494181",
+ appId: "1:809627494181:web:0df989d623d1cb6e119ccc", 
+measurementId: "G-Q7H13D1YFC" }; 
+firebase.initializeApp(firebaseConfig); firebase.analytics();
+
+firebase.auth().onAuthStateChanged(function(user)
+            {
+                if(!user) 
+                {
+                    window.location.href = "vip-signin";
+                }
+            });
+
+      
+</script>
+</body>
+</html>
