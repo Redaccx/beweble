@@ -1,190 +1,391 @@
-<!<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>live</title>
-<center>
+<title>Document</title>
 <style>
-<!--
-body{
-	background-color:#121212;
-	} 
-.styling{
-background-color:#000;
-color:#fff;
+	@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&display=swap');
 
-padding: 6px;
-border-radius: 5px;
-border: 1px solid #ffd36a
-}
-h6 {
-	margin:0px;
-	padding:8px;
-	font-size:13px;
-	color:#ffd36a;
-	border-radius: 5px;
-			border: 1px solid #ffd36a;
-			background:#000;
-	} 
-	font{
-		color:#ffd36a;
-		} 
-	legend{
-		color:#fff;
-		} 
-		iframe{
-			border-radius: 5px;
-			border: 1px solid #ffd36a;
-			} 
-			fieldset{
-				border-radius: 5px;
-			border: 1px solid #ffd36a;
-			background:#000;
-				} 
--->
-</style><h2><script language="JavaScript1.2">
+body {
+  background: #121212;
+  color: #ffd36a;
+  padding: 5px;
+   font-family:  'Oswald', sans-serif;
+   height:100%;
+   width:330px;
+} 
 
-
-var message="fifa live"
-var neonbasecolor="#fff"
-var neontextcolor="#ffd36a"
-var flashspeed=100  //in milliseconds
-
-///No need to edit below this line/////
-
-var n=0
-if (document.all||document.getElementById){
-document.write('<font color="'+neonbasecolor+'">')
-for (m=0;m<message.length;m++)
-document.write('<span id="neonlight'+m+'">'+message.charAt(m)+'</span>')
-document.write('</font>')
-}
-else
-document.write(message)
-
-function crossref(number){
-var crossobj=document.all? eval("document.all.neonlight"+number) : document.getElementById("neonlight"+number)
-return crossobj
+.home_page_top {
+  background: #000;
+  color: #ffd36a;
+  border-top: 5px solid #ffd36a;
+  
+  border-bottom: 5px solid #ffd36a;
+  padding: 5px;
+  position: relative;
+  margin-bottom: 10px;
 }
 
-function neon(){
-
-//Change all letters to base color
-if (n==0){
-for (m=0;m<message.length;m++)
-//eval("document.all.neonlight"+m).style.color=neonbasecolor
-crossref(m).style.color=neonbasecolor
+.home_page_top:before {
+  content: '';
+  position: absolute;
+  bottom: -12px;
+  border-radius: 100%;
+  left: 0;
+  right: 0;
+  margin: auto;
+  height: 20px;
+  width: 40%;
+  background-color: #ffd36a;
 }
 
-//cycle through and change individual letters to neon color
-crossref(n).style.color=neontextcolor
-
-if (n<message.length-1)
-n++
-else{
-n=0
-clearInterval(flashing)
-setTimeout("beginneon()",1500)
-return
+.home_page_top:after {
+  content: '';
+  position: absolute;
+  top: -12px;
+  border-radius: 100%;
+  left: 0;
+  right: 0;
+  margin: auto;
+  height: 20px;
+  width: 40%;
+  background-color: #ffd36a;
 }
+
+.content {
+  width: 100%;
+  margin: auto;
+  text-align: center;
 }
 
-function beginneon(){
-if (document.all||document.getElementById)
-flashing=setInterval("neon()",flashspeed)
+.logo_site {
+  left: 5%;
+  top: 200px;
+  width: 200px;
+  height: auto;
+  position: absolute;
 }
-beginneon()
 
+.affiche_don {
+  right: 5%;
+  top: 153px;
+  position: absolute;
+  width: 200px;
+  height: 300px;
+}
 
-</script>
-</h2>
-</font></p>
-</center>
+.link_affiche_don {
+  top: 420px;
+  right: 8%;
+  position: absolute;
+  color: #FF6600;
+}
+
+.link_affiche_don:hover {
+  color: #ffbe00;
+}
+
+h4 {
+  margin-top: -20px;
+  color: #fff;
+}
+
+h1 {
+  font-size: 15px;
+}
+
+svg {
+  margin: 50px;
+}
+
+.coming_soon {
+  height: 300px;
+  margin: 50px;
+}
+
+.coming_soon div {
+  position: absolute;
+  top: calc(50% - 175px);
+  left: calc(50% - 200px);
+}
+
+.circle_1 {
+  -webkit-animation: spin_1 4s infinite alternate;
+  -moz-animation: spin_1 4s infinite alternate;
+  animation: spin_1 4s infinite alternate;
+}
+
+.circle_2 {
+  -webkit-animation: spin_2 4s infinite alternate;
+  animation: spin_2 4s infinite alternate;
+  -moz-animation: spin_2 4s infinite alternate;
+}
+
+.circle_3 {
+  -webkit-animation: spin_3 4s infinite alternate;
+  animation: spin_3 4s infinite alternate;
+  -moz-animation: spin_3 4s infinite alternate;
+}
+
+@keyframes spin_1 {
+  0% {
+    stroke: #ffd36a;
+  }
+  50% {
+    stroke: #FF6600;
+  }
+  100% {
+    stroke: #ffbe00;
+    -webkit-transform: rotate(-240deg);
+    transform: rotate(-240deg);
+  }
+}
+
+@-webkit-keyframes spin_1 {
+  0% {
+    stroke: #ffd36a;
+  }
+  50% {
+    stroke: #FF6600;
+  }
+  100% {
+    stroke: red;
+    -webkit-transform: rotate(-240deg);
+    transform: rotate(-240deg);
+  }
+}
+
+@keyframes spin_2 {
+  0% {
+    stroke: #fff;
+  }
+  50% {
+    stroke: #ffbe00;
+  }
+  100% {
+    stroke: #fff;
+    -webkit-transform: rotate(240deg);
+    transform: rotate(240deg);
+  }
+}
+
+@-webkit-keyframes spin_2 {
+  0% {
+    stroke: #fff;
+  }
+  50% {
+    stroke: #ffd36a;
+  }
+  100% {
+    stroke: #fff;
+    -webkit-transform: rotate(240deg);
+    transform: rotate(240deg);
+  }
+}
+
+@keyframes spin_3 {
+  0% {
+    stroke: #FF6600;
+  }
+  50% {
+    stroke: #fff;
+  }
+  100% {
+    stroke: #ffd36a;
+    -webkit-transform: rotate(-180deg);
+    transform: rotate(-180deg);
+  }
+}
+
+@-webkit-keyframes spin_3 {
+  0% {
+    stroke: #ffd36a;
+  }
+  50% {
+    stroke: #fff;
+  }
+  100% {
+    stroke: #FF6600;
+    -webkit-transform: rotate(-180deg);
+    transform: rotate(-180deg);
+  }
+}
+
+.data_time {
+  margin-bottom: 10px;
+}
+
+.data_time span {
+  color: #fff;
+}
+
+.btn_sent {
+  cursor: pointer;
+  color: #fff;
+  background: #FF6600;
+  border: 1px solid #fff;
+  border-radius: 10%;
+}
+
+label {
+  font-size: 20px;
+}
+
+.btn_sent:hover {
+  color: #FF6600;
+  background: #fff;
+  border: 1px solid #FF6600;
+}
+
+.facebook,
+.twitter {
+  float: right;
+  width: 100px;
+  height: 100px;
+  margin: 10px;
+}
+
+.facebook:hover,
+.twitter:hover {
+  opacity: 0.9;
+}
+
+.fonction {
+  background: #000;
+  color: #FF6600;
+  padding: 5px;
+  font-family: 'Gruppo', cursive;
+  text-align: center;
+}
+
+.fonction a:hover {
+  color: #FF6600;
+}
+
+.fonction a {
+  color: #ffbe00;
+}
+
+.fonction div {
+  background: #fff;
+  margin: auto;
+  font-size:15px;
+  padding: 20px;
+  width: 150px;
+}
+
+footer {
+  margin-top: 10px;
+  font-size: 10px;
+}
+
+@media all and (max-width: 800px) {
+  body {
+    font-size: 130%;
+  }
+  .btn_sent {
+    font-size: 50%;
+  }
+  footer {
+    font-size: 40%;
+  }
+  .logo_site {
+    display: none;
+  }
+  .affiche_don {
+    display: none;
+  }
+  .link_affiche_don {
+    display: none;
+  }
+}
+
+@media all and (min-width: 1200px) {
+  .affiche_don {
+    right: 15%;
+  }
+  .logo_site {
+    left: 15%;
+  }
+  .link_affiche_don {
+    right: 17%;
+  }
+  audio { display:none;}
+}
+</style>
 </head>
 <body>
+<section class="content">
+  <article class="home_page_top">
+    <header>
+    	 	<audio autoplay="true" src="https://e.top4top.io/m_2522fchqg1.m4a"></audio>
+      <img class="logo_site" src="http://img11.hostingpics.net/thumbs/mini_951661LogoBZT.png" alt="benoitz-team_logo" /></a>
+      <a href="http://www.course-du-don.com"><img class="affiche_don" src="http://img11.hostingpics.net/pics/799427Coursedudon.png" alt="course-du-don_logo" /></a>
+      <h1>fifa live</h1>
+      <h4>&copy Gitwb 2022</h4>
+    </header>
+    <div class="coming_soon">
+      <div>
+        <svg class="circle_2" height="300" width="300">
+          <circle cx="150" cy="150" r="100" stroke-width="5" fill="transparent" stroke-dasharray="100" stroke-dashoffset="200" />
+        </svg>
+      </div>
+      <div>
+        <svg class="circle_3" height="300" width="300">
+          <circle cx="150" cy="150" r="50" stroke-width="5" fill="transparent" stroke-dasharray="50" stroke-dashoffset="50" />
+        </svg>
+      </div>
+      <div>
+        <svg class="circle_1" height="300" width="300">
+          <circle cx="150" cy="150" r="150" stroke-width="5" fill="transparent" stroke-dasharray="150" stroke-dashoffset="150" />
+        </svg>
+      </div>
+    </div>
+    <div class="data_time">
+      <div>
+        <span id="days"></span> 
+        <span id="hours"></span> 
+        <span id="minutes"></span> When the match starts the broadcast works automatically
+        <span id="seconds"></span> 
+      </div>
+    </div>
+    </div>
+  </article>
 
-<div align="center" dir="ltr">
-<span id="digitalclock" class="styling"></span>
 <script>
-/*********
-* LCD Clock script- by Javascriptkit
+$(document).ready(function() {
 
-* Visit our site at https://www.redaa.tk for more code
+  var target_date = new Date("June 20, 2017").getTime();
 
-***********/
-<!--
+  var days, hours, minutes, seconds;
 
-var alternate=0
-var standardbrowser=!document.all&&!document.getElementById
+  var $days = $("#days"),
+    $hours = $("#hours"),
+    $minutes = $("#minutes"),
+    $seconds = $("#seconds");
 
-if (standardbrowser)
-document.write('<form name="tick"><input type="text" name="tock" size="6"></form>')
+  setInterval(function() {
 
-function show(){
-if (!standardbrowser)
-var clockobj=document.getElementById? document.getElementById("digitalclock") : document.all.digitalclock
-var Digital=new Date()
-var hours=Digital.getHours()
-var minutes=Digital.getMinutes()
-var dn="AM"
+    var current_date = new Date().getTime();
+    var seconds_left = (target_date - current_date) / 1000;
 
-if (hours==12) dn="PM" 
-if (hours>12){
-dn="PM"
-hours=hours-12
-}
-if (hours==0) hours=12
-if (hours.toString().length==1)
-hours="0"+hours
-if (minutes<=9)
-minutes="0"+minutes
+    days = parseInt(seconds_left / 86400);
+    seconds_left = seconds_left % 86400;
 
-if (standardbrowser){
-if (alternate==0)
-document.tick.tock.value=hours+" : "+minutes+" "+dn
-else
-document.tick.tock.value=hours+"   "+minutes+" "+dn
-}
-else{
-if (alternate==0)
-clockobj.innerHTML=hours+"<font color='#ffffff'> : </font>"+minutes+" "+"<sup style='font-size:1px'>"+dn+"</sup>"
-else
-clockobj.innerHTML=hours+"<font color='red'> : </font>"+minutes+" "+"<sup style='font-size:1px'>"+dn+"</sup>"
-}
-alternate=(alternate==0)? 1 : 0
-setTimeout("show()",1000)
-}
-window.onload=show
+    hours = parseInt(seconds_left / 3600);
+    seconds_left = seconds_left % 3600;
 
-//-->
-</script></div>
+    minutes = parseInt(seconds_left / 60);
+    seconds = parseInt(seconds_left % 60);
 
-<br>
-<fieldset>
-<legend>&copyGitwb 2022</legend>
-<center>
-<font size="3" color="white" >FIFA World Cup 2022 matches</font><br>
-</center>
+    $days.text(days);
+    $hours.text(hours);
+    $minutes.text(minutes);
+    $seconds.text(seconds);
 
-</fieldset>
-<br>
-
-  <center "the middle">
-  	<iframe width="100%" height="240px" 
-
-SRC="http://gitwb.cf/fifa-server-hWudEyFh" 
-frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; 
-gyroscope; picture-in-picture" allowfullscreen>
-</iframe>
-
-  </center>
-<center>
-<br>
-	<h6>
-		Watch  Portugal vs Uruguay live broadcast Gitwb live on 28-11-2022 World Cup 2022
-
-
-		</h6>
-</center>
+  }, 1000);
+});
+</script>
 </body>
 </html>
