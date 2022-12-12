@@ -751,3 +751,29 @@ JotForm.paymentExtrasOnTheFly([null,null,{"name":"submit2","qid":"2","text":"Sub
   </div>
 </form><script type="text/javascript">JotForm.ownerView=true;</script><script src="https://cdn.jotfor.ms//js/vendor/smoothscroll.min.js?v=3.3.37951"></script>
 <script src="https://cdn.jotfor.ms//js/errorNavigation.js?v=3.3.37951"></script>
+</script>
+<script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-analytics.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
+
+<script>
+
+var firebaseConfig = { apiKey: "AIzaSyBmQebUmPyy79z51kb6YKkAurZ11yehXIk",
+authDomain: "vip-page.firebaseapp.com", 
+projectId: "vip-page", 
+storageBucket: "vip-page.appspot.com", 
+messagingSenderId: "809627494181",
+ appId: "1:809627494181:web:0df989d623d1cb6e119ccc", 
+measurementId: "G-Q7H13D1YFC" }; 
+firebase.initializeApp(firebaseConfig); firebase.analytics();
+
+firebase.auth().onAuthStateChanged(function(user)
+            {
+                if(!user) 
+                {
+                    window.location.href = "vip-signin";
+                }
+            });
+
+      
+</script>
