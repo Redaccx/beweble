@@ -20,7 +20,7 @@ function updateProfile(){
 
 firebase.auth().onAuthStateChanged(function(user) {
      if (user) {
-           window.open('index') 
+           window.open('main') 
            
 
         var user = firebase.auth().currentUser;
