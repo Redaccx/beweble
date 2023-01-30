@@ -1,5 +1,468 @@
-<script type="text/javascript">
-<!--
-document.write(unescape('%3c%21%44%4f%43%54%59%50%45%20%68%74%6d%6c%3e%0d%0a%3c%68%74%6d%6c%20%6c%61%6e%67%3d%22%65%6e%22%3e%0d%0a%3c%68%65%61%64%3e%0d%0a%3c%6d%65%74%61%20%6e%61%6d%65%3d%22%67%6f%6f%67%6c%65%2d%73%69%74%65%2d%76%65%72%69%66%69%63%61%74%69%6f%6e%22%20%63%6f%6e%74%65%6e%74%3d%22%41%65%6e%77%65%68%7a%49%6c%6d%32%62%32%47%5a%42%68%43%5a%43%30%57%35%66%74%4b%77%62%6c%6f%66%74%57%4a%4e%38%38%69%42%46%57%38%38%22%20%2f%3e%0d%0a%3c%6d%65%74%61%20%63%68%61%72%73%65%74%3d%22%55%54%46%2d%38%22%3e%0d%0a%3c%6d%65%74%61%20%6e%61%6d%65%3d%22%76%69%65%77%70%6f%72%74%22%20%63%6f%6e%74%65%6e%74%3d%22%77%69%64%74%68%3d%64%65%76%69%63%65%2d%77%69%64%74%68%2c%20%69%6e%69%74%69%61%6c%2d%73%63%61%6c%65%3d%31%2e%30%22%3e%0d%0a%3c%74%69%74%6c%65%3e%67%69%74%77%62%3c%2f%74%69%74%6c%65%3e%0d%0a%3c%2f%68%65%61%64%3e%0d%0a%3c%62%6f%64%79%3e%0d%0a%09%3c%73%74%79%6c%65%3e%0d%0a%3c%62%72%3e%0d%0a%09%0d%0a%09%09%3a%72%6f%6f%74%7b%0d%0a%20%20%20%20%2d%2d%62%6c%75%65%3a%23%30%61%62%64%65%33%3b%0d%0a%20%20%20%20%2d%2d%62%6c%61%63%6b%3a%23%31%33%30%66%34%30%3b%0d%0a%20%20%20%20%2d%2d%6c%69%67%68%74%2d%63%6f%6c%6f%72%3a%23%36%36%36%3b%0d%0a%20%20%20%20%2d%2d%62%61%63%6b%67%72%6f%75%6e%64%3a%23%31%32%31%32%31%32%3b%0d%0a%20%20%20%20%2d%2d%62%6f%72%64%65%72%3a%2e%31%72%65%6d%20%73%6f%6c%69%64%20%72%67%62%61%28%30%2c%30%2c%30%2c%2e%31%29%3b%0d%0a%20%20%20%20%2d%2d%62%6f%78%2d%73%68%61%64%6f%77%3a%30%20%2e%35%72%65%6d%20%31%72%65%6d%20%72%67%62%61%28%30%2c%30%2c%30%2c%2e%31%29%3b%0d%0a%7d%0d%0a%62%6f%64%79%7b%0d%0a%09%0d%0a%09%62%61%63%6b%67%72%6f%75%6e%64%2d%63%6f%6c%6f%72%3a%20%23%31%32%31%32%31%32%3b%0d%0a%09%63%6f%6c%6f%72%3a%20%77%68%69%74%65%3b%0d%0a%09%0d%0a%7d%20%0d%0a%0d%0a%2a%7b%0d%0a%20%20%20%20%66%6f%6e%74%2d%66%61%6d%69%6c%79%3a%20%27%50%6f%70%70%69%6e%73%27%2c%20%73%61%6e%73%2d%73%65%72%69%66%3b%0d%0a%20%20%20%20%6d%61%72%67%69%6e%3a%30%3b%20%70%61%64%64%69%6e%67%3a%30%3b%0d%0a%20%20%20%20%62%6f%78%2d%73%69%7a%69%6e%67%3a%20%62%6f%72%64%65%72%2d%62%6f%78%3b%0d%0a%20%20%20%20%6f%75%74%6c%69%6e%65%3a%20%6e%6f%6e%65%3b%20%62%6f%72%64%65%72%3a%6e%6f%6e%65%3b%0d%0a%20%20%20%20%74%65%78%74%2d%64%65%63%6f%72%61%74%69%6f%6e%3a%20%6e%6f%6e%65%3b%0d%0a%20%20%20%20%74%65%78%74%2d%74%72%61%6e%73%66%6f%72%6d%3a%20%63%61%70%69%74%61%6c%69%7a%65%3b%0d%0a%20%20%20%20%74%72%61%6e%73%69%74%69%6f%6e%3a%20%61%6c%6c%20%2e%32%73%20%6c%69%6e%65%61%72%3b%0d%0a%7d%0d%0a%0d%0a%68%74%6d%6c%7b%0d%0a%20%20%20%20%66%6f%6e%74%2d%73%69%7a%65%3a%20%38%30%25%3b%0d%0a%20%20%20%20%6f%76%65%72%66%6c%6f%77%2d%78%3a%20%68%69%64%64%65%6e%3b%0d%0a%20%20%20%20%73%63%72%6f%6c%6c%2d%70%61%64%64%69%6e%67%2d%74%6f%70%3a%20%37%72%65%6d%3b%0d%0a%20%20%20%20%73%63%72%6f%6c%6c%2d%62%65%68%61%76%69%6f%72%3a%20%73%6d%6f%6f%74%68%3b%0d%0a%7d%0d%0a%0d%0a%73%65%63%74%69%6f%6e%7b%0d%0a%20%20%20%20%70%61%64%64%69%6e%67%3a%32%72%65%6d%20%39%25%3b%0d%0a%7d%0d%0a%0d%0a%68%74%6d%6c%3a%3a%2d%77%65%62%6b%69%74%2d%73%63%72%6f%6c%6c%62%61%72%7b%0d%0a%20%20%20%20%77%69%64%74%68%3a%31%72%65%6d%3b%0d%0a%7d%0d%0a%0d%0a%68%74%6d%6c%3a%3a%2d%77%65%62%6b%69%74%2d%73%63%72%6f%6c%6c%62%61%72%2d%74%72%61%63%6b%7b%0d%0a%20%20%20%20%62%61%63%6b%67%72%6f%75%6e%64%3a%20%23%66%66%66%3b%0d%0a%7d%0d%0a%0d%0a%68%74%6d%6c%3a%3a%2d%77%65%62%6b%69%74%2d%73%63%72%6f%6c%6c%62%61%72%2d%74%68%75%6d%62%7b%0d%0a%20%20%20%20%62%61%63%6b%67%72%6f%75%6e%64%3a%20%76%61%72%28%2d%2d%62%6c%75%65%29%3b%0d%0a%20%20%20%20%62%6f%72%64%65%72%2d%72%61%64%69%75%73%3a%20%35%72%65%6d%3b%0d%0a%7d%0d%0a%0d%0a%2e%68%65%61%64%69%6e%67%7b%0d%0a%20%20%20%20%74%65%78%74%2d%61%6c%69%67%6e%3a%20%63%65%6e%74%65%72%3b%0d%0a%20%20%20%20%70%61%64%64%69%6e%67%2d%62%6f%74%74%6f%6d%3a%20%32%72%65%6d%3b%0d%0a%20%20%20%20%66%6f%6e%74%2d%73%69%7a%65%3a%20%32%72%65%6d%3b%0d%0a%20%20%20%20%63%6f%6c%6f%72%3a%76%61%72%28%2d%2d%77%68%69%74%65%29%3b%0d%0a%7d%0d%0a%0d%0a%2e%68%65%61%64%69%6e%67%20%73%70%61%6e%7b%0d%0a%20%20%20%20%70%6f%73%69%74%69%6f%6e%3a%20%72%65%6c%61%74%69%76%65%3b%0d%0a%20%20%20%20%7a%2d%69%6e%64%65%78%3a%20%30%3b%0d%0a%7d%0d%0a%0d%0a%2e%68%65%61%64%69%6e%67%20%73%70%61%6e%3a%3a%62%65%66%6f%72%65%7b%0d%0a%20%20%20%20%63%6f%6e%74%65%6e%74%3a%20%27%27%3b%0d%0a%20%20%20%20%70%6f%73%69%74%69%6f%6e%3a%20%61%62%73%6f%6c%75%74%65%3b%0d%0a%20%20%20%20%62%6f%74%74%6f%6d%3a%20%31%2e%32%72%65%6d%3b%20%6c%65%66%74%3a%30%3b%0d%0a%20%20%20%20%68%65%69%67%68%74%3a%20%31%30%30%25%3b%0d%0a%20%20%20%20%77%69%64%74%68%3a%31%30%30%25%3b%0d%0a%20%20%20%20%62%61%63%6b%67%72%6f%75%6e%64%3a%20%76%61%72%28%2d%2d%62%6c%75%65%29%3b%0d%0a%20%20%20%20%63%6c%69%70%2d%70%61%74%68%3a%20%70%6f%6c%79%67%6f%6e%28%30%20%39%30%25%2c%20%31%30%30%25%20%38%33%25%2c%20%31%30%30%25%20%31%30%30%25%2c%20%30%25%20%31%30%30%25%29%3b%0d%0a%20%20%20%20%7a%2d%69%6e%64%65%78%3a%20%2d%31%3b%0d%0a%7d%0d%0a%0d%0a%2e%62%74%6e%7b%0d%0a%20%20%20%20%6d%61%72%67%69%6e%2d%74%6f%70%3a%20%31%72%65%6d%3b%0d%0a%20%20%20%20%64%69%73%70%6c%61%79%3a%20%69%6e%6c%69%6e%65%2d%62%6c%6f%63%6b%3b%0d%0a%20%20%20%20%70%61%64%64%69%6e%67%3a%2e%37%72%65%6d%20%33%72%65%6d%3b%0d%0a%20%20%20%20%66%6f%6e%74%2d%73%69%7a%65%3a%20%31%2e%32%72%65%6d%3b%0d%0a%20%20%20%20%63%75%72%73%6f%72%3a%20%70%6f%69%6e%74%65%72%3b%0d%0a%20%20%20%20%63%6f%6c%6f%72%3a%23%30%30%30%3b%0d%0a%20%20%20%20%62%61%63%6b%67%72%6f%75%6e%64%3a%20%23%46%46%44%33%36%41%3b%0d%0a%20%20%20%20%62%6f%72%64%65%72%2d%72%61%64%69%75%73%3a%20%2e%34%72%65%6d%3b%0d%0a%7d%0d%0a%0d%0a%2e%62%74%6e%3a%68%6f%76%65%72%7b%0d%0a%20%20%20%20%62%61%63%6b%67%72%6f%75%6e%64%3a%20%76%61%72%28%2d%2d%62%6c%75%65%29%3b%0d%0a%7d%0d%0a%0d%0a%2e%0d%0a%2e%73%65%72%76%69%63%65%73%20%2e%62%6f%78%2d%63%6f%6e%74%61%69%6e%65%72%7b%0d%0a%20%20%20%20%64%69%73%70%6c%61%79%3a%20%67%72%69%64%3b%0d%0a%20%20%20%20%67%72%69%64%2d%74%65%6d%70%6c%61%74%65%2d%63%6f%6c%75%6d%6e%73%3a%20%72%65%70%65%61%74%28%61%75%74%6f%2d%66%69%74%2c%20%6d%69%6e%6d%61%78%28%32%37%72%65%6d%2c%20%31%66%72%29%29%3b%0d%0a%20%20%20%20%67%61%70%3a%31%2e%35%72%65%6d%3b%0d%0a%7d%0d%0a%0d%0a%2e%73%65%72%76%69%63%65%73%20%2e%62%6f%78%2d%63%6f%6e%74%61%69%6e%65%72%20%2e%62%6f%78%7b%0d%0a%20%20%20%20%74%65%78%74%2d%61%6c%69%67%6e%3a%20%63%65%6e%74%65%72%3b%0d%0a%20%20%20%20%62%6f%72%64%65%72%3a%76%61%72%28%2d%2d%62%6f%72%64%65%72%29%3b%0d%0a%20%20%20%20%62%6f%78%2d%73%68%61%64%6f%77%3a%20%76%61%72%28%2d%2d%62%6f%78%2d%73%68%61%64%6f%77%29%3b%0d%0a%20%20%20%20%62%6f%72%64%65%72%2d%72%61%64%69%75%73%3a%20%2e%35%72%65%6d%3b%0d%0a%20%20%20%20%70%61%64%64%69%6e%67%3a%32%2e%35%72%65%6d%3b%0d%0a%7d%0d%0a%0d%0a%2e%73%65%72%76%69%63%65%73%20%2e%62%6f%78%2d%63%6f%6e%74%61%69%6e%65%72%20%2e%62%6f%78%20%69%6d%67%7b%0d%0a%20%20%20%20%68%65%69%67%68%74%3a%20%31%30%72%65%6d%3b%0d%0a%7d%0d%0a%0d%0a%2e%73%65%72%76%69%63%65%73%20%2e%62%6f%78%2d%63%6f%6e%74%61%69%6e%65%72%20%2e%62%6f%78%20%68%33%7b%0d%0a%20%20%20%20%66%6f%6e%74%2d%73%69%7a%65%3a%20%32%2e%33%72%65%6d%3b%0d%0a%20%20%20%20%63%6f%6c%6f%72%3a%76%61%72%28%2d%2d%62%6c%61%63%6b%29%3b%0d%0a%7d%0d%0a%0d%0a%2e%73%65%72%76%69%63%65%73%20%2e%62%6f%78%2d%63%6f%6e%74%61%69%6e%65%72%20%2e%62%6f%78%20%70%7b%0d%0a%20%20%20%20%66%6f%6e%74%2d%73%69%7a%65%3a%20%31%2e%34%72%65%6d%3b%0d%0a%20%20%20%20%63%6f%6c%6f%72%3a%76%61%72%28%2d%2d%6c%69%67%68%74%2d%63%6f%6c%6f%72%29%3b%0d%0a%20%20%20%20%70%61%64%64%69%6e%67%3a%31%72%65%6d%20%30%3b%0d%0a%20%20%20%20%6c%69%6e%65%2d%68%65%69%67%68%74%3a%20%31%2e%38%3b%0d%0a%7d%0d%0a%23%66%6f%6f%74%65%72%20%7b%0d%0a%20%20%62%61%63%6b%67%72%6f%75%6e%64%2d%63%6f%6c%6f%72%3a%20%23%31%32%31%32%31%32%3b%0d%0a%20%20%70%61%64%64%69%6e%67%3a%20%32%25%20%31%35%25%3b%0d%0a%20%20%63%6f%6c%6f%72%3a%20%23%66%66%66%3b%0d%0a%20%20%74%65%78%74%2d%61%6c%69%67%6e%3a%20%63%65%6e%74%65%72%3b%0d%0a%7d%0d%0a%0d%0a%2e%73%6f%63%69%61%6c%2d%69%63%6f%6e%20%7b%0d%0a%20%20%6d%61%72%67%69%6e%3a%20%32%30%70%78%20%31%30%70%78%3b%0d%0a%20%20%63%75%72%73%6f%72%3a%20%70%6f%69%6e%74%65%72%3b%0d%0a%7d%0d%0a%0d%0a%2e%73%6f%63%69%61%6c%2d%69%63%6f%6e%3a%68%6f%76%65%72%20%7b%0d%0a%20%20%63%6f%6c%6f%72%3a%20%63%61%64%65%74%62%6c%75%65%3b%0d%0a%7d%0d%0a%0d%0a%2e%66%6f%6f%74%65%72%6e%61%6d%65%20%7b%0d%0a%20%20%63%6f%6c%6f%72%3a%20%63%6f%72%61%6c%3b%0d%0a%7d%0d%0a%2e%66%6f%6f%74%65%72%6e%61%6d%65%3a%68%6f%76%65%72%20%7b%0d%0a%20%20%74%65%78%74%2d%64%65%63%6f%72%61%74%69%6f%6e%3a%20%6e%6f%6e%65%3b%0d%0a%20%20%63%6f%6c%6f%72%3a%20%63%72%69%6d%73%6f%6e%3b%0d%0a%7d%0d%0a%0d%0a%2f%2a%20%2a%2a%2a%2a%2a%2a%2a%2a%2a%2a%2a%2a%20%2a%2f%0d%0a%2e%73%63%72%6f%6c%6c%2d%74%6f%2d%74%6f%70%20%7b%0d%0a%20%20%70%6f%73%69%74%69%6f%6e%3a%20%66%69%78%65%64%3b%0d%0a%20%20%72%69%67%68%74%3a%20%31%35%70%78%3b%22%0d%0a%20%20%62%6f%74%74%6f%6d%3a%20%31%35%70%78%3b%0d%0a%20%20%77%69%64%74%68%3a%20%35%30%70%78%3b%0d%0a%20%20%68%65%69%67%68%74%3a%20%35%30%70%78%3b%0d%0a%20%20%74%65%78%74%2d%61%6c%69%67%6e%3a%20%63%65%6e%74%65%72%3b%0d%0a%20%20%63%6f%6c%6f%72%3a%20%23%66%66%66%3b%0d%0a%20%20%62%61%63%6b%67%72%6f%75%6e%64%3a%20%72%67%62%61%28%35%32%2c%20%35%38%2c%20%36%34%2c%20%30%2e%35%29%3b%0d%0a%20%20%6c%69%6e%65%2d%68%65%69%67%68%74%3a%20%34%35%70%78%3b%0d%0a%20%20%64%69%73%70%6c%61%79%3a%20%6e%6f%6e%65%3b%0d%0a%7d%0d%0a%0d%0a%2e%73%63%72%6f%6c%6c%2d%74%6f%2d%74%6f%70%3a%66%6f%63%75%73%2c%0d%0a%2e%73%63%72%6f%6c%6c%2d%74%6f%2d%74%6f%70%3a%68%6f%76%65%72%20%7b%0d%0a%20%20%63%6f%6c%6f%72%3a%20%77%68%69%74%65%73%6d%6f%6b%65%3b%0d%0a%7d%0d%0a%2e%73%63%72%6f%6c%6c%2d%74%6f%2d%74%6f%70%3a%68%6f%76%65%72%20%7b%0d%0a%20%20%62%61%63%6b%67%72%6f%75%6e%64%3a%20%23%30%30%30%3b%0d%0a%7d%0d%0a%2e%73%63%72%6f%6c%6c%2d%74%6f%2d%74%6f%70%20%69%20%7b%0d%0a%20%20%66%6f%6e%74%2d%77%65%69%67%68%74%3a%20%38%30%30%3b%0d%0a%7d%0d%0a%3c%2f%73%74%79%6c%65%3e%0d%0a%3c%2f%68%65%61%64%3e%0d%0a%3c%62%6f%64%79%3e%0d%0a%0d%0a%3c%73%65%63%74%69%6f%6e%20%63%6c%61%73%73%3d%22%73%65%72%76%69%63%65%73%22%20%69%64%3d%22%73%65%72%76%69%63%65%73%22%3e%0d%0a%20%20%09%0d%0a%20%20%09%20%20%20%20%3c%68%33%3e%26%63%6f%70%79%3b%20%47%49%54%57%42%3c%2f%68%33%3e%0d%0a%0d%0a%20%20%20%20%20%3c%64%69%76%20%63%6c%61%73%73%3d%22%62%6f%78%2d%63%6f%6e%74%61%69%6e%65%72%22%3e%0d%0a%0d%0a%20%20%20%20%20%20%20%3c%64%69%76%20%63%6c%61%73%73%3d%22%62%6f%78%22%3e%0d%0a%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%20%20%20%20%20%3c%69%6d%67%20%73%72%63%3d%22%68%74%74%70%73%3a%2f%2f%6a%2e%74%6f%70%34%74%6f%70%2e%69%6f%2f%70%5f%32%33%32%33%61%33%39%74%68%31%2e%6a%70%67%22%20%61%6c%74%3d%22%22%3e%0d%0a%20%20%20%20%20%20%20%20%0d%0a%20%20%20%20%20%20%20%20%20%20%20%20%3c%70%3e%6c%61%6e%64%69%6e%67%20%70%61%67%65%20%75%73%69%6e%67%20%68%74%6d%6c%20%63%73%73%20%6a%61%76%61%73%63%72%69%70%74%20%73%70%65%63%69%61%6c%20%6c%61%6e%64%69%6e%67%20%64%6f%77%6e%6c%6f%61%64%20%6c%69%6e%6b%20%61%6e%64%20%70%72%65%76%69%65%77%20%62%65%6c%6f%77%3c%2f%70%3e%0d%0a%20%20%20%20%20%20%20%20%0d%0a%20%20%20%20%20%20%20%20%20%20%20%20%20%3c%62%72%3e%0d%0a%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3c%61%20%68%72%65%66%3d%22%68%74%74%70%73%3a%2f%2f%77%77%77%2e%6d%65%64%69%61%66%69%72%65%2e%63%6f%6d%2f%66%69%6c%65%2f%74%37%70%75%73%79%36%71%7a%34%62%67%75%39%73%2f%6c%6f%61%64%65%72%31%2e%68%74%6d%6c%2f%66%69%6c%65%22%20%63%6c%61%73%73%3d%22%62%74%6e%22%20%3e%44%6f%77%6e%6c%6f%61%64%3c%2f%61%3e%0d%0a%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3c%62%72%3e%0d%0a%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09%20%20%20%20%20%20%20%20%20%3c%61%20%68%72%65%66%3d%22%68%74%74%70%73%3a%2f%2f%72%65%64%61%63%78%2e%67%69%74%68%75%62%2e%69%6f%2f%4c%61%6e%64%69%6e%67%31%2f%22%20%63%6c%61%73%73%3d%22%62%74%6e%22%20%3e%44%65%6d%6f%3c%2f%61%3e%0d%0a%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3c%21%2d%2d%20%66%6f%6f%74%65%72%20%73%65%63%74%69%6f%6e%20%73%74%61%72%74%20%2d%2d%3e%0d%0a%20%20%20%20%3c%66%6f%6f%74%65%72%20%69%64%3d%22%66%6f%6f%74%65%72%22%3e%0d%0a%20%20%20%20%20%20%20%20%20%20%3c%70%3e%3c%2f%70%3e%0d%0a%20%20%20%20%3c%2f%66%6f%6f%74%65%72%3e%0d%0a%20%20%20%20%20%20%20%20%3c%2f%64%69%76%3e%0d%0a%3c%2f%62%6f%64%79%3e%0d%0a%3c%2f%68%74%6d%6c%3e'));
-//-->
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>landing page 1</title>
+<style>
+:root {
+  --plyr-color-main: #009227;
+}
+
+html,
+body {
+  font-family: "Roboto", sans-serif;
+  font-size: 100%;
+  font-weight: 400;
+  line-height: 1.65;
+  color: white;
+  background-color: #111212;
+  background-image: url("https://i.postimg.cc/fbSXnBct/video.png");
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+  background-blend-mode: soft-light;
+}
+
+small,
+.text-small {
+  font-size: 0.8em;
+}
+
+.plyr--video {
+  width: 100%;
+  border-radius: 0.64em;
+  box-shadow: 0.0625rem 0.125rem 0.25rem 0.0625rem rgba(0, 0, 0, 0.2);
+}
+
+.plyr__poster {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: top center;
+}
+
+main {
+  width: 100%;
+  height: 100%;
+  padding: 1rem 0 4rem 0;
+  overflow-x: hidden;
+  position: relative;
+  display: flex;
+}
+main section {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+main section .lx-container-80 .lx-row {
+  align-items: flex-start;
+}
+main section .lx-container-80 .lx-row #videoColumn .lx-row .video-header {
+  width: 100%;
+  margin: 0 0 1.05rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+main section .lx-container-80 .lx-row #videoColumn .lx-row .video-header h1 {
+  margin: 0;
+  line-height: normal;
+  font-size: 1.953em;
+}
+main section .lx-container-80 .lx-row #videoColumn .lx-row .video-header .nav-toggle {
+  padding: 0.5rem;
+  border-radius: 0.64em;
+  box-shadow: 0.0625rem 0.125rem 0.25rem 0.0625rem rgba(0, 0, 0, 0.2);
+  background-color: #1e2020;
+}
+main section .lx-container-80 .lx-row #videoColumn .lx-row .lx-card {
+  width: 100%;
+  margin: 1rem 0 0 0;
+  padding: 0;
+  display: flex;
+  flex-flow: wrap column;
+  overflow: hidden;
+  border: none;
+  background-color: #1e2020;
+}
+main section .lx-container-80 .lx-row #videoColumn .lx-row .lx-card .accordion {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  position: relative;
+  border-radius: 0;
+  border: none;
+  text-align: left;
+  font-size: 1.563em;
+  background-color: #2b2e2e;
+  transition: 0.3s;
+}
+main section .lx-container-80 .lx-row #videoColumn .lx-row .lx-card .accordion:after {
+  content: "";
+  width: 0.5rem;
+  height: 0.5rem;
+  transform: translate(-50%, -50%) rotate(-45deg);
+  position: absolute;
+  top: 50%;
+  left: 95%;
+  border-right: 0.125rem solid #009227;
+  border-bottom: 0.125rem solid #009227;
+  transition: 0.4s;
+}
+main section .lx-container-80 .lx-row #videoColumn .lx-row .lx-card .accordion.is-active:after {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+main section .lx-container-80 .lx-row #videoColumn .lx-row .lx-card .panel {
+  max-height: 0;
+  padding: 0 1rem;
+  overflow: hidden;
+  font-size: 0.75em;
+  transition: max-height 0.5s;
+}
+main section .lx-container-80 .lx-row #videoColumn.is-full {
+  width: 100%;
+}
+main section .lx-container-80 .lx-row #navColumn {
+  display: none;
+}
+main section .lx-container-80 .lx-row #navColumn .lx-row .lx-card {
+  width: 100%;
+  margin: 0 0 1em 0;
+  padding: 0;
+  overflow: hidden;
+  border: none;
+  background-color: #1e2020;
+}
+main section .lx-container-80 .lx-row #navColumn .lx-row .lx-card .title {
+  padding: 0.8em 1em;
+}
+main section .lx-container-80 .lx-row #navColumn .lx-row .lx-card .title h2 {
+  width: 100%;
+  margin: 0 0 0.5rem 0;
+  line-height: normal;
+  text-align: left;
+  font-size: 1.563em;
+}
+main section .lx-container-80 .lx-row #navColumn .lx-row .lx-card .title p {
+  margin: 0;
+}
+main section .lx-container-80 .lx-row #navColumn .lx-row .lx-card .accordions {
+  display: flex;
+  flex-flow: wrap column;
+}
+main section .lx-container-80 .lx-row #navColumn .lx-row .lx-card .accordions .accordion {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  position: relative;
+  border-radius: 0;
+  border: none;
+  text-align: left;
+  font-size: 0.8em;
+  background-color: #2b2e2e;
+  transition: 0.3s;
+}
+main section .lx-container-80 .lx-row #navColumn .lx-row .lx-card .accordions .accordion:after {
+  content: "";
+  width: 0.5em;
+  height: 0.5em;
+  transform: translate(-50%, -50%) rotate(-45deg);
+  position: absolute;
+  top: 50%;
+  left: 95%;
+  border-right: 0.125rem solid #009227;
+  border-bottom: 0.125rem solid #009227;
+  transition: 0.4s;
+}
+main section .lx-container-80 .lx-row #navColumn .lx-row .lx-card .accordions .accordion.is-active:after {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+main section .lx-container-80 .lx-row #navColumn .lx-row .lx-card .accordions .panel {
+  max-height: 0;
+  padding: 0 1rem;
+  overflow: hidden;
+  font-size: 0.75em;
+  transition: max-height 0.5s;
+}
+main section .lx-container-80 .lx-row #navColumn .lx-row .lx-card .accordions .panel .go-to {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+main section .lx-container-80 .lx-row #navColumn .lx-row .lx-card .accordions .panel .go-to img,
+main section .lx-container-80 .lx-row #navColumn .lx-row .lx-card .accordions .panel .go-to svg,
+main section .lx-container-80 .lx-row #navColumn .lx-row .lx-card .accordions .panel .go-to i {
+  height: 1.5em;
+  margin: 0 0.5rem 0 0;
+  color: #009227;
+  object-fit: contain;
+}
+main section .lx-container-80 .lx-row #navColumn .lx-row .lx-card .accordions .panel .go-to p {
+  flex-grow: 1;
+}
+main section .lx-container-80 .lx-row #navColumn .lx-row .lx-card:last-child {
+  margin: 0;
+}
+main section .lx-container-80 .lx-row #navColumn.is-active {
+  display: block;
+}
+
+@media screen and (max-width: 64rem) {
+  main section .lx-container-80 .lx-row .lx-column {
+    padding: 0;
+  }
+  main section .lx-container-80 .lx-row #videoColumn {
+    width: 100%;
+  }
+  main section .lx-container-80 .lx-row #videoColumn .lx-row .video-header .nav-toggle {
+    display: none;
+  }
+  main section .lx-container-80 .lx-row #videoColumn .lx-row .lx-card {
+    margin: 1rem 0;
+  }
+  main section .lx-container-80 .lx-row #navColumn {
+    width: 100%;
+  }
+}
+@media screen and (max-width: 31.25rem) {
+  html,
+body {
+    font-size: 95%;
+  }
+}
+@media screen and (max-width: 22.5rem) {
+  html,
+body {
+    font-size: 90%;
+  }
+}
+div button{
+    background-color: #2A2E2F;
+    border: 1px solid #ffd36a;
+    color: #fff;
+    margin:8px;
+    border-radius: 5px;
+    padding: 12px;
+    width:125px;
+    font-family:  'Oswald', sans-serif;
+    
+
+    
+}
+
+
+div button:hover{
+	
+    font-family:  'Oswald', sans-serif;
+    background-color: #121212;
+    color: #fff;
+    margin:8px;
+border: 1px solid #FFD36A;
+    border: 1px solid white;
+    
+    
+}
+a{
+	font-size:10px;
+	} 
+	video{
+	width: 100%;
+  height:100%;
+	} 
+
+</style>
+</head>
+<body>
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <link rel='stylesheet' href='https://cdn.plyr.io/3.6.2/plyr.css'>
+<link rel='stylesheet' href='https://cdn.jsdelivr.net/gh/luxonauta/luxa@1.0/dist/compressed/luxa.css'><link rel="stylesheet" href="styleforvips.css">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<main>
+  <section>
+    <div class="lx-container-80">
+      <div class="lx-row">
+        <div id="videoColumn" class="lx-column is-8 is-flex">
+          <div class="lx-row">
+            <div class="video-header">
+            
+              <a class="nav-toggle text-small is-active">Hide navigation</a>
+            </div>
+            <!-- example of how to use with the HTML5 <video> tag -->
+            <video id="player" playsinline controls>
+              <source src="https://c.top4top.io/m_25863gu391.mp4" type="video/webm" />
+              <track kind="captions" label="English" src="path/video-en.vtt" srclang="en" default />
+            </video>
+       <div class="container">
+	       <div class="home-box">
+		<a href="https://www.mediafire.com/file/t7pusy6qz4bgu9s/loader1.html/file">
+	<button > Download </button>
+	</a>
+
+<a href="https://redacx.github.io/Landing1/">
+             
+              	 <button > Demo</button> 
+        </a>
+            </div>
+            <div class="lx-card">
+              <a class="accordion">Description</a>
+              <div class="panel">
+                <p>A landing page with great features
+                     there is an open source black and 
+                     white theme that you can modify on  
+                     Source easily / follow us on Instagram <a style="color:#ffd36a" href="https://instagram.com/beweble" target="_blank" rel="noopener noreferrer"> Beweble</a>
+                </p>
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="navColumn" class="lx-column is-active">
+          <div class="lx-row">
+            <div class="lx-card">
+
+              <div class="accordions">
+                <a class="accordion">html page maker</a>
+                <div class="panel">
+                  <a class="go-to" data-time="15">
+                    <i class="fas fa-external-link-alt"></i>
+                    <p>html page maker</p>
+                  </a>
+                  <p>It is a tool through which you can create an HTML page easily and there are many buttons you can put you can visit a tool by going back to a home page
+                  </p>
+                </div>
+                <a class="accordion">Code editor</a>
+                <div class="panel">
+                  <a class="go-to" data-time="65">
+                    <i class="fas fa-external-link-alt"></i>
+                    <p>code editor</p>
+                  </a>
+                  <p>A tool with which you can modify a code and also you can link three languages to each other such as html css js 
+                  </p>
+                </div>
+                <a class="accordion">privacy policy generator </a>
+                <div class="panel">
+                  <a class="go-to" data-time="115">
+                    <i class="fas fa-external-link-alt"></i>
+                    <p>privacy policy generator </p>
+                  </a>
+                  <p>A tool with which you can create a site privacy policy page in HTML 
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="lx-card">
+              <div class="title">
+                <h2>Frequently Asked Questions</h2>
+              </div>
+              <div class="accordions">
+                <a class="accordion">Can I change the rights of SourceCode</a>
+                <div class="panel">
+                  <p>Yes, you can change all rights.
+                  </p>
+                  <p></p>
+                </div>
+                <a class="accordion">Does the source code stop after a month or always?</a>
+                <div class="panel">
+                  <p>always with the follow-up updates
+                  </p>
+                </div>
+                <a class="accordion">Can I create a source as an application?</a>
+                <div class="panel">
+                  <p>Yes you can build an application and I will explain in a video soon
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<!-- partial -->
+  <script src='https://cdn.plyr.io/3.6.2/plyr.js'></script>
+<script src='https://use.fontawesome.com/releases/v5.14.0/js/all.js'></script><script  src="./scr"></script>
+
+</body>
+</html>
+
+<script>
+// DOM Loaded
+document.addEventListener("DOMContentLoaded", () => {
+  const player = new Plyr("#player", {
+    title: "Spring",
+    controls: [
+    "play-large",
+    "play",
+    "progress",
+    "current-time",
+    "duration",
+    "mute",
+    "volume",
+    "settings",
+    "pip",
+    "airplay",
+    "fullscreen"] });
+
+
+
+  document.querySelectorAll(".accordion").forEach(acc => {
+    acc.addEventListener("click", () => {
+      acc.classList.toggle("is-active");
+      let panel = acc.nextElementSibling;
+      panel.style.maxHeight ?
+      panel.style.maxHeight = null :
+      panel.style.maxHeight = panel.scrollHeight + "px";
+    });
+  });
+
+  document.querySelector(".nav-toggle").addEventListener("click", e => {
+    e.currentTarget.classList.contains("is-active") ?
+    e.currentTarget.innerHTML = "Show navigation" :
+    e.currentTarget.innerHTML = "Hide navigation";
+
+    e.currentTarget.classList.toggle("is-active");
+
+    document.querySelector("#videoColumn").classList.toggle("is-full");
+    document.querySelector("#navColumn").classList.toggle("is-active");
+  });
+
+  document.querySelectorAll(".go-to").forEach(btn => {
+    btn.addEventListener("click", () => {
+      player.currentTime = parseInt(btn.getAttribute("data-time"));
+      player.play();
+    });
+  });
+});
 </script>
+<script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-analytics.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-analytics.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
+
+<script>
+
+var firebaseConfig = { apiKey: "AIzaSyAFPHSQdRugV6ngWGtPuUfSzBhS94D30hU", authDomain: "reda-7d506.firebaseapp.com", projectId: "reda-7d506", storageBucket: "reda-7d506.appspot.com", messagingSenderId: "637395019512", appId: "1:637395019512:web:1c7834e529eb90dcaf3d0d", measurementId: "G-Q7H13D1YFC" }; firebase.initializeApp(firebaseConfig); firebase.analytics();
+
+firebase.auth().onAuthStateChanged(function(user)
+            {
+                if(!user) 
+                {
+                    window.location.href = "main";
+                }
+            });
+
+      
+</script>
+</body>
+</html>
