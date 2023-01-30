@@ -9,12 +9,12 @@ firebase.auth().onAuthStateChanged(function(user)
     {
       if (snapshot.val())
       {
-        window.location.href = "index";
+        window.location.href = "main";
 
       }
       else
       {
-        window.location.href = "main";
+        window.location.href = "index";
       }
     });
 
