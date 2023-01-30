@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>beweble</title>
+<style>
+@font-face {
+  font-family: Freight-sans;
+  src: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/2053557/Freight%20Sans%20Medium.otf");
+}
+body, button {
+  font-family: Freight-sans, sans-serif;
+  background:#121212;
+  color:#fff;
+}
+
+body, h1, h2, p {
+  margin: 0;
+  padding: 0;
+}
+
+button {
+	color:#fff;
+  border: 0;
+  outline: 0;
+  background: #121212 ;
+  
+  
+}
+
+a {
+  text-decoration: none;
+  color:#fff;
+}
+
+.container {
+  margin: 0 auto;
+  padding-bottom: 50px;
+  max-width: 375px;
+}
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: nowrap;
+  padding: 10px 15px;
+}
+.top-bar__title {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+.top-bar__title__text {
+  font-size: 18px;
+}
+.top-bar__title__verified-icon {
+  margin-left: 4px;
+  width: 15px;
+  height: 14px;
+  background:#121212;
+}
+
+.stats {
+  padding: 0 15px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-column-gap: 10px;
+}
+.stats__img-holder {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 1px solid #FFD36A ;
+  background: center/125% no-repeat;
+}
+.stats__data {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+  align-items: center;
+  text-align: center;
+}
+.stats__data__point {
+  font-family: sans-serif;
+}
+.stats__data__point__value {
+  font-size: 16px;
+  font-weight: 600;
+}
+.stats__data__point__description {
+  font-weight: 300;
+  font-size: 14px;
+  margin-top: 2px;
+}
+
+.description {
+  padding: 0 15px;
+}
+.description h2 {
+  font-size: 18px;
+  margin: 0;
+  margin-top: 16px;
+  padding: 0;
+}
+.description p {
+  margin-top: 4px;
+  color: #fff;
+}
+.description a {
+  margin-top: 2px;
+  color: #FFD36A ;
+}
+
+.actions {
+  padding: 0 15px;
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 34px;
+  grid-column-gap: 6px;
+}
+.actions__btn {
+  font-size: 15px;
+  border-radius: 4px;
+  border: 1px solid #fff;
+  height: 32px;
+  display: block;
+  width: 100%;
+}
+.actions__btn--icon {
+  display: flex;
+}
+.actions__btn--icon i {
+  margin: auto;
+  font-size: 16px;
+}
+.actions__btn--active {
+  background: #FFD36A ;
+  border: 1px solid #fff;
+  color: black;
+}
+
+.stories {
+  margin-top: 14px;
+  padding: 0 10px;
+  white-space: nowrap;
+  overflow-x: auto;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* Internet Explorer 10+ */
+}
+.stories::-webkit-scrollbar {
+  /* WebKit */
+  width: 0;
+  height: 0;
+}
+.stories__single {
+  display: inline-block;
+}
+.stories__single__img-holder {
+  display: inline-block;
+  border-radius: 50%;
+  border: 1px solid #d8d8d8;
+  padding: 3px;
+  position: relative;
+  left: 50%;
+  transform: translatex(-50%);
+  margin-right: 12px;
+}
+.stories__single__img-holder__inner {
+  border-radius: 50%;
+  border: 1px solid #d8d8d8;
+  width: 60px;
+  height: 60px;
+  background: center/cover no-repeat;
+}
+.stories__single__description {
+  text-align: center;
+  font-size: 14px;
+  margin-top: 2px;
+  color: #fff;
+}
+
+.tabs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid #d8d8d8;
+  margin-top: 20px;
+}
+.tabs__btn {
+  display: flex;
+  padding-top: 6px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid transparent;
+}
+.tabs__btn__icon {
+  margin: auto;
+  max-width: 22px;
+}
+.tabs__btn--active {
+  border-bottom: 1px solid #444;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 1px;
+}
+.grid__photo {
+  display: block;
+  width: 100%;
+  height: calc(375px / 3);
+  background: center/cover no-repeat;
+}
+
+.bottom-bar {
+  width: calc(375px + 2px);
+  height: 50px;
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translatex(-50%);
+  z-index: 1;
+  background: #121212 ;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.bottom-bar__btn__icon {
+  width: 22px;
+  text-align: center;
+}
+</style>
+</head>
+<body>
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>beweble</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="./style.css">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<div class="container">
+  <section class="top-bar">
+   	<a href="index" > 
+   	
+    <button class="top-bar__back-btn"><i class="material-icons">arrow_back_ios</i></button>
+    </a>
+    <div class="top-bar__title">        
+      <h1 class="top-bar__title__text">Beweble</h1>
+      <img class='top-bar__title__verified-icon' src="https://i.top4top.io/p_2370wgilt1.png" alt=""></div>
+    <button class="top-bar__menu-btn"></button>
+  </section>
+  <section class="stats">
+  	   	<a href="story" > 
+    <div class="stats__img-holder" style="background-image: url('https://i.top4top.io/p_2582hbajv1.png');">      
+    </div>
+    </a>
+    <div class="stats__data">
+      <div class="stats__data__point">
+        <div class="stats__data__point__value">3</div>
+        <div class="stats__data__point__description">Posts</div>
+      </div>
+      <div class="stats__data__point">
+        <div class="stats__data__point__value">1m</div>
+        <div class="stats__data__point__description">Followers</div>
+      </div>
+      <div class="stats__data__point">
+        <div class="stats__data__point__value">0</div>
+        <div class="stats__data__point__description">Following</div>
+      </div>
+    </div>      
+  </section>
+  <section class="description">
+    <h2 class="decription__title">Beweble</h2>
+    <p>
+      ⬆️See the site updates on beweble story
+   
+    </p>
+    <a href="Https://beweble.cf">beweble</a>
+  </section>
+  <section class="actions">
+  	 	<a href="http://instagram.com/beweble" >
+    <button class="actions__btn actions__btn--active">Follow</button>
+    </a>
+     	<a href="livechat" >
+    <button class="actions__btn">Live chat</button>
+    </a>
+    <button class="actions__btn actions__btn--icon"><i class="material-icons">©</i></button>
+  </section>
+  <section class="stories">
+    <div class="stories__single">
+    	<a href="g1gt1" >
+      <div class="stories__single__img-holder">
+      	 	<a href="g1gt1" >
+        <div class="stories__single__img-holder__inner" style="background-image: url('https://i.top4top.io/p_2582hbajv1.png');"></div>
+      </div>
+      <p class="stories__single__description">-</p>
+    </div>
+    </a>
+    <div class="stories__single">
+      <div class="stories__single__img-holder">
+      	 	<a href="Hydvh" >
+        <div class="stories__single__img-holder__inner" style="background-image: url('https://i.top4top.io/p_2582hbajv1.png');"></div>
+      </div>
+      <p class="stories__single__description">-</p>
+    </div>
+    </a>
+
+  </section>
+  <section class="tabs">
+
+  </section>
+  <section class="grid">
+    <a href="YmMyM" class="grid__photo" style="background-image: url('https://c.top4top.io/p_2582tn4m31.jpg' );"></a>
+    <a href="A2M2Y" class="grid__photo" style="background-image: url('https://d.top4top.io/p_2582koyp61.jpg');"></a>
+    <a href="CfXDg" class="grid__photo" style="background-image: url('https://c.top4top.io/p_2582tn4m31.jpg');"></a>
+
+  </section>
+
+<!-- partial -->
+  
+</body>
+</html>
+
+<script>
+
+</script>
+</body>
+</html>
