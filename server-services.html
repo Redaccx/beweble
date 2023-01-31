@@ -2,7 +2,7 @@
 <html lang="en">
 <head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Document</title>
+<title>window server</title>
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap");
 * {
@@ -393,15 +393,9 @@ border: 1px solid #FFD36A;
 </div>
 <!-- partial -->
   
-</body>
-</html>
-
-<script>
 <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-analytics.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
-
-<script>
 
 <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-analytics.js"></script>
@@ -415,11 +409,11 @@ firebase.auth().onAuthStateChanged(function(user)
             {
                 if(!user) 
                 {
-                    window.location.href = "main";
+                    window.location.href = "index";
                 }
             });
 
-
+      
 </script>
 </body>
 </html>
