@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>company name generator </title>
+<style>
+@import url('https://fonts.googleapis.com/css?family=Work+Sans:200,400,700,900');
+
+body {
+  background: #121212;
+}
+
+body, input {
+
+  font-family: 'work sans', sans-serif;
+  color: #000;
+}
+
+.input-form {
+  text-align: center;
+  border-bottom: solid 1px #ddd;
+  padding: 16px;
+  background: #121212;
+  -webkit-box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+}
+
+.input-form > label {
+  display: inline;
+  font-weight: bold;
+}
+
+.input-form > .input {
+  border: 0;
+  border-radius:5px;
+  padding: 8px 0;
+  width: 228px;
+  background:#ffd36a;
+  box-shadow: 0 .2rem 1.5rem #ffd36a;
+  border: 1px solid  #000;
+  
+  margin-top:20px;
+  text-align:center;
+}
+
+.input-form > .input:focus {
+  border-bottom-color: #fff;
+
+  
+;
+  
+}
+
+.input-form > .submit {
+  background: #ffd36a;
+  
+  color: #000;
+  border: solid 1px #000;
+  padding: 0 8px;
+  height: 32px;
+  width: 77px;
+  border-radius: 3px;
+  margin-left: 16px;
+  font-weight: bold;
+  text-align: center;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  box-shadow: 0 .3rem 1.5rem #ffd36a;
+  cursor: pointer;
+}
+
+.results-list {
+  max-width: 960px;
+  padding: 16px;
+  margin: 64px auto 16px auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+.result-item {
+  display: block;
+  -webkit-box-flex: 0;
+      -ms-flex: 0 0 50%;
+          flex: 0 0 50%;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  font-size: 18px;
+  color: #000;
+  text-decoration: none;
+}
+
+@media (min-width: 768px) {
+  .result-item {
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 33%;
+            flex: 0 0 33%;
+  }
+
+  .result-item:nth-child(3n+1) {
+    -webkit-transform: translate3d(0, -48px, 0);
+            transform: translate3d(0, -48px, 0);
+  }
+
+  .result-item:nth-child(3n+3) {
+    -webkit-transform: translate3d(0, 48px, 0);
+            transform: translate3d(0, 48px, 0);
+  }
+}
+
+.result-item > span {
+  display: block;
+  background: #ffd36a;
+  height: 160px;
+  line-height: 160px;
+  margin: 8px;
+  -webkit-box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  -webkit-animation: pop-in 300ms ease-out;
+          animation: pop-in 300ms ease-out;
+}
+
+@media (min-width: 768px) {
+  .result-item > span {
+    margin: 16px;
+  }
+}
+
+.result-item > span {
+  font-size: 1.2em;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 1.1em;
+}
+
+.result-item:hover > span {
+  -webkit-transform: scale(0) translate3d(0, 0, 0);
+          transform: scale(0) translate3d(0, 0, 0);
+  -webkit-transition: -webkit-transform 150ms ease;
+  transition: -webkit-transform 150ms ease;
+  -o-transition: transform 150ms ease;
+  transition: transform 150ms ease;
+  transition: transform 150ms ease, -webkit-transform 150ms ease;
+}
+
+.result-item:nth-child(3n+2) > span {
+  text-transform: none;
+  font-weight: 200;
+  letter-spacing: 0;
+  font-size: 1.9em;
+}
+
+
+.result-item:nth-child(7n+3) > span {
+  text-transform: none;
+  font-weight: 700;
+  letter-spacing: -0.05em;
+  font-size: 1.7em;
+}
+
+.result-item:nth-child(5n+0) > span {
+  text-transform: uppercase;
+  font-weight: 900;
+  letter-spacing: 0.2em;
+  font-size: 1.1em;
+}
+
+.result-item:hover > span {
+  -webkit-transform: scale(1) translate3d(0, 0, 0);
+          transform: scale(1) translate3d(0, 0, 0);
+}
+
+@media (min-width: 768px) {
+  .result-item:hover > span, 
+  .result-item:nth-child(9n+5) > span {
+    background: #ffd36a;
+    color: #000;
+    -webkit-transform: scale(1.05) translate3d(0, 0, 0);
+            transform: scale(1.05) translate3d(0, 0, 0);
+  }
+
+  .result-item:nth-child(9n+5) > span {
+    -webkit-transform: scale(1.1) translate3d(0, 0, 0);
+            transform: scale(1.1) translate3d(0, 0, 0);
+  }
+}
+
+.results-list > hr {
+  -webkit-box-flex: 1;
+      -ms-flex: 1 1 100%;
+          flex: 1 1 100%;
+  background: #ffd36a;
+  height: 1px;
+  margin: 16px 32px;
+}
+
+@-webkit-keyframes pop-in {
+  0% {
+    opacity: 0;
+    -webkit-transform: scale(0.8);
+            transform: scale(0.8);
+  }
+}
+
+@keyframes pop-in {
+  0% {
+    opacity: 0;
+    -webkit-transform: scale(0.8);
+            transform: scale(0.8);
+  }
+}
+.home-img {
+  width: 45%;
+  height: 100%;
+  background: url("https://j.top4top.io/p_2590shy2k1.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  margin-top:-100px;
+}
+.home-img {
+    width: 100%;
+    height: 520px;
+    background-position: center;
+   } 
+    .home-img {
+    background-position: 0px;
+    background-size: cover;
+  }
+}
+
+</style>
+</head>
+<body>
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - Startup name generator</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<link rel="stylesheet" href="./style.css">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<form id='form' class='input-form'>
+  <label style="color:#fff" >Let's name your company  &copy beweble</label>
+  <br>
+  <input type='text' class='input' id='input' placeholder=' Type some words' value=''>
+  <button class='submit'>Generate</button>
+</form>
+
+<div id='results' class='results-list'>
+</div>
+        <div class="home-img"></div>
+<!-- partial -->
+  <script src='https://unpkg.com/@rstacruz/startup-name-generator@0.2.1/dist/startup-name-generator.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script><script  src="./script.js"></script>
+
+</body>
+</html>
+
+<script>
+$('#form').on('submit', e => {
+  e.preventDefault();
+
+  var input = $('#input').val();
+  var $results = $('#results');
+  var items = StartupNameGenerator(input);
+
+  $results.html('');
+
+  items.forEach((item, idx) => {
+    $('<a class="result-item" target="_blank">').
+    html(`<span>${item}</span>`).
+    attr('href', `https://www.namecheap.com/domains/registration/results.aspx?domain=${item.toLowerCase()}.com`).
+    appendTo($results);
+  });
+});
+</script>
+<script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-analytics.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
+
+<script>
+
+var firebaseConfig = { apiKey: "AIzaSyAFPHSQdRugV6ngWGtPuUfSzBhS94D30hU", authDomain: "reda-7d506.firebaseapp.com", projectId: "reda-7d506", storageBucket: "reda-7d506.appspot.com", messagingSenderId: "637395019512", appId: "1:637395019512:web:1c7834e529eb90dcaf3d0d", measurementId: "G-Q7H13D1YFC" }; firebase.initializeApp(firebaseConfig); firebase.analytics();
+
+firebase.auth().onAuthStateChanged(function(user)
+            {
+                if(!user) 
+                {
+                    window.location.href = "index";
+                }
+            });
+
+      
+function logout(){
+    firebase.auth().signOut();
+  
+
+          window.open('index');
+} 
+
+
+</script>
+
+<script src="test.js"></script>
+
+
+    
+</body>
+</html>
