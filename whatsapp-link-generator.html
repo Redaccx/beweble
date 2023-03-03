@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+<head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WhatsApp message me link generator</title>
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css'>
+<style>
+	body{
+		background:#121212;
+		color:#ffd36a;
+		} 
+#myVideo {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+}
+.content {
+  position: fixed;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  color: #f1f1f1;
+  width: 100%;
+  padding: 20px;
+}
+#messageHelp,#numberHelp {
+	color:#fff;
+	} 
+audio { display:none;}
+	</style>
+</head>
+  	<audio autoplay="true" src="https://e.top4top.io/m_26187n7u31.mp3"></audio>
+<body>
+	<video autoplay muted loop id="myVideo">
+  <source src="https://e.top4top.io/m_26189gtkl1.mp4" type="video/mp4">
+</video>
+<!-- partial:index.partial.html -->
+<div id="app">
+
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <h1>Generate a WhatsApp link</h1>
+        <p>This little helper will generate a whatsapp message link to use in your email signature social icons or other social posts. </p>
+        
+      </div>
+    </div>
+    <div class="row">
+
+      <div class="col-sm-12">
+
+        <div class="form-group">
+          <label for="exampleInputEmail1">Your telephone number</label>
+          <input type="number" v-model="number" class="form-control" id="telephone" aria-describedby="numberHelp" placeholder="Enter your telephone">
+          <small id="numberHelp" class="form-text text-muted">Enter your telephone number 96181112046 not +96181112046.</small>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">A pre-filled message that will automatically appear in the text field of the chat <span class="small">(optional)</span></label>
+          <input type="message" v-model="message" class="form-control" id="message" placeholder="I would like to request a quote" describedby="messageHelp">
+          <small id="messageHelp" class="form-text text-muted">Enter your telephone number 96181112046 not +96181112046.</small>
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="generate-url" :disabled="number == ''" @click="generateUrl">Generate WhatsApp Link</button>
+      </div>
+      <div class="col-sm-12">
+        <br>
+        <h4>Your URL and QR code <span v-if="whatsappurl == ''">will show below once you fill ut the form and press generate</span></h4>
+        <pre id="generated-url" v-if="whatsappurl !== ''">{{whatsappurl}}</pre>
+        <br>
+        <div id="qr-code">
+
+        </div>
+        <p style="text-align:center" class="small">&copy Beweble 2023 </p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- partial -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.min.js'></script>
+<script>
+var app = new Vue({
+  el: '#app',
+  data: {
+    number: '',
+    message: '',
+    whatsappurl:''
+  },
+  methods:{
+    generateUrl: function(){
+      if(this.message){
+        this.whatsappurl = "https://api.whatsapp.com/send?phone="+this.number+"&text="+this.message
+      }else{
+        this.whatsappurl = "https://api.whatsapp.com/send?phone="+this.number
+      }
+      
+      $('#qr-code').qrcode(this.whatsappurl);
+    }
+  }
+  
+})
+</script>
+
+</body>
+</html>
