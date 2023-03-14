@@ -60,14 +60,14 @@
   --ff-poppins: 'Poppins', sans-serif;
 
   /* font-size */
-  --fs-1: 24px;
-  --fs-2: 18px;
-  --fs-3: 17px;
-  --fs-4: 16px;
-  --fs-5: 15px;
-  --fs-6: 14px;
-  --fs-7: 13px;
-  --fs-8: 14px;
+  --fs-1: 22px;
+  --fs-2: 16px;
+  --fs-3: 15px;
+  --fs-4: 14px;
+  --fs-5: 13px;
+  --fs-6: 12px;
+  --fs-7: 11px;
+  --fs-8: 12px;
 
   /* font-weight */
   --fw-300: 300;
@@ -227,6 +227,7 @@ article.active {
 
 .article-title {
   position: relative;
+  font-size:19px;
   padding-bottom: 7px;
 }
 
@@ -237,6 +238,7 @@ article.active {
   left: 0;
   width: 30px;
   height: 3px;
+  
   background: var(--text-gradient-yellow);
   border-radius: 3px;
 }
@@ -320,8 +322,8 @@ main {
 
 .circle {
   position: relative;
-  width: 80px;
-  height: 80px;
+  width: 84px;
+  height: 84px;
 }
 .circle svg {
   fill: none;
@@ -342,11 +344,11 @@ main {
 }
 @keyframes stroke-draw {
   from {
-    stroke: #FFD36A;
+    stroke: #ffd36a;
     stroke-dasharray: 1;
   }
   to {
-    stroke: #121212;
+    stroke: #121212 ;
     transform: rotate(180deg);
     stroke-dasharray: 8;
   }
@@ -1905,3 +1907,16 @@ textarea.form-input::-webkit-resizer { display: none; }
   .timeline-text { max-width: 700px; }
 
 }
+h9 {
+  color:#ffd36a ;
+ 
+
+
+  position: absolute ;
+  top: 164px;
+  right: 29px;
+  font-size: 18px;
+}
+
+ 
+} 
