@@ -33,9 +33,7 @@ firebase.auth().onAuthStateChanged(function(user) {
             document.getElementById("user_name_from_database").value = uname;
             document.getElementById("user_email_from_database").value = email_id;
             document.getElementById("profilepic").src = dp_url;
-else{
-        console.log("successful login");
-      }
+
         }
     }
 
@@ -57,7 +55,9 @@ function login(){
         console.log(error);
 
     });
-    
+    else{
+        console.log("successful login");
+      }
 }
 
 function logout(){
