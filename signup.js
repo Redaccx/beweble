@@ -15,15 +15,15 @@ function SignUpFunction(){
     
     }).catch(function(error){
         window.alert(error.message);
-        console.log('Error');
+        console.log('Error !!!');
     });
 
 }
 
 firebase.auth().onAuthStateChanged(user => {
     if(user){
-        window.open('main.html', target="_self");
-        document.title = "main";
+        window.open('main', target="_self");
+        document.title = "PROFILE PAGE";
 
     }
 })
