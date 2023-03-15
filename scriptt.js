@@ -55,7 +55,9 @@ function login(){
         console.log(error);
 
     });
-    
+    then(function() {
+
+      alert('successfully ');
 }
 
 function logout(){
