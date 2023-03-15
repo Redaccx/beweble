@@ -52,6 +52,10 @@ function login(){
     firebase.auth().signInWithEmailAndPassword(email_address, password).catch(function(error){
         console.log(error);
 
+    then(function() {
+
+      alert('successfully ');
+}
     });
     
 }
