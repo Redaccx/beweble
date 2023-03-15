@@ -23,7 +23,7 @@ function SignUpFunction(){
 firebase.auth().onAuthStateChanged(user => {
     if(user){
         window.open('main', target="_self");
-        document.title = "PROFILE PAGE";
+        document.title = "main";
 
     }
 })
