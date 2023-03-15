@@ -55,9 +55,7 @@ function login(){
         console.log(error);
 
     });
-    else{
-        console.log("successful login");
-      }
+    
 }
 
 function logout(){
