@@ -3,13 +3,16 @@
 <head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>home</title>
+   <body onload="myFunction()">
+<div id="loading"></div>
+
 <style>
 /*-----------------------------------*\ 
  * #style.css
 \*-----------------------------------*/
 
 /**
- * copyright 2022 @beweble
+ * copyright 2022 @codewithsadee
  */
 
 
@@ -84,6 +87,17 @@
   padding: 0;
   box-sizing: border-box;
 }
+#loading{
+	position: fixed;
+	width: 100%;
+	height: 100vh;
+	background: #121212
+	url('https://b.top4top.io/p_26402jv7x1.gif' )
+	 no-repeat center center;	
+	z-index: 99999;
+	background-size:100%;
+}
+
 
 a { text-decoration: none; }
 
@@ -1006,10 +1020,7 @@ header .container {
     margin-bottom: 0;
   }
 
-  .btn-group { 
-  justify-content: flex-start;
-
- }
+  .btn-group { justify-content: flex-start; }
 
 
 
@@ -1305,14 +1316,9 @@ video{
   border-top: 3px solid #FFD36A ;
   border-radius: 5px;
 }
-	.space {
-  width: 4px;
-  height: auto;
-  display: inline-block;
-}
+	
 </style>
-</head>
-<body>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -1325,7 +1331,7 @@ video{
   <!-- 
     - favicon
   -->
-  <link rel="shortcut icon" href="https://i.top4top.io/p_2582hbajv1.png" type="image/x-icon">
+  <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
 
   <!-- 
     - custom css link
@@ -1424,9 +1430,6 @@ video{
             	<a href="signin" >
               <button class="btn btn-primary">SignIn </button>
 </a>
-<div class="space">
-  </div>
-
  	<a href="signup" >
               <button class="btn btn-secondary">SignUp </button>
               </a>
@@ -1449,7 +1452,7 @@ video{
           <div class="section-header-wrapper">
 
             <h2 class="h2 section-title">Video ad </h2>
-<a href='beweble-apk' >
+<a href='https://apk.e-droid.net/apk/app2135083-5sw3px.apk?v=3' >
             <button class="btn btn-primary">Beweble Apk</button>
 </a>
           </div>
@@ -1463,7 +1466,7 @@ video{
                 <figure class="product-banner">
 
       <video  id="myVideo" controls="controls">
-      	        <source  src="https://l.top4top.io/m_2588j261l1.mp4" type="video/mp4">
+      	        <source  src="https://d.top4top.io/m_2384curb01.mp4" type="video/mp4">
 
                   <div class="product-actions">
                     <button class="product-card-menu">
@@ -1530,7 +1533,7 @@ video{
 
                 <figure class="product-banner">
 
-                  <img src="https://f.top4top.io/p_2582zff5r1.jpg" alt="">
+                  <img src="https://b.top4top.io/p_26401rq1s1.jpg" alt="">
 
                   <div class="product-actions">
                     <button class="product-card-menu">
@@ -1902,7 +1905,19 @@ video{
   </a>
 
 
+<script>
+		// $(document).ready(function(){
+			// 	$('div#loading').removeAttr('id');
+		// });
+		var preloader = document.getElementById("loading");
+		// window.addEventListener('load', function(){
+		// 	preloader.style.display = 'none';
+		// 	})
 
+		function myFunction(){
+			preloader.style.display = 'none';
+		};
+	</script>
 
 
   <!-- 
@@ -1916,9 +1931,8 @@ video{
   <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
-</body>
 
-</html>
+
 <script>
 'use strict';
 
