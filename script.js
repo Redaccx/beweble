@@ -21,7 +21,7 @@ function updateProfile(){
 firebase.auth().onAuthStateChanged(function(user) {
      if (user) {
            window.open('main') 
-           window.alert("Welcome "+email);
+           
    
         var user = firebase.auth().currentUser;
 
