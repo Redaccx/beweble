@@ -4,7 +4,7 @@ function SignUpFunction(){
 
     firebase.auth().createUserWithEmailAndPassword(email, pswd).then(function(){
         // console.log('User Created !! ');
-        window.alert("Successfully Registered");
+        window.alert("Successfully Signup");
         var user = firebase.auth().currentUser;
 
         user.updateProfile({
