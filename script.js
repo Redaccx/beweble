@@ -22,7 +22,7 @@ firebase.auth().onAuthStateChanged(function(user) {
      if (user) {
            window.open('main') 
            
-   
+
         var user = firebase.auth().currentUser;
 
         if (user != null) {
@@ -48,11 +48,10 @@ firebase.auth().onAuthStateChanged(function(user) {
 function login(){
     var email_address = document.getElementById("email_field").value;
     var password = document.getElementById("password_field").value;
-    
+
     firebase.auth().signInWithEmailAndPassword(email_address, password).catch(function(error){
         console.log(error);
-    
-    
+
     });
     
 }
