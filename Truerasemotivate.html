@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Coming Soon - True Rase Motivate</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #121212;
+      color: white;
+      font-family: 'Arial', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      position: relative;
+    }
+
+    .logo {
+      position: absolute;
+      top: 0px;
+      right: 20px;
+      width: 60px;
+    }
+
+    .menu-toggle {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      cursor: pointer;
+      width: 30px;
+      height: 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .menu-toggle span {
+      height: 4px;
+      background: #fbc531;
+      border-radius: 2px;
+    }
+
+    .menu {
+      display: none;
+      position: absolute;
+      top: 60px;
+      left: 20px;
+      background: #1e1e1e;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+
+    .menu a {
+      display: block;
+      padding: 10px 20px;
+      color: #fbc531;
+      text-decoration: none;
+      font-weight: bold;
+      border-bottom: 1px solid #333;
+    }
+
+    .menu a:hover {
+      background-color: #333;
+    }
+
+    .content {
+      margin-top: 100px;
+      text-align: center;
+    }
+
+    .content h1 {
+      font-size: 48px;
+      margin-bottom: 10px;
+    }
+
+    .content p {
+      font-size: 18px;
+      color: #ccc;
+      margin-bottom: 30px;
+    }
+
+    .loader {
+      border: 8px solid #f3f3f3;
+      border-top: 8px solid #fbc531;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      margin: 0 auto 40px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .news-post {
+      background-color: #1e1e1e;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 600px;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
+    }
+
+    .news-post h2 {
+      color: #fbc531;
+      margin-bottom: 10px;
+    }
+
+    .news-post p {
+      color: #ccc;
+      font-size: 16px;
+    }
+
+    footer {
+      margin-top: auto;
+      padding: 20px;
+      text-align: center;
+      font-size: 14px;
+      color: #777;
+    }
+
+    footer a {
+      color: #fbc531;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <img src="https://e.top4top.io/p_3421gzgdb1.png" alt="Logo" class="logo" />
+
+  <div class="menu-toggle" onclick="toggleMenu()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <div class="menu" id="menu">
+    <a href="#">Home</a>
+    <a href="https://wa.me/96181112046">Contact Us</a>
+  </div>
+
+  <div class="content">
+    <h1>Coming Soon</h1>
+    <p>True Rase Motivate</p>
+    <div class="loader"></div>
+
+    <div class="news-post">
+      <h2>Latest Update</h2>
+      <p>We're working hard to bring you a powerful platform focused on motivation and real progress. Stay tuned for updates, new features, and exclusive content coming your way soon!</p>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 All rights reserved | Powered by <a href="https://beweble.com" target="_blank">Beweble</a>
+  </footer>
+
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById("menu");
+      menu.style.display = menu.style.display === "block" ? "none" : "block";
+    }
+  </script>
+
+</body>
+</html>
