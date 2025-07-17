@@ -1,0 +1,448 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <title>جمعية الأمل الخيرية</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    /* (نفس الـ CSS السابق بدون تغيير) */
+    body {
+      font-family: Tahoma, sans-serif;
+      margin: 0;
+      background: #f4f4f4;
+    }
+
+    .header {
+      background-color: #2c3e50;
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-direction: row-reverse;
+    }
+
+    .title {
+      font-size: 20px;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .menu-icon {
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .lang-toggle {
+      background: white;
+      color: #2c3e50;
+      border: none;
+      padding: 5px 10px;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .top-image {
+      width: 100%;
+      height: auto;
+    }
+
+    .sidebar {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      top: 0;
+      right: 0;
+      background-color: #2c3e50;
+      overflow-x: hidden;
+      transition: 0.3s;
+      padding-top: 60px;
+      z-index: 1000;
+    }
+
+    .sidebar a {
+      padding: 12px 30px;
+      text-decoration: none;
+      font-size: 18px;
+      color: white;
+      display: block;
+      transition: background-color 0.3s;
+      user-select: none;
+    }
+
+    .sidebar a:hover {
+      background-color: #34495e;
+    }
+
+    .closebtn {
+      position: absolute;
+      top: 10px;
+      left: 20px;
+      font-size: 30px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .content {
+      max-width: 800px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .section {
+      background: white;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      color: #2c3e50;
+      margin-top: 0;
+    }
+
+    .donate-button {
+      display: inline-block;
+      padding: 12px 25px;
+      background-color: #27ae60;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      font-size: 16px;
+      margin-top: 15px;
+      transition: background-color 0.3s;
+      user-select: none;
+    }
+
+    .donate-button:hover {
+      background-color: #1e8449;
+    }
+
+    .donate-icon {
+      width: 60px;
+      display: block;
+      margin-bottom: 10px;
+      user-select: none;
+    }
+
+    .stars {
+      direction: ltr;
+      unicode-bidi: bidi-override;
+      font-size: 24px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .stars span {
+      color: #ccc;
+    }
+
+    .stars .filled {
+      color: gold;
+    }
+
+    .comments {
+      margin-top: 15px;
+      user-select: none;
+    }
+
+    .comment-box {
+      margin-bottom: 10px;
+      padding: 10px;
+      background: #f1f1f1;
+      border-radius: 5px;
+      position: relative;
+      user-select: text;
+    }
+
+    .comment-date {
+      font-size: 12px;
+      color: #888;
+      user-select: none;
+    }
+
+    .comment-input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      user-select: text;
+    }
+
+    .comment-delete-btn {
+      position: absolute;
+      top: 6px;
+      left: 8px;
+      background: #e74c3c;
+      border: none;
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      padding: 2px 6px;
+      user-select: none;
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      background-color: #ddd;
+      border-radius: 8px;
+      margin: 20px auto 30px;
+      max-width: 800px;
+      user-select: none;
+    }
+
+    footer img {
+      vertical-align: middle;
+      margin: 0 8px;
+      cursor: pointer;
+      transition: opacity 0.3s;
+      user-select: none;
+    }
+
+    footer img:hover {
+      opacity: 0.7;
+    }
+
+    .whatsapp-btn {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background-color: #25d366;
+      border-radius: 50%;
+      width: 55px;
+      height: 55px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+      z-index: 1000;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      user-select: none;
+    }
+
+    .whatsapp-btn img {
+      width: 32px;
+      height: 32px;
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="title" id="title">جمعية الأمل الخيرية</div>
+    <div class="header-right" id="header-right">
+      <button class="lang-toggle" onclick="toggleLanguage()">English</button>
+      <span class="menu-icon" onclick="openNav()">☰</span>
+    </div>
+  </div>
+
+  <img class="top-image" src="https://via.placeholder.com/1200x300.png?text=صورة+تعريفية+عن+الجمعية" alt="صورة تعريفية" />
+
+  <div id="mySidebar" class="sidebar">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+    <a href="#about" id="link-about" onclick="showMainContent()">من نحن</a>
+    <a href="#goals" id="link-goals" onclick="showMainContent()">أهداف الجمعية</a>
+    <a href="#donate" id="link-donate" onclick="showMainContent()">التبرع</a>
+    <a href="#privacy" id="link-privacy" onclick="showMainContent()">الخصوصية</a>
+    <a href="#" id="link-admin" onclick="openAdmin()">صفحة الأدمن</a>
+  </div>
+
+  <div class="content" id="mainContent">
+    <section class="section" id="about">
+      <h2 id="about-title">من نحن؟</h2>
+      <p id="about-text">جمعية الأمل هي منظمة غير ربحية تعمل على دعم الأسر المحتاجة، وتوفير المساعدات الإنسانية، والتعليم، والرعاية الصحية.</p>
+    </section>
+
+    <section class="section" id="goals">
+      <h2 id="goals-title">أهداف الجمعية</h2>
+      <p id="goals-text">- دعم العائلات الفقيرة والأيتام<br>- توفير الغذاء والدواء<br>- تعليم الأطفال<br>- العمل المجتمعي والتطوعي</p>
+    </section>
+
+    <section class="section" id="donate">
+      <h2 id="donate-title">التبرع</h2>
+      <img class="donate-icon" src="https://cdn-icons-png.flaticon.com/512/1040/1040230.png" alt="تبرع" />
+      <p id="donate-text">ساعدنا نزرع الأمل. يمكنك التبرع عبر واتساب أو التواصل معنا مباشرة.</p>
+      <a class="donate-button" href="https://wa.me/96181112046" target="_blank" id="donate-btn">تبرع عبر واتساب</a>
+
+      <div style="margin-top:20px;">
+        <h3>قيّم الجمعية:</h3>
+        <div class="stars" id="rating"></div>
+      </div>
+
+      <div class="comments">
+        <h3>التعليقات:</h3>
+        <textarea class="comment-input" id="commentText" placeholder="اكتب تعليقك هنا..."></textarea>
+        <button onclick="addComment()">نشر</button>
+        <div id="commentList"></div>
+      </div>
+    </section>
+
+    <section class="section" id="privacy">
+      <h2 id="privacy-title">سياسة الخصوصية</h2>
+      <p id="privacy-text">نضمن سرية جميع المعلومات الخاصة بالمتبرعين ولا تتم مشاركتها مع أي طرف ثالث.</p>
+    </section>
+  </div>
+
+  <!-- صفحة الأدمن -->
+  <div class="content" id="adminContent" style="display:none;">
+    <section class="section">
+      <h2>صفحة الأدمن</h2>
+      <p>هنا يمكنك حذف التعليقات.</p>
+      <div id="adminCommentList"></div>
+      <button onclick="closeAdmin()">العودة للصفحة الرئيسية</button>
+    </section>
+  </div>
+
+  <footer id="footer">
+    <div style="margin-bottom: 10px;">
+      <a href="https://facebook.com" target="_blank"><img src="https://cdn-icons-png.flaticon.com/32/733/733547.png" alt="Facebook" /></a>
+      <a href="https://instagram.com" target="_blank"><img src="https://cdn-icons-png.flaticon.com/32/2111/2111463.png" alt="Instagram" /></a>
+      <a href="https://x.com" target="_blank"><img src="https://cdn-icons-png.flaticon.com/32/5968/5968958.png" alt="X" /></a>
+    </div>
+    <div style="margin-bottom: 8px;" id="contact-info">
+      📞 <strong>رقم الهاتف:</strong> <a href="tel:+96181112046" id="phone">+961 81 112 046</a><br />
+      ✉️ <strong>الإيميل:</strong> <a href="mailto:info@amal.org" id="email">info@amal.org</a>
+    </div>
+    <div style="margin-top: 10px;" id="footer-text">© 2025 جمعية الأمل - جميع الحقوق محفوظة</div>
+  </footer>
+
+  <a href="https://wa.me/96181112046" target="_blank" class="whatsapp-btn" title="تواصل عبر واتساب">
+    <img src="https://cdn-icons-png.flaticon.com/32/733/733585.png" alt="WhatsApp" />
+  </a>
+
+  <script>
+    function openNav() {
+      document.getElementById("mySidebar").style.width = "250px";
+    }
+
+    function closeNav() {
+      document.getElementById("mySidebar").style.width = "0";
+    }
+
+    let currentLang = "ar";
+
+    function toggleLanguage() {
+      currentLang = currentLang === "ar" ? "en" : "ar";
+      const body = document.body;
+      const html = document.documentElement;
+      const headerRight = document.getElementById("header-right");
+      const langBtn = document.querySelector(".lang-toggle");
+
+      if (currentLang === "en") {
+        html.lang = "en"; body.dir = "ltr";
+        headerRight.style.flexDirection = "row";
+        langBtn.textContent = "عربي";
+        document.getElementById("title").textContent = "Al-Amal Charity";
+        document.getElementById("link-about").textContent = "About";
+        document.getElementById("link-goals").textContent = "Goals";
+        document.getElementById("link-donate").textContent = "Donate";
+        document.getElementById("link-privacy").textContent = "Privacy";
+        document.getElementById("link-admin").textContent = "Admin Page";
+
+        document.getElementById("about-title").textContent = "About Us";
+        document.getElementById("about-text").textContent = "Al-Amal is a nonprofit helping families in need.";
+        document.getElementById("goals-title").textContent = "Goals";
+        document.getElementById("goals-text").innerHTML = "- Help poor families<br>- Provide aid<br>- Educate children<br>- Volunteer work";
+        document.getElementById("donate-title").textContent = "Donate";
+        document.getElementById("donate-text").textContent = "Help us spread hope. You can donate via WhatsApp.";
+        document.getElementById("donate-btn").textContent = "Donate via WhatsApp";
+        document.getElementById("privacy-title").textContent = "Privacy";
+        document.getElementById("privacy-text").textContent = "Your data is confidential and never shared.";
+        document.getElementById("phone").textContent = "+1 555 123 4567";
+        document.getElementById("phone").href = "tel:+15551234567";
+        document.getElementById("email").textContent = "info@hope.org";
+        document.getElementById("email").href = "mailto:info@hope.org";
+        document.getElementById("footer-text").textContent = "© 2025 Al-Amal Charity - All rights reserved";
+      } else {
+        html.lang = "ar"; body.dir = "rtl";
+        headerRight.style.flexDirection = "row-reverse";
+        langBtn.textContent = "English";
+        document.getElementById("title").textContent = "جمعية الأمل الخيرية";
+        document.getElementById("link-about").textContent = "من نحن";
+        document.getElementById("link-goals").textContent = "أهداف الجمعية";
+        document.getElementById("link-donate").textContent = "التبرع";
+        document.getElementById("link-privacy").textContent = "الخصوصية";
+        document.getElementById("link-admin").textContent = "صفحة الأدمن";
+
+        document.getElementById("about-title").textContent = "من نحن؟";
+        document.getElementById("about-text").textContent = "جمعية الأمل هي منظمة غير ربحية تعمل على دعم الأسر المحتاجة.";
+        document.getElementById("goals-title").textContent = "أهداف الجمعية";
+        document.getElementById("goals-text").innerHTML = "- دعم العائلات الفقيرة<br>- تقديم المساعدات<br>- تعليم الأطفال<br>- العمل التطوعي";
+        document.getElementById("donate-title").textContent = "التبرع";
+        document.getElementById("donate-text").textContent = "ساعدنا نزرع الأمل. يمكنك التبرع عبر واتساب.";
+        document.getElementById("donate-btn").textContent = "تبرع عبر واتساب";
+        document.getElementById("privacy-title").textContent = "سياسة الخصوصية";
+        document.getElementById("privacy-text").textContent = "نضمن سرية معلوماتك ولن نشاركها مع أي طرف ثالث.";
+        document.getElementById("phone").textContent = "+961 81 112 046";
+        document.getElementById("phone").href = "tel:+96181112046";
+        document.getElementById("email").textContent = "info@amal.org";
+        document.getElementById("email").href = "mailto:info@amal.org";
+        document.getElementById("footer-text").textContent = "© 2025 جمعية الأمل - جميع الحقوق محفوظة";
+      }
+    }
+
+    // نجوم التقييم
+    const ratingContainer = document.getElementById("rating");
+    for (let i = 1; i <= 5; i++) {
+      const star = document.createElement("span");
+      star.innerHTML = "★";
+      star.dataset.value = i;
+      ratingContainer.appendChild(star);
+    }
+
+    function updateStars(value) {
+      const stars = ratingContainer.querySelectorAll("span");
+      stars.forEach(s => {
+        s.classList.toggle("filled", s.dataset.value <= value);
+      });
+      localStorage.setItem("rating", value);
+    }
+
+    ratingContainer.addEventListener("click", e => {
+      if (e.target.tagName === "SPAN") {
+        updateStars(e.target.dataset.value);
+      }
+    });
+
+    if (localStorage.getItem("rating")) {
+      updateStars(localStorage.getItem("rating"));
+    }
+
+    // التعليقات
+    function addComment() {
+      const text = document.getElementById("commentText").value.trim();
+      if (!text) return;
+
+      const date = new Date().toLocaleString();
+      const comment = { text, date };
+      const comments = JSON.parse(localStorage.getItem("comments") || "[]");
+      comments.unshift(comment);
+      localStorage.setItem("comments", JSON.stringify(comments));
+      document.getElementById("commentText").value = "";
+      renderComments();
+    }
+
+    function renderComments() {
+      const comments = JSON.parse(localStorage.getItem("comments") || "[]");
+      const list = document.getElementById("commentList");
+      list.innerHTML = "";
+      comments.forEach(c => {
+        const box = document.createElement("div");
+        box.className = "comment-box";
+        box.innerHTML = `<div>${c.text}</div><div class="comment-date">${c.date}</div>`;
+        list.appendChild(box);
+  
+</script>
+
+</body>
+</html>
