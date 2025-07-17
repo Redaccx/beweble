@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <title>نظام تعليقات مع صلاحية حذف للأدمن</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      font-family: Tahoma, sans-serif;
+      background: #f9f9f9;
+      margin: 0; padding: 20px; direction: rtl;
+    }
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    }
+    textarea {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      margin-bottom: 10px;
+      resize: vertical;
+    }
+    .btn {
+      padding: 8px 15px;
+      font-size: 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .btn-post {
+      background-color: #27ae60;
+      color: white;
+    }
+    .comment-box {
+      background: #f0f0f0;
+      margin-top: 15px;
+      padding: 10px;
+      border-radius: 6px;
+      word-break: break-word;
+      position: relative;
+    }
+    .comment-date {
+      font-size: 12px;
+      color: #777;
+    }
+    .comment-actions {
+      margin-top: 8px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .like-btn {
+      background-color: #3498db;
+      color: white;
+    }
+    .delete-btn {
+      background-color: #e74c3c;
+      color: white;
+      font-weight: bold;
+    }
+    .like-count {
+      font-weight: bold;
+    }
+    #adminLogin {
+      margin-bottom: 15px;
+      text-align: center;
+    }
+    #adminLogin input {
+      padding: 8px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      width: 200px;
+      margin-right: 10px;
+    }
+    #adminStatus {
+      margin-bottom: 15px;
+      color: green;
+      font-weight: bold;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <div id="adminLogin">
+      <input type="password" id="adminPassword" placeholder="أدخل كلمة سر الأدمن">
+      <button class="btn" onclick="adminLogin()">تسجيل الدخول</button>
+      <div id="loginMessage" style="color:red; margin-top:10px;"></div>
+    </div>
+
+    <div id="adminStatus" style="display:none;">مسجل دخول كأدمن ✔️</div>
+
+    <h2>💬 التعليقات</h2>
+    <textarea id="commentText" placeholder="اكتب تعليقك هنا..."></textarea>
+    <button class="btn btn-post" onclick="addComment()">نشر</button>
+
+    <div id="commentList"></div>
+  </div>
+
+  <script>
+    const ADMIN_PASSWORD = "admin123";
+
+    let isAdmin = false;
+
+    function adminLogin() {
+      const pass = document.getElementById("adminPassword").value;
+      const msg = document.getElementById("loginMessage");
+      const adminStatus = document.getElementById("adminStatus");
+      if (pass === ADMIN_PASSWORD) {
+        isAdmin = true;
+        msg.textContent = "";
+        adminStatus.style.display = "block";
+        document.getElementById("adminLogin").style.display = "none";
+        console.log("تم تسجيل الدخول كأدمن");
+        renderComments();
+      } else {
+        msg.textContent = "كلمة السر خاطئة ❌";
+        adminStatus.style.display = "none";
+        isAdmin = false;
+        console.log("كلمة سر خاطئة");
+        renderComments();
+      }
+    }
+
+    function addComment() {
+      const text = document.getElementById("commentText").value.trim();
+      if (!text) {
+        alert("الرجاء كتابة تعليق");
+        return;
+      }
+      const date = new Date().toLocaleString();
+      const comment = { text, date, likes: 0 };
+      const comments = JSON.parse(localStorage.getItem("comments") || "[]");
+      comments.unshift(comment);
+      localStorage.setItem("comments", JSON.stringify(comments));
+      document.getElementById("commentText").value = "";
+      console.log("تم إضافة تعليق");
+      renderComments();
+    }
+
+    function deleteComment(index) {
+      if (!isAdmin) {
+        alert("يجب تسجيل الدخول كأدمن لحذف التعليقات");
+        console.log("حذف مرفوض: ليس أدمن");
+        return;
+      }
+      if (!confirm("هل أنت متأكد من حذف هذا التعليق؟")) {
+        console.log("تم إلغاء حذف التعليق");
+        return;
+      }
+      const comments = JSON.parse(localStorage.getItem("comments") || "[]");
+      console.log("التعليق المحذوف:", comments[index]);
+      comments.splice(index, 1);
+      localStorage.setItem("comments", JSON.stringify(comments));
+      console.log("تم حذف التعليق");
+      renderComments();
+    }
+
+    function likeComment(index) {
+      const comments = JSON.parse(localStorage.getItem("comments") || "[]");
+      comments[index].likes = (comments[index].likes || 0) + 1;
+      localStorage.setItem("comments", JSON.stringify(comments));
+      console.log("تم الإعجاب بالتعليق رقم:", index);
+      renderComments();
+    }
+
+    function renderComments() {
+      const comments = JSON.parse(localStorage.getItem("comments") || "[]");
+      const list = document.getElementById("commentList");
+      list.innerHTML = "";
+      comments.forEach((c, i) => {
+        const box = document.createElement("div");
+        box.className = "comment-box";
+        box.innerHTML = `
+          <div>${c.text}</div>
+          <div class="comment-date">${c.date}</div>
+          <div class="comment-actions">
+            <button class="btn like-btn" onclick="likeComment(${i})">👍 إعجاب</button>
+            <span class="like-count">${c.likes}</span>
+            ${isAdmin ? `<button class="btn delete-btn" onclick="deleteComment(${i})">🗑️ حذف</button>` : ""}
+          </div>
+        `;
+        list.appendChild(box);
+      });
+    }
+
+    renderComments();
+  </script>
+
+</body>
+</html>
