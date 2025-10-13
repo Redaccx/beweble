@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>قريباً | الذكاء الاصطناعي</title>
+<title>AI Platform | Coming Soon</title>
 <style>
 :root {
   --bg: #121212;
@@ -20,7 +20,7 @@ body {
   height: 100vh;
   background: var(--bg);
   color: var(--gold);
-  font-family: "Cairo", sans-serif;
+  font-family: "Poppins", "Cairo", sans-serif;
   overflow: hidden;
   display: flex;
   justify-content: center;
@@ -28,7 +28,7 @@ body {
   text-align: center;
 }
 
-/* خلفية متحركة */
+/* ===== Background Animation ===== */
 .bg {
   position: fixed;
   inset: 0;
@@ -43,7 +43,7 @@ body {
   100% { transform: scale(1.2) rotate(10deg); opacity: 1; }
 }
 
-/* الدوائر */
+/* ===== Floating Circles ===== */
 .circle {
   position: absolute;
   border-radius: 50%;
@@ -61,28 +61,31 @@ body {
   100% { transform: translateY(0) scale(1); opacity: 0.6; }
 }
 
-/* الضوء مع الماوس */
+/* ===== Mouse Light Effect ===== */
 .light {
   position: fixed;
   width: 200px;
   height: 200px;
   pointer-events: none;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255,211,106,0.2), transparent 80%);
+  background: radial-gradient(circle, rgba(255,211,106,0.25), transparent 80%);
   filter: blur(70px);
   z-index: 1;
   transition: transform 0.08s linear;
 }
 
-/* المحتوى */
+/* ===== Content ===== */
 .container {
   position: relative;
   z-index: 3;
+  padding: 20px;
+  width: 100%;
+  max-width: 500px;
 }
 
 .logo {
-  width: 150px;
-  height: 150px;
+  width: 140px;
+  height: 140px;
   margin-bottom: 25px;
   animation: float 4s ease-in-out infinite;
   filter: drop-shadow(0 0 20px rgba(255,211,106,0.4));
@@ -93,9 +96,9 @@ body {
 }
 
 h1 {
-  font-size: 2.4rem;
-  letter-spacing: 2px;
-  margin-bottom: 10px;
+  font-size: 2.2rem;
+  letter-spacing: 1.5px;
+  margin-bottom: 12px;
   animation: glow 2s ease-in-out infinite alternate;
 }
 @keyframes glow {
@@ -104,35 +107,44 @@ h1 {
 }
 
 p {
-  font-size: 1.1rem;
-  opacity: 0.85;
-  margin-bottom: 20px;
+  font-size: 1rem;
+  opacity: 0.9;
+  margin-bottom: 25px;
+  line-height: 1.6;
 }
 
-/* العداد */
+/* ===== Countdown Timer ===== */
 .countdown {
   display: flex;
   justify-content: center;
-  gap: 25px;
-  margin-top: 10px;
-  font-weight: bold;
+  gap: 15px;
+  flex-wrap: wrap;
 }
 .countdown div {
   background: rgba(255,211,106,0.05);
   border: 1px solid rgba(255,211,106,0.2);
-  border-radius: 12px;
-  padding: 15px 20px;
+  border-radius: 10px;
+  padding: 12px 15px;
   box-shadow: 0 0 10px rgba(255,211,106,0.2);
-  min-width: 80px;
+  min-width: 70px;
 }
 .countdown span {
   display: block;
-  font-size: 2rem;
-  margin-bottom: 6px;
+  font-size: 1.8rem;
+  margin-bottom: 4px;
+  font-weight: 700;
 }
 .label {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   opacity: 0.8;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 480px) {
+  h1 { font-size: 1.8rem; }
+  .logo { width: 110px; height: 110px; }
+  p { font-size: 0.95rem; }
+  .countdown span { font-size: 1.5rem; }
 }
 </style>
 </head>
@@ -145,26 +157,27 @@ p {
 <div class="light" id="light"></div>
 
 <div class="container">
-  <img src="https://l.top4top.io/p_3573pclji1.png" alt="Logo" class="logo">
-  <h1>قريباً جداً</h1>
-  <p>موقع الذكاء الاصطناعي المتطور قيد الإطلاق — ترقّبوا التجربة الجديدة بعد شهرين.</p>
+  <img src="https://l.top4top.io/p_3573pclji1.png" alt="AI Logo" class="logo">
+  <h1>Coming Soon</h1>
+  <p>Our next-generation Artificial Intelligence platform is launching soon.  
+     Get ready for something powerful in 2 months!</p>
 
   <div class="countdown" id="countdown">
-    <div><span id="days">--</span><div class="label">يوم</div></div>
-    <div><span id="hours">--</span><div class="label">ساعة</div></div>
-    <div><span id="minutes">--</span><div class="label">دقيقة</div></div>
-    <div><span id="seconds">--</span><div class="label">ثانية</div></div>
+    <div><span id="days">--</span><div class="label">Days</div></div>
+    <div><span id="hours">--</span><div class="label">Hours</div></div>
+    <div><span id="minutes">--</span><div class="label">Minutes</div></div>
+    <div><span id="seconds">--</span><div class="label">Seconds</div></div>
   </div>
 </div>
 
 <script>
-// حركة الضوء مع الماوس
+// === Mouse Light Movement ===
 const light = document.getElementById("light");
 document.addEventListener("mousemove", (e) => {
   light.style.transform = `translate(${e.clientX - 100}px, ${e.clientY - 100}px)`;
 });
 
-// العد التنازلي لشهرين من اليوم
+// === Countdown Timer (2 months) ===
 const now = new Date();
 const launchDate = new Date(now.getFullYear(), now.getMonth() + 2, now.getDate());
 
