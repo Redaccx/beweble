@@ -338,7 +338,7 @@ body {
 	align-items: center;
 	gap: 10px;
 	box-shadow: 0 4px 20px var(--shadow);
-width:370px;
+width:365px;
 }
 .upload-button {
 	display: inline-block;
@@ -882,7 +882,7 @@ width:370px;
 	.chat-input-area {
 		border-radius: 14px;
 		gap: 6px;
-		width:370px;
+		width:365px;
 	}
 	#user-input {
 		font-size: 0.9rem;
