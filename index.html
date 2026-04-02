@@ -203,6 +203,10 @@
     background: #8a2be2;
     color: #fff;
 }
+
+.hidden {
+    display: none !important;
+}
 </style>
 
 </head>
@@ -244,6 +248,7 @@
         <li><a id="history-btn">History</a></li>
         <li><a id="contact-us-btn">Contact Us</a></li>
         <li><a id="privacy-policy-btn">Privacy Policy</a></li>
+        <li><a id="logout">Logout</a></li>
     </ul>
 </div>
 
@@ -374,9 +379,10 @@ Beweble Ai © 2026 All rights reserved.
     const msg = document.getElementById("auth-msg");
     
     // ===== START BUTTON =====
-    document.getElementById("start-btn").onclick = () => {
-        authBox.classList.remove("hidden");
-    };
+    document.getElementById("start-btn").addEventListener("click", () => {
+    welcome.classList.add("hidden");
+    authBox.classList.remove("hidden");
+});
     
     // ===== SIGN UP =====
     document.getElementById("signup").onclick = async () => {
