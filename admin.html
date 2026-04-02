@@ -53,12 +53,20 @@ button {
     color: white;
     margin-bottom: 15px;
 }
+
+#status {
+    text-align: center;
+    margin-bottom: 10px;
+    color: #8b5cf6;
+}
 </style>
 </head>
 
 <body>
 
 <h1>👥 Users Dashboard</h1>
+
+<div id="status">Checking authentication...</div>
 
 <button class="refresh-btn" onclick="loadUsers()">Refresh Users</button>
 
@@ -75,10 +83,20 @@ button {
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, getDocs, deleteDoc, doc } 
-from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import {
+    getFirestore,
+    collection,
+    getDocs,
+    deleteDoc,
+    doc
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-// 🔥 Firebase Config (نفس مشروعك)
+import {
+    getAuth,
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+// 🔥 Firebase Config
 const firebaseConfig = {
     apiKey: "AIzaSyAgqj5RFXuwldXm5-yFZj0POdS6rRYepo",
     authDomain: "support-c1836.firebaseapp.com",
@@ -87,44 +105,66 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
 
 const table = document.getElementById("usersTable");
+const status = document.getElementById("status");
+
+// 🔐 حماية الصفحة
+onAuthStateChanged(auth, (user) => {
+    if (!user) {
+        status.innerText = "❌ Not logged in. Redirecting...";
+        setTimeout(() => {
+            window.location.href = "index.html";
+        }, 1500);
+        return;
+    }
+
+    status.innerText = "✅ Logged in as: " + user.email;
+
+    // تحميل البيانات فقط بعد تسجيل الدخول
+    loadUsers();
+});
 
 // 📥 تحميل المستخدمين
 window.loadUsers = async function () {
-    table.innerHTML = "";
+    try {
+        table.innerHTML = "";
 
-    const snapshot = await getDocs(collection(db, "users"));
+        const snapshot = await getDocs(collection(db, "users"));
 
-    snapshot.forEach((docSnap) => {
-        const data = docSnap.data();
+        snapshot.forEach((docSnap) => {
+            const data = docSnap.data();
 
-        table.innerHTML += `
-            <tr>
-                <td>${data.email || "No email"}</td>
-                <td>${docSnap.id}</td>
-                <td>
-                    <button class="delete-btn" onclick="deleteUser('${docSnap.id}')">
-                        Delete
-                    </button>
-                </td>
-            </tr>
-        `;
-    });
+            table.innerHTML += `
+                <tr>
+                    <td>${data.email || "No email"}</td>
+                    <td>${docSnap.id}</td>
+                    <td>
+                        <button class="delete-btn" onclick="deleteUser('${docSnap.id}')">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            `;
+        });
+
+    } catch (err) {
+        console.error(err);
+        alert("Permission denied or not admin");
+    }
 };
 
 // 🗑️ حذف مستخدم
 window.deleteUser = async function (id) {
-    await deleteDoc(doc(db, "users", id));
-    loadUsers();
+    try {
+        await deleteDoc(doc(db, "users", id));
+        loadUsers();
+    } catch (err) {
+        alert("Cannot delete user (no permission)");
+    }
 };
-
-// أول تشغيل
-loadUsers();
 </script>
 
 </body>
 </html>
-
-
-
