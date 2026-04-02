@@ -349,6 +349,22 @@
 .hidden {
     display: none !important;
 }
+.menu-logo-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.menu-logo-box img {
+    width: 40px;
+}
+
+.menu-logo-box span {
+    font-size: 20px;
+    font-weight: 600;
+    color: white;
+}
 </style>
 
 </head>
@@ -390,7 +406,7 @@
 <!-- قائمة جانبية -->
 <div id="side-menu" class="side-menu">
     <button class="close-menu">✖</button>
-    <h2>Menu</h2>
+    <img src="logo.png" class="menu-logo">
     <ul>
         <li><a id="new-chat-btn">New Chat</a></li>
         <li><a id="history-btn">History</a></li>
