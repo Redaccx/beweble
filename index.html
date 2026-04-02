@@ -557,22 +557,11 @@ document.getElementById("reset").onclick = async () => {
     
     
     
-    // ===== LOGOUT =====
-    const logoutBtn = document.getElementById("logout");
+const logoutBtn = document.getElementById("logout");
 
 if (logoutBtn) {
     logoutBtn.onclick = async () => {
         await signOut(auth);
-        
-        // 👇 رجوع لشاشة Get Started
-        welcome.classList.remove("hidden");
-        welcome.style.display = "flex";
-        
-        // 👇 إخفاء باقي الواجهة
-        authBox.classList.add("hidden");
-        chatBox.style.display = "none";
-        
-        document.body.style.overflow = "hidden";
     };
 }
 
