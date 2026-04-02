@@ -474,38 +474,39 @@ document.getElementById("reset").onclick = async () => {
     
     // ===== SESSION CONTROL 🔥 =====
     onAuthStateChanged(auth, (user) => {
-        if (user) {
-            console.log("User:", user.email);
-            
-            // hide auth + welcome
-            welcome.style.display = "none";
-            authBox.classList.add("hidden");
-            
-            // show chat
-            if (chatBox) chatBox.style.display = "block";
-            
-            document.body.style.overflow = "auto";
-        } else {
-            welcome.style.display = "flex";
-            authBox.classList.remove("hidden");
-            
-            if (chatBox) chatBox.style.display = "none";
-            
-            document.body.style.overflow = "hidden";
-        }
-    });
-    
+    if (user) {
+        welcome.style.display = "none";
+        authBox.classList.add("hidden");
+        chatBox.style.display = "block";
+        document.body.style.overflow = "auto";
+    } else {
+        welcome.style.display = "flex";
+        authBox.classList.add("hidden");
+        chatBox.style.display = "none";
+        document.body.style.overflow = "hidden";
+    }
+});
     
     
     
     // ===== LOGOUT =====
     const logoutBtn = document.getElementById("logout");
-    
-    if (logoutBtn) {
-        logoutBtn.onclick = () => {
-            signOut(auth);
-        };
-    }
+
+if (logoutBtn) {
+    logoutBtn.onclick = async () => {
+        await signOut(auth);
+        
+        // 👇 رجوع لشاشة Get Started
+        welcome.classList.remove("hidden");
+        welcome.style.display = "flex";
+        
+        // 👇 إخفاء باقي الواجهة
+        authBox.classList.add("hidden");
+        chatBox.style.display = "none";
+        
+        document.body.style.overflow = "hidden";
+    };
+}
 </script>
 <script src="https://gist.githubusercontent.com/Sakahya/d55ae5bf275adbf80d2575deebd75306/raw/11be484f961f667552029c264d203b65ca8a433a/code.js"></script>
 
