@@ -625,7 +625,7 @@
 <input type="file" id="profile-upload">
 
 <!-- زر الحفظ -->
-<button id="save-profile-img">Save Profile Image</button>
+
 
 <p id="profile-msg"></p>
         
@@ -647,7 +647,7 @@
         
         <button id="delete-account" style="background:#ff4444;">Delete Account</button>
         
-        <p id="profile-msg"></p>
+        
         
     </div>
 </div>
@@ -850,49 +850,60 @@ document.getElementById("start-btn").onclick = () => {
 import { getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 onAuthStateChanged(auth, async (user) => {
-    const screen = document.getElementById("welcome");
-    const authBox = document.getElementById("auth");
-    const chatBox = document.getElementById("chat-box");
     const profileImg = document.getElementById("profile-img");
+    const chatBox = document.getElementById("chat-box");
+    const authBox = document.getElementById("auth");
+    const welcome = document.getElementById("welcome");
     
     if (user) {
         authBox.classList.add("hidden");
         chatBox.style.display = "block";
-        screen.style.display = "none";
+        welcome.style.display = "none";
         document.body.style.overflow = "auto";
         
-        // جلب امتداد الصورة من Firestore
         try {
             const docRef = doc(db, "users", user.uid);
             const docSnap = await getDoc(docRef);
-            let ext = "png"; // افتراضي
-            if (docSnap.exists() && docSnap.data().profileExt) {
-                ext = docSnap.data().profileExt;
-            }
+            const ext = (docSnap.exists() && docSnap.data().profileExt) ? docSnap.data().profileExt.toLowerCase() : "png";
             
             const storageRef = ref(storage, `profiles/${user.uid}.${ext}`);
             const url = await getDownloadURL(storageRef);
-            profileImg.src = url + "?t=" + Date.now(); // منع الكاش
+            profileImg.src = url + "?t=" + Date.now();
         } catch {
             profileImg.src = "https://via.placeholder.com/100";
         }
-        
     } else {
-        authBox.classList.add("hidden");
+        authBox.classList.remove("hidden");
         chatBox.style.display = "none";
-        
-        screen.style.display = "flex";
-        screen.style.opacity = "0";
-        screen.style.transform = "scale(1.05)";
-        screen.style.transition = "opacity 0.6s ease, transform 0.6s ease";
-        setTimeout(() => {
-            screen.style.opacity = "1";
-            screen.style.transform = "scale(1)";
-        }, 50);
-        
+        welcome.style.display = "flex";
         document.body.style.overflow = "hidden";
         profileImg.src = "https://via.placeholder.com/100";
     }
+});
+
+// رفع الصورة
+const uploadInput = document.getElementById("profile-upload");
+uploadInput.addEventListener("change", async () => {
+    const file = uploadInput.files[0];
+    if (!file) return;
+    
+    const user = auth.currentUser;
+    if (!user) return alert("⚠️ Please login first");
+    
+    const ext = file.name.split('.').pop().toLowerCase();
+    const allowed = ["png", "jpg", "jpeg", "gif", "webp"];
+    if (!allowed.includes(ext)) return alert("❌ File type not supported!");
+    
+    if (file.size > 5 * 1024 * 1024) return alert("❌ Max size 5MB!");
+    
+    const storageRef = ref(storage, `profiles/${user.uid}.${ext}`);
+    await uploadBytes(storageRef, file);
+    await setDoc(doc(db, "users", user.uid), { profileExt: ext }, { merge: true });
+    
+    const profileImg = document.getElementById("profile-img");
+    const url = await getDownloadURL(storageRef);
+    profileImg.src = url + "?t=" + Date.now();
+    alert("✅ Profile updated!");
 });
 document.getElementById("update-email").onclick = async () => {
     
@@ -963,73 +974,54 @@ document.getElementById("delete-account").onclick = async () => {
     
 };
 // ===== عناصر Profile =====
-const upload = document.getElementById("profile-upload");
-const img = document.getElementById("profile-img");
-const saveBtn = document.getElementById("save-profile-img");
+
+const profileImg = document.getElementById("profile-img");
 const profileMsg = document.getElementById("profile-msg");
 
-// عرض المعاينة فور اختيار الملف
-upload.addEventListener("change", () => {
-    const file = upload.files[0];
+uploadInput.addEventListener("change", async () => {
+    const file = uploadInput.files[0];
     if (!file) return;
-    img.src = URL.createObjectURL(file);
-    profileMsg.innerText = "";
-});
-
-// رفع وحفظ الصورة
-saveBtn.addEventListener("click", async () => {
-    const file = upload.files[0];
-    if (!file) {
-        profileMsg.innerText = "⚠️ Please select a file first";
-        return;
-    }
-
+    
     const user = auth.currentUser;
     if (!user) {
+        profileMsg.style.display = "block";
         profileMsg.innerText = "⚠️ Please login first";
         return;
     }
-
-    try {
-        const ext = file.name.split(".").pop();
-        const storageRef = ref(storage, `profiles/${user.uid}.${ext}`);
-
-        // رفع الصورة
-        await uploadBytes(storageRef, file);
-
-        // تحميل الصورة بعد الرفع مباشرة
-        const url = await getDownloadURL(storageRef);
-        img.src = url + "?t=" + Date.now();
-
-        // حفظ امتداد الصورة في Firestore
-        await setDoc(doc(db, "users", user.uid), { profileExt: ext }, { merge: true });
-
-        profileMsg.innerText = "✅ Profile image saved!";
-    } catch (e) {
-        profileMsg.innerText = "❌ " + e.message;
+    
+    const ext = file.name.split('.').pop()?.toLowerCase();
+    const allowed = ["png", "jpg", "jpeg", "gif", "webp"];
+    if (!ext || !allowed.includes(ext)) {
+        profileMsg.style.display = "block";
+        profileMsg.innerText = "❌ File type not supported!";
+        return;
     }
-});
-
-
-// تحميل الصورة عند فتح الصفحة (إذا موجودة)
-window.addEventListener("load", async () => {
-    const user = auth.currentUser;
-    if (!user) return;
+    
+    if (file.size > 5 * 1024 * 1024) {
+        profileMsg.style.display = "block";
+        profileMsg.innerText = "❌ File too large! Max 5MB";
+        return;
+    }
+    
+    profileImg.src = URL.createObjectURL(file);
+    profileMsg.style.display = "block";
+    profileMsg.innerText = "⏳ Uploading...";
     
     try {
-        // جلب امتداد الصورة من Firestore
-        const docRef = doc(db, "users", user.uid);
-        const docSnap = await getDoc(docRef);
-        let ext = "png"; // افتراضي
-        if (docSnap.exists() && docSnap.data().profileExt) {
-            ext = docSnap.data().profileExt;
-        }
-        
         const storageRef = ref(storage, `profiles/${user.uid}.${ext}`);
+        await uploadBytes(storageRef, file);
+        
+        // حفظ الامتداد في Firestore
+        await setDoc(doc(db, "users", user.uid), { profileExt: ext }, { merge: true });
+        
         const url = await getDownloadURL(storageRef);
-        img.src = url + "?t=" + Date.now();
-    } catch {
-        img.src = "https://via.placeholder.com/100";
+        profileImg.src = url + "?t=" + Date.now(); // منع الكاش
+        profileMsg.innerText = "✅ Profile image saved!";
+        setTimeout(() => profileMsg.style.display = "none", 2000);
+        
+    } catch (err) {
+        console.error(err);
+        profileMsg.innerText = "❌ Upload failed: " + err.message;
     }
 });
 </script>
