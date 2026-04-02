@@ -640,24 +640,6 @@ document.getElementById("reset").onclick = async () => {
 
     
     // ===== SESSION CONTROL 🔥 =====
-    onAuthStateChanged(auth, (user) => {
-    const screen = document.getElementById("welcome");
-    if (user) {
-        // المستخدم مسجل دخول، نخفي auth ونعرض chat
-        authBox.classList.add("hidden");
-        chatBox.style.display = "block";
-        document.body.style.overflow = "auto";
-    } else {
-        // المستخدم logout، نرجع welcome screen بشكل ثابت
-        screen.style.display = "flex";
-        screen.style.opacity = "1";
-        screen.style.transform = "scale(1)";
-        authBox.classList.add("hidden");
-        chatBox.style.display = "none";
-        document.body.style.overflow = "hidden";
-    }
-});
-    
     
     
 // ===== LOGOUT BUTTON =====
@@ -682,7 +664,34 @@ document.getElementById("start-btn").onclick = () => {
 };
 
 // ===== SESSION CONTROL =====
-
+onAuthStateChanged(auth, (user) => {
+    const screen = document.getElementById("welcome");
+    const authBox = document.getElementById("auth");
+    const chatBox = document.getElementById("chat-box");
+    
+    if (user) {
+        // المستخدم مسجل دخول
+        authBox.classList.add("hidden");
+        chatBox.style.display = "block";
+        screen.style.display = "none";
+        document.body.style.overflow = "auto";
+    } else {
+        // المستخدم logout
+        authBox.classList.add("hidden");
+        chatBox.style.display = "none";
+        
+        screen.style.display = "flex";
+        screen.style.opacity = "0";
+        screen.style.transform = "scale(1.05)";
+        screen.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        setTimeout(() => {
+            screen.style.opacity = "1";
+            screen.style.transform = "scale(1)";
+        }, 50);
+        
+        document.body.style.overflow = "hidden";
+    }
+});
 </script>
 <script src="https://gist.githubusercontent.com/Sakahya/d55ae5bf275adbf80d2575deebd75306/raw/11be484f961f667552029c264d203b65ca8a433a/code.js"></script>
 
