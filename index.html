@@ -392,6 +392,126 @@
   25%, 75% { opacity: 0; }
 }
 
+
+/* Profile Popup */
+
+#profile-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
+
+#profile-popup.hidden {
+    display: none;
+}
+
+#profile-popup .popup-content {
+    background: #020617;
+    padding: 25px;
+    border-radius: 12px;
+    width: 320px;
+    text-align: center;
+    color: white;
+    position: relative;
+}
+
+/* close button */
+#profile-popup .close-popup {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+/* profile image */
+#profile-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #7c3aed;
+}
+
+/* inputs */
+#profile-popup input {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 8px;
+    background: #222;
+    color: white;
+}
+
+/* buttons */
+#profile-popup button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 8px;
+    border: none;
+    border-radius: 8px;
+    background: #7c3aed;
+    color: white;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+#profile-popup button:hover {
+    background: #6d28d9;
+}
+
+/* delete button */
+#delete-account {
+    background: #e11d48;
+}
+
+#delete-account:hover {
+    background: #be123c;
+}
+
+/* line */
+#profile-popup hr {
+    border: none;
+    border-top: 1px solid #333;
+    margin: 15px 0;
+}
+
+/* message */
+#profile-msg {
+    font-size: 13px;
+    margin-top: 10px;
+    color: #ccc;
+}
+
+/* زر الإغلاق */
+#profile-popup .close-popup {
+    position: absolute;
+    top: 10px;
+    right: 120px;
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+/* تأثير عند المرور */
+#profile-popup .close-popup:hover {
+    color: #ff4444;
+    transform: scale(1.1);
+}
 </style>
 
 </head>
@@ -455,6 +575,11 @@
       <span class="purple-dot"></span> Privacy Policy
     </a>
 </li>
+<li>
+    <a id="profile-btn">
+        <span class="purple-dot"></span> My Profile
+    </a>
+</li>
         <li><a id="logout">
       <span class="purple-dot"></span>
             Logout</a></li>
@@ -486,6 +611,44 @@
         <p>
             Your privacy is important to us. We do not share your personal information with third parties without your consent.
         </p>
+    </div>
+</div>
+
+<div id="profile-popup" class="popup hidden">
+    <div class="popup-content">
+        
+        <button class="close-popup">✖</button>
+        
+        <h3>My Profile</h3>
+        
+   <img id="profile-img" src="https://via.placeholder.com/100" style="width:100px;border-radius:50%;margin-bottom:10px;">
+<input type="file" id="profile-upload">
+
+<!-- زر الحفظ -->
+<button id="save-profile-img">Save Profile Image</button>
+
+<p id="profile-msg"></p>
+        
+        <hr>
+        
+        <input type="email" id="new-email" placeholder="New Email">
+        
+        <button id="update-email">Update Email</button>
+        
+        <hr>
+        
+        <input type="password" id="old-password" placeholder="Current Password">
+        
+        <input type="password" id="new-password" placeholder="New Password">
+        
+        <button id="update-password">Change Password</button>
+        
+        <hr>
+        
+        <button id="delete-account" style="background:#ff4444;">Delete Account</button>
+        
+        <p id="profile-msg"></p>
+        
     </div>
 </div>
 
@@ -552,7 +715,318 @@ Beweble Ai © 2026 All rights reserved.
 </div>
 <script type="module">
     // ===== FIREBASE IMPORTS =====
-  const _0x33809e=_0x316b;(function(_0x5a976b,_0x231f57){const _0x1a1047=_0x316b,_0x5174c1=_0x5a976b();while(!![]){try{const _0x4cc1fd=parseInt(_0x1a1047(0xf3))/0x1+parseInt(_0x1a1047(0xe9))/0x2+parseInt(_0x1a1047(0x103))/0x3*(parseInt(_0x1a1047(0xfc))/0x4)+-parseInt(_0x1a1047(0xde))/0x5+parseInt(_0x1a1047(0xfe))/0x6*(parseInt(_0x1a1047(0xd3))/0x7)+parseInt(_0x1a1047(0xe4))/0x8+parseInt(_0x1a1047(0xf1))/0x9*(-parseInt(_0x1a1047(0xe5))/0xa);if(_0x4cc1fd===_0x231f57)break;else _0x5174c1['push'](_0x5174c1['shift']());}catch(_0x463305){_0x5174c1['push'](_0x5174c1['shift']());}}}(_0x1892,0xefd4a));function _0x316b(_0x2cb861,_0xb0297f){_0x2cb861=_0x2cb861-0xd1;const _0x18920b=_0x1892();let _0x316bc6=_0x18920b[_0x2cb861];return _0x316bc6;}import{initializeApp}from'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';import{getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,onAuthStateChanged,signOut,sendPasswordResetEmail}from'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';function _0x1892(){const _0x4f068a=['click','toISOString','users','none','⚠️\x20Enter\x20your\x20email\x20first','getElementById','display','9tioAoY','AIzaSyAgqj5rWFXuwldXm5-yFZj0POdS6rRYepo','1511738FAxDZD','password','body','support-c1836.firebasestorage.app','475150183599','opacity\x200.6s\x20ease,\x20transform\x200.6s\x20ease','auth-msg','support-c1836','welcome','2044CaYEOR','style','186VJQBYw','overflow','signup','add','✅\x20Account\x20created!','1167APUwjP','reset','message','314293CRBUEz','auth','auto','value','classList','email','transition','transform','✅\x20Welcome\x20back!','user','start-btn','617730GHfEGL','support-c1836.firebaseapp.com','opacity','innerText','onclick','chat-box','11275528piRZpl','42002270RcCkYx','hidden','logout','addEventListener','1588584bYtZvk'];_0x1892=function(){return _0x4f068a;};return _0x1892();}const firebaseConfig={'apiKey':_0x33809e(0xf2),'authDomain':_0x33809e(0xdf),'projectId':_0x33809e(0xfa),'storageBucket':_0x33809e(0xf6),'messagingSenderId':_0x33809e(0xf7),'appId':'1:475150183599:web:4c8a3f40f645b160b0f85a'},app=initializeApp(firebaseConfig),auth=getAuth(app),welcome=document[_0x33809e(0xef)](_0x33809e(0xfb)),authBox=document[_0x33809e(0xef)](_0x33809e(0xd4)),chatBox=document[_0x33809e(0xef)]('chat-box'),email=document[_0x33809e(0xef)](_0x33809e(0xd8)),password=document[_0x33809e(0xef)](_0x33809e(0xf4)),msg=document[_0x33809e(0xef)](_0x33809e(0xf9));document[_0x33809e(0xef)](_0x33809e(0xdd))[_0x33809e(0xe8)](_0x33809e(0xea),()=>{const _0x13a1bd=_0x33809e;welcome[_0x13a1bd(0xd7)][_0x13a1bd(0x101)]('hidden'),authBox[_0x13a1bd(0xd7)]['remove'](_0x13a1bd(0xe6));}),document[_0x33809e(0xef)](_0x33809e(0x100))[_0x33809e(0xe2)]=async()=>{const _0x35297d=_0x33809e;try{const _0x4e5358=await createUserWithEmailAndPassword(auth,email['value'],password[_0x35297d(0xd6)]);await setDoc(doc(db,_0x35297d(0xec),_0x4e5358[_0x35297d(0xdc)]['uid']),{'email':email[_0x35297d(0xd6)],'createdAt':new Date()[_0x35297d(0xeb)]()}),msg[_0x35297d(0xe1)]=_0x35297d(0x102);}catch(_0xfcf387){msg['innerText']=_0xfcf387['message'];}},document[_0x33809e(0xef)]('login')[_0x33809e(0xe2)]=async()=>{const _0x5a4ec7=_0x33809e;try{await signInWithEmailAndPassword(auth,email[_0x5a4ec7(0xd6)],password['value']),msg[_0x5a4ec7(0xe1)]=_0x5a4ec7(0xdb);}catch(_0x1f94a8){msg[_0x5a4ec7(0xe1)]=_0x1f94a8['message'];}},document[_0x33809e(0xef)](_0x33809e(0xd1))[_0x33809e(0xe2)]=async()=>{const _0x54e879=_0x33809e;if(!email['value']){msg[_0x54e879(0xe1)]=_0x54e879(0xee);return;}try{await sendPasswordResetEmail(auth,email[_0x54e879(0xd6)]),msg[_0x54e879(0xe1)]='📩\x20Reset\x20link\x20sent\x20to\x20email';}catch(_0xabd595){msg[_0x54e879(0xe1)]=_0xabd595[_0x54e879(0xd2)];}};const logoutBtn=document[_0x33809e(0xef)](_0x33809e(0xe7));logoutBtn&&(logoutBtn[_0x33809e(0xe2)]=async()=>{await signOut(auth);});document[_0x33809e(0xef)]('start-btn')['onclick']=()=>{const _0x5520a0=_0x33809e,_0x5bd28b=document[_0x5520a0(0xef)](_0x5520a0(0xfb));_0x5bd28b[_0x5520a0(0xfd)][_0x5520a0(0xd9)]='opacity\x200.6s\x20ease,\x20transform\x200.6s\x20ease',_0x5bd28b[_0x5520a0(0xfd)][_0x5520a0(0xe0)]='0',_0x5bd28b['style']['transform']='scale(1.05)',setTimeout(()=>{const _0x490c89=_0x5520a0;_0x5bd28b[_0x490c89(0xfd)][_0x490c89(0xf0)]=_0x490c89(0xed);},0x258);},onAuthStateChanged(auth,_0x2e58df=>{const _0x37b4ad=_0x33809e,_0x486281=document['getElementById'](_0x37b4ad(0xfb)),_0x1c5bd8=document[_0x37b4ad(0xef)](_0x37b4ad(0xd4)),_0x28e453=document[_0x37b4ad(0xef)](_0x37b4ad(0xe3));_0x2e58df?(_0x1c5bd8[_0x37b4ad(0xd7)][_0x37b4ad(0x101)]('hidden'),_0x28e453[_0x37b4ad(0xfd)]['display']='block',_0x486281[_0x37b4ad(0xfd)]['display']=_0x37b4ad(0xed),document[_0x37b4ad(0xf5)][_0x37b4ad(0xfd)]['overflow']=_0x37b4ad(0xd5)):(_0x1c5bd8['classList'][_0x37b4ad(0x101)](_0x37b4ad(0xe6)),_0x28e453[_0x37b4ad(0xfd)][_0x37b4ad(0xf0)]=_0x37b4ad(0xed),_0x486281[_0x37b4ad(0xfd)][_0x37b4ad(0xf0)]='flex',_0x486281['style'][_0x37b4ad(0xe0)]='0',_0x486281[_0x37b4ad(0xfd)]['transform']='scale(1.05)',_0x486281[_0x37b4ad(0xfd)][_0x37b4ad(0xd9)]=_0x37b4ad(0xf8),setTimeout(()=>{const _0x14b0e6=_0x37b4ad;_0x486281['style'][_0x14b0e6(0xe0)]='1',_0x486281['style'][_0x14b0e6(0xda)]='scale(1)';},0x32),document[_0x37b4ad(0xf5)][_0x37b4ad(0xfd)][_0x37b4ad(0xff)]=_0x37b4ad(0xe6));});
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+
+import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    onAuthStateChanged,
+    signOut,
+    sendPasswordResetEmail,
+    updateEmail,
+    updatePassword,
+    deleteUser,
+    reauthenticateWithCredential,
+    EmailAuthProvider
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    
+    import {
+    getStorage,
+    ref,
+    uploadBytes,
+    getDownloadURL
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
+
+import {
+    getFirestore,
+    doc,
+    setDoc
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    // ===== CONFIG =====
+    const firebaseConfig = {
+    apiKey: "AIzaSyAgqj5rWFXuwldXm5-yFZj0POdS6rRYepo",
+    authDomain: "support-c1836.firebaseapp.com",
+    projectId: "support-c1836",
+    storageBucket: "support-c1836.firebasestorage.app",
+    messagingSenderId: "475150183599",
+    appId: "1:475150183599:web:4c8a3f40f645b160b0f85a"
+};
+    
+    // ===== INIT =====
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+const storage = getStorage(app);
+
+    
+    // ===== UI ELEMENTS =====
+    const welcome = document.getElementById("welcome");
+    const authBox = document.getElementById("auth");
+    const chatBox = document.getElementById("chat-box");
+    
+    const email = document.getElementById("email");
+    const password = document.getElementById("password");
+    const msg = document.getElementById("auth-msg");
+    
+    // ===== START BUTTON =====
+    document.getElementById("start-btn").addEventListener("click", () => {
+    welcome.classList.add("hidden");
+    authBox.classList.remove("hidden");
+});
+    
+    // ===== SIGN UP =====
+document.getElementById("signup").onclick = async () => {
+    try {
+        const userCred = await createUserWithEmailAndPassword(
+            auth,
+            email.value,
+            password.value
+        );
+        
+        // ✅ نحفظ بيانات المستخدم
+        await setDoc(doc(db, "users", userCred.user.uid), {
+            email: email.value,
+            createdAt: new Date().toISOString()
+        });
+        
+        msg.innerText = "✅ Account created!";
+    } catch (e) {
+        msg.innerText = e.message;
+    }
+};
+    
+    // ===== SIGN IN =====
+    document.getElementById("login").onclick = async () => {
+        try {
+            await signInWithEmailAndPassword(auth, email.value, password.value);
+            msg.innerText = "✅ Welcome back!";
+        } catch (e) {
+            msg.innerText = e.message;
+        }
+    };
+    
+   
+document.getElementById("reset").onclick = async () => {
+    if (!email.value) {
+        msg.innerText = "⚠️ Enter your email first";
+        return;
+    }
+    
+    try {
+        await sendPasswordResetEmail(auth, email.value);
+        msg.innerText = "📩 Reset link sent to email";
+    } catch (e) {
+        msg.innerText = e.message;
+    }
+};
+
+    
+    // ===== SESSION CONTROL 🔥 =====
+    
+    
+// ===== LOGOUT BUTTON =====
+const logoutBtn = document.getElementById("logout");
+
+if (logoutBtn) {
+    logoutBtn.onclick = async () => {
+        await signOut(auth);
+        // لا حاجة لتغيير أي شيء هنا، onAuthStateChanged سيتولى عرض welcome-screen
+    };
+}
+
+// ===== START BUTTON =====
+document.getElementById("start-btn").onclick = () => {
+    const screen = document.getElementById("welcome");
+    screen.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+    screen.style.opacity = "0";
+    screen.style.transform = "scale(1.05)";
+    setTimeout(() => {
+        screen.style.display = "none";
+    }, 600);
+};
+
+// ===== SESSION CONTROL =====
+onAuthStateChanged(auth, (user) => {
+    const screen = document.getElementById("welcome");
+    const authBox = document.getElementById("auth");
+    const chatBox = document.getElementById("chat-box");
+    const profileImg = document.getElementById("profile-img");
+    
+    if (user) {
+        // المستخدم مسجل دخول
+        authBox.classList.add("hidden");
+        chatBox.style.display = "block";
+        screen.style.display = "none";
+        document.body.style.overflow = "auto";
+        
+        // تحميل صورة الملف الشخصي من Firebase Storage
+        const storageRef = ref(storage, "profiles/" + user.uid + ".png");
+        getDownloadURL(storageRef)
+            .then(url => {
+                profileImg.src = url + "?t=" + Date.now(); // منع الكاش
+            })
+            .catch(() => {
+                profileImg.src = "https://via.placeholder.com/100"; // صورة افتراضية إذا ما موجودة
+            });
+        
+    } else {
+        // المستخدم logout
+        authBox.classList.add("hidden");
+        chatBox.style.display = "none";
+        
+        screen.style.display = "flex";
+        screen.style.opacity = "0";
+        screen.style.transform = "scale(1.05)";
+        screen.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        setTimeout(() => {
+            screen.style.opacity = "1";
+            screen.style.transform = "scale(1)";
+        }, 50);
+        
+        document.body.style.overflow = "hidden";
+        
+        // صورة افتراضية عند تسجيل الخروج
+        profileImg.src = "https://via.placeholder.com/100";
+    }
+});
+document.getElementById("update-email").onclick = async () => {
+    
+    const user = auth.currentUser;
+    const newEmail = document.getElementById("new-email").value;
+    const msg = document.getElementById("profile-msg");
+    
+    try {
+        
+        await updateEmail(user, newEmail);
+        
+        msg.innerText = "✅ Email updated";
+        
+    } catch (e) {
+        
+        msg.innerText = e.message;
+        
+    }
+    
+};
+
+document.getElementById("update-password").onclick = async () => {
+    
+    const user = auth.currentUser;
+    
+    const oldPass = document.getElementById("old-password").value;
+    const newPass = document.getElementById("new-password").value;
+    
+    const msg = document.getElementById("profile-msg");
+    
+    try {
+        
+        const cred = EmailAuthProvider.credential(user.email, oldPass);
+        
+        await reauthenticateWithCredential(user, cred);
+        
+        await updatePassword(user, newPass);
+        
+        msg.innerText = "✅ Password changed";
+        
+    } catch (e) {
+        
+        msg.innerText = e.message;
+        
+    }
+    
+};
+
+document.getElementById("delete-account").onclick = async () => {
+    
+    const user = auth.currentUser;
+    
+    if (!confirm("Are you sure you want to delete your account?")) return;
+    
+    try {
+        
+        await deleteUser(user);
+        
+        alert("Account deleted");
+        
+        location.reload();
+        
+    } catch (e) {
+        
+        alert(e.message);
+        
+    }
+    
+};
+
+// JS مستقل باستخدام auth موجود مسبقًا
+const upload = document.getElementById("profile-upload");
+const img = document.getElementById("profile-img");
+const saveBtn = document.getElementById("save-profile-img");
+const profileMsg = document.getElementById("profile-msg");
+
+// عرض المعاينة فور اختيار الملف
+upload.onchange = () => {
+    const file = upload.files[0];
+    if (!file) return;
+    img.src = URL.createObjectURL(file);
+    profileMsg.innerText = "";
+};
+
+// حفظ الصورة عند الضغط على زر Save
+saveBtn.onclick = async () => {
+    const file = upload.files[0];
+    if (!file) {
+        profileMsg.innerText = "⚠️ Please select a file first";
+        return;
+    }
+    
+    const user = auth.currentUser;
+    if (!user) {
+        alert("⚠️ Please login first");
+        return;
+    }
+    
+    try {
+        const ext = file.name.split('.').pop(); // jpg, png, ...
+        const storageRef = ref(storage, `profiles/${user.uid}.${ext}`);
+        
+        // رفع الصورة
+        await uploadBytes(storageRef, file);
+        
+        // تحميل الصورة مباشرة بعد الرفع
+        const url = await getDownloadURL(storageRef);
+        img.src = url + "?t=" + Date.now(); // منع الكاش
+        
+        // حفظ امتداد الصورة في Firestore حتى تعرفه لاحقًا
+        await setDoc(doc(db, "users", user.uid), { profileExt: ext }, { merge: true });
+        
+        profileMsg.innerText = "✅ Profile image saved!";
+    } catch (e) {
+        profileMsg.innerText = "❌ " + e.message;
+    }
+};
+// تحميل الصورة عند فتح الصفحة (إذا موجودة)
+window.addEventListener("load", async () => {
+    const user = auth.currentUser;
+    if (!user) return;
+    
+    try {
+        // جلب امتداد الصورة من Firestore
+        const docRef = doc(db, "users", user.uid);
+        const docSnap = await getDoc(docRef);
+        let ext = "png"; // افتراضي
+        if (docSnap.exists() && docSnap.data().profileExt) {
+            ext = docSnap.data().profileExt;
+        }
+        
+        const storageRef = ref(storage, `profiles/${user.uid}.${ext}`);
+        const url = await getDownloadURL(storageRef);
+        img.src = url + "?t=" + Date.now();
+    } catch {
+        img.src = "https://via.placeholder.com/100";
+    }
+});
 </script>
 <script src="https://gist.githubusercontent.com/Sakahya/d55ae5bf275adbf80d2575deebd75306/raw/11be484f961f667552029c264d203b65ca8a433a/code.js"></script>
 
@@ -561,7 +1035,74 @@ Beweble Ai © 2026 All rights reserved.
 <script>
 
 // ===== عناصر القائمة الجانبية =====
-function _0x544a(_0x3ccde8,_0x208838){_0x3ccde8=_0x3ccde8-0x173;const _0xbbec82=_0xbbec();let _0x544ade=_0xbbec82[_0x3ccde8];return _0x544ade;}function _0xbbec(){const _0xc21f7a=['contact-us-btn','contact-form','+96181112046','3SknlSI','7bNtKde','submit','name','privacy-policy-btn','2500011zEjLZM','click','menu-btn','https://wa.me/','POST','getElementById','.close-popup','2908644kTWJrP','33aMkOpj','querySelectorAll','addEventListener','31694VKMBSX','_replyto','block','add','8WXhWSl','182990cxGpuk','\x0aMessage:\x20','hidden','open','.close-menu','remove','closest','preventDefault','710312IElIKB','application/json','_blank','78LtSiBP','style','18pDaBFx','form-success','display','contact-popup','5342617ttsSRD','Error\x20sending\x20message,\x20please\x20try\x20again.','https://formspree.io/f/YOUR_FORM_ID','?text=','classList','value','querySelector','forEach','error','\x0aEmail:\x20','side-menu','483585ftNfTF'];_0xbbec=function(){return _0xc21f7a;};return _0xbbec();}const _0x572a69=_0x544a;(function(_0x2ebe2b,_0x437175){const _0x596881=_0x544a,_0x406967=_0x2ebe2b();while(!![]){try{const _0x44fbc1=parseInt(_0x596881(0x174))/0x1*(-parseInt(_0x596881(0x183))/0x2)+-parseInt(_0x596881(0x173))/0x3*(parseInt(_0x596881(0x190))/0x4)+parseInt(_0x596881(0x1a4))/0x5*(-parseInt(_0x596881(0x195))/0x6)+parseInt(_0x596881(0x199))/0x7*(-parseInt(_0x596881(0x187))/0x8)+parseInt(_0x596881(0x178))/0x9+-parseInt(_0x596881(0x188))/0xa*(-parseInt(_0x596881(0x180))/0xb)+-parseInt(_0x596881(0x17f))/0xc*(-parseInt(_0x596881(0x193))/0xd);if(_0x44fbc1===_0x437175)break;else _0x406967['push'](_0x406967['shift']());}catch(_0x3467d6){_0x406967['push'](_0x406967['shift']());}}}(_0xbbec,0x6cab5));const menuBtn=document[_0x572a69(0x17d)](_0x572a69(0x17a)),sideMenu=document[_0x572a69(0x17d)](_0x572a69(0x1a3)),closeMenu=document[_0x572a69(0x19f)](_0x572a69(0x18c));menuBtn[_0x572a69(0x182)](_0x572a69(0x179),()=>sideMenu[_0x572a69(0x19d)][_0x572a69(0x186)](_0x572a69(0x18b))),closeMenu[_0x572a69(0x182)](_0x572a69(0x179),()=>sideMenu['classList']['remove'](_0x572a69(0x18b)));const contactBtn=document[_0x572a69(0x17d)](_0x572a69(0x1a5)),privacyBtn=document[_0x572a69(0x17d)](_0x572a69(0x177)),contactPopup=document[_0x572a69(0x17d)](_0x572a69(0x198)),privacyPopup=document['getElementById']('privacy-popup'),closePopupBtns=document[_0x572a69(0x181)](_0x572a69(0x17e)),contactForm=document[_0x572a69(0x17d)](_0x572a69(0x1a6)),successMsg=document[_0x572a69(0x17d)](_0x572a69(0x196));contactBtn['addEventListener'](_0x572a69(0x179),()=>contactPopup[_0x572a69(0x19d)][_0x572a69(0x18d)](_0x572a69(0x18a))),privacyBtn[_0x572a69(0x182)](_0x572a69(0x179),()=>privacyPopup[_0x572a69(0x19d)]['remove'](_0x572a69(0x18a))),closePopupBtns[_0x572a69(0x1a0)](_0x3a3713=>{const _0x5b14e5=_0x572a69;_0x3a3713[_0x5b14e5(0x182)]('click',()=>_0x3a3713[_0x5b14e5(0x18e)]('.popup')[_0x5b14e5(0x19d)][_0x5b14e5(0x186)](_0x5b14e5(0x18a)));}),contactForm[_0x572a69(0x182)](_0x572a69(0x175),async _0x5165c6=>{const _0x98b045=_0x572a69;_0x5165c6[_0x98b045(0x18f)]();const _0x261994=contactForm[_0x98b045(0x176)][_0x98b045(0x19e)],_0x3a8335=contactForm[_0x98b045(0x184)][_0x98b045(0x19e)],_0xf71168=contactForm['message'][_0x98b045(0x19e)];try{const _0x4adb33=await fetch(_0x98b045(0x19b),{'method':_0x98b045(0x17c),'headers':{'Content-Type':_0x98b045(0x191)},'body':JSON['stringify']({'name':_0x261994,'email':_0x3a8335,'message':_0xf71168})});if(_0x4adb33['ok']){successMsg[_0x98b045(0x194)][_0x98b045(0x197)]=_0x98b045(0x185);const _0x1039a0=_0x98b045(0x1a7),_0x2a8047='Name:\x20'+_0x261994+_0x98b045(0x1a2)+_0x3a8335+_0x98b045(0x189)+_0xf71168;window[_0x98b045(0x18b)](_0x98b045(0x17b)+_0x1039a0['replace'](/\+/g,'')+_0x98b045(0x19c)+encodeURIComponent(_0x2a8047),_0x98b045(0x192)),contactForm['reset'](),setTimeout(()=>contactPopup['classList'][_0x98b045(0x186)](_0x98b045(0x18a)),0x3e8);}else alert(_0x98b045(0x19a));}catch(_0x33e375){console[_0x98b045(0x1a1)](_0x33e375),alert('Error\x20sending\x20message,\x20please\x20try\x20again.');}});
+const menuBtn = document.getElementById("menu-btn");
+const sideMenu = document.getElementById("side-menu");
+const closeMenu = document.querySelector(".close-menu");
+
+// فتح وغلق القائمة
+menuBtn.addEventListener("click", () => sideMenu.classList.add("open"));
+closeMenu.addEventListener("click", () => sideMenu.classList.remove("open"));
+
+// ===== Pop-ups =====
+const contactBtn = document.getElementById("contact-us-btn");
+const privacyBtn = document.getElementById("privacy-policy-btn");
+const contactPopup = document.getElementById("contact-popup");
+const privacyPopup = document.getElementById("privacy-popup");
+const closePopupBtns = document.querySelectorAll(".close-popup");
+const contactForm = document.getElementById("contact-form");
+const successMsg = document.getElementById("form-success");
+const profileBtn = document.getElementById("profile-btn");
+const profilePopup = document.getElementById("profile-popup");
+
+profileBtn.onclick = () => {
+    profilePopup.classList.remove("hidden");
+};
+// فتح البوب أب
+contactBtn.addEventListener("click", () => contactPopup.classList.remove("hidden"));
+privacyBtn.addEventListener("click", () => privacyPopup.classList.remove("hidden"));
+
+// إغلاق أي بوب أب
+closePopupBtns.forEach(btn => {
+btn.addEventListener("click", () => btn.closest(".popup").classList.add("hidden"));
+});
+
+// إرسال الفورم + فتح واتساب
+contactForm.addEventListener("submit", async (e) => {
+e.preventDefault();
+
+const name = contactForm.name.value;
+const email = contactForm._replyto.value;
+const message = contactForm.message.value; // input سطر واحد
+
+try {
+// إرسال Formspree
+const response = await fetch("https://formspree.io/f/YOUR_FORM_ID", {
+method: "POST",
+headers: { "Content-Type": "application/json" },
+body: JSON.stringify({ name, email, message })
+});
+
+if (response.ok) {
+successMsg.style.display = "block"; // رسالة نجاح بدون alert
+
+// فتح واتساب مع الرسالة
+const waNumber = "+96181112046";
+const waText = `Name: ${name}\nEmail: ${email}\nMessage: ${message}`;
+window.open(`https://wa.me/${waNumber.replace(/\+/g,"")}?text=${encodeURIComponent(waText)}`, "_blank");
+
+contactForm.reset();
+setTimeout(() => contactPopup.classList.add("hidden"), 1000);
+} else {
+alert("Error sending message, please try again.");
+}
+} catch (err) {
+console.error(err);
+alert("Error sending message, please try again.");
+}
+});
+
+
+
 </script>
 
 </body>
