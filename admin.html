@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Users Dashboard</title>
+
+<style>
+body {
+    font-family: Arial;
+    background: #0f172a;
+    color: white;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #1e293b;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #334155;
+}
+
+th {
+    background: #111827;
+}
+
+button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.delete-btn {
+    background: #ef4444;
+    color: white;
+}
+
+.refresh-btn {
+    background: #8b5cf6;
+    color: white;
+    margin-bottom: 15px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>👥 Users Dashboard</h1>
+
+<button class="refresh-btn" onclick="loadUsers()">Refresh Users</button>
+
+<table>
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>User ID</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody id="usersTable"></tbody>
+</table>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, getDocs, deleteDoc, doc } 
+from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+// 🔥 Firebase Config (نفس مشروعك)
+const firebaseConfig = {
+    apiKey: "AIzaSyAgqj5RFXuwldXm5-yFZj0POdS6rRYepo",
+    authDomain: "support-c1836.firebaseapp.com",
+    projectId: "support-c1836",
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const table = document.getElementById("usersTable");
+
+// 📥 تحميل المستخدمين
+window.loadUsers = async function () {
+    table.innerHTML = "";
+
+    const snapshot = await getDocs(collection(db, "users"));
+
+    snapshot.forEach((docSnap) => {
+        const data = docSnap.data();
+
+        table.innerHTML += `
+            <tr>
+                <td>${data.email || "No email"}</td>
+                <td>${docSnap.id}</td>
+                <td>
+                    <button class="delete-btn" onclick="deleteUser('${docSnap.id}')">
+                        Delete
+                    </button>
+                </td>
+            </tr>
+        `;
+    });
+};
+
+// 🗑️ حذف مستخدم
+window.deleteUser = async function (id) {
+    await deleteDoc(doc(db, "users", id));
+    loadUsers();
+};
+
+// أول تشغيل
+loadUsers();
+</script>
+
+</body>
+</html>
+
+
+
