@@ -11,6 +11,8 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600&display=swap" rel="stylesheet">
 
+
+
 <link rel="stylesheet" href="style.css">
 
 <style>
@@ -40,6 +42,7 @@
     margin-bottom: 20px;
     font-size: 24px;
     color: #fff;
+    font-family: 'Poppins', sans-serif; /* تغيير الخط */
 }
 
 .side-menu ul {
@@ -58,6 +61,7 @@
     text-decoration: none;
     font-size: 18px;
     transition: color 0.2s;
+    font-family: 'Poppins', sans-serif; /* تغيير الخط */
 }
 
 .side-menu a:hover {
@@ -357,7 +361,7 @@
 }
 
 .menu-logo-box img {
-    width: 40px;
+    width: 25px;
 }
 
 .menu-logo-box span {
@@ -365,6 +369,29 @@
     font-weight: 600;
     color: white;
 }
+.plus-icon {
+    margin-left: 6px;
+    color: #fff;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.purple-dot {
+  display: inline-block;
+  width: 10px;             /* حجم النقطة */
+  height: 10px;
+  background-color: purple; /* اللون البنفسجي */
+  border-radius: 50%;       /* لتصبح دائرة */
+  margin-right: 6px;        /* مسافة بين النقطة والكلمة */
+  vertical-align: middle;
+  animation: blink 1s infinite; /* تأثير وميض */
+}
+
+@keyframes blink {
+  0%, 50%, 100% { opacity: 1; }
+  25%, 75% { opacity: 0; }
+}
+
 </style>
 
 </head>
@@ -408,11 +435,29 @@
     <button class="close-menu">✖</button>
     <img src="https://i.top4top.io/p_37447l83x1.png" class="menu-logo">
     <ul>
-        <li><a id="new-chat-btn">New Chat</a></li>
-        <li><a id="history-btn">History</a></li>
-        <li><a id="contact-us-btn">Contact Us</a></li>
-        <li><a id="privacy-policy-btn">Privacy Policy</a></li>
-        <li><a id="logout">Logout</a></li>
+<li>
+    <a id="new-chat-btn">
+        <span class="plus-icon">+</span> New Chat
+    </a>
+</li>
+<li>
+    <a id="history-btn">
+        <span class="purple-dot"></span> History
+    </a>
+</li>
+<li>
+    <a id="contact-us-btn">
+        <span class="purple-dot"></span> Contact Us
+    </a>
+</li>
+<li>
+    <a id="privacy-policy-btn">
+      <span class="purple-dot"></span> Privacy Policy
+    </a>
+</li>
+        <li><a id="logout">
+      <span class="purple-dot"></span>
+            Logout</a></li>
     </ul>
 </div>
 
@@ -595,41 +640,58 @@ document.getElementById("reset").onclick = async () => {
 
     
     // ===== SESSION CONTROL 🔥 =====
-    onAuthStateChanged(auth, (user) => {
-    if (user) {
-        welcome.style.display = "none";
-        authBox.classList.add("hidden");
-        chatBox.style.display = "block";
-        document.body.style.overflow = "auto";
-    } else {
-        welcome.style.display = "flex";
-        authBox.classList.add("hidden");
-        chatBox.style.display = "none";
-        document.body.style.overflow = "hidden";
-    }
-});
     
     
-    
+// ===== LOGOUT BUTTON =====
 const logoutBtn = document.getElementById("logout");
 
 if (logoutBtn) {
     logoutBtn.onclick = async () => {
         await signOut(auth);
+        // لا حاجة لتغيير أي شيء هنا، onAuthStateChanged سيتولى عرض welcome-screen
     };
 }
 
-
-    document.getElementById("start-btn").onclick = () => {
+// ===== START BUTTON =====
+document.getElementById("start-btn").onclick = () => {
     const screen = document.getElementById("welcome");
-    
+    screen.style.transition = "opacity 0.6s ease, transform 0.6s ease";
     screen.style.opacity = "0";
-    screen.style.transform = "scale(1.05)"; // حركة خفيفة حلوة
-    
+    screen.style.transform = "scale(1.05)";
     setTimeout(() => {
         screen.style.display = "none";
     }, 600);
 };
+
+// ===== SESSION CONTROL =====
+onAuthStateChanged(auth, (user) => {
+    const screen = document.getElementById("welcome");
+    const authBox = document.getElementById("auth");
+    const chatBox = document.getElementById("chat-box");
+    
+    if (user) {
+        // المستخدم مسجل دخول
+        authBox.classList.add("hidden");
+        chatBox.style.display = "block";
+        screen.style.display = "none";
+        document.body.style.overflow = "auto";
+    } else {
+        // المستخدم logout
+        authBox.classList.add("hidden");
+        chatBox.style.display = "none";
+        
+        screen.style.display = "flex";
+        screen.style.opacity = "0";
+        screen.style.transform = "scale(1.05)";
+        screen.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        setTimeout(() => {
+            screen.style.opacity = "1";
+            screen.style.transform = "scale(1)";
+        }, 50);
+        
+        document.body.style.overflow = "hidden";
+    }
+});
 </script>
 <script src="https://gist.githubusercontent.com/Sakahya/d55ae5bf275adbf80d2575deebd75306/raw/11be484f961f667552029c264d203b65ca8a433a/code.js"></script>
 
