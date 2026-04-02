@@ -847,31 +847,37 @@ document.getElementById("start-btn").onclick = () => {
 };
 
 // ===== SESSION CONTROL =====
-onAuthStateChanged(auth, (user) => {
+import { getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+onAuthStateChanged(auth, async (user) => {
     const screen = document.getElementById("welcome");
     const authBox = document.getElementById("auth");
     const chatBox = document.getElementById("chat-box");
     const profileImg = document.getElementById("profile-img");
     
     if (user) {
-        // المستخدم مسجل دخول
         authBox.classList.add("hidden");
         chatBox.style.display = "block";
         screen.style.display = "none";
         document.body.style.overflow = "auto";
         
-        // تحميل صورة الملف الشخصي من Firebase Storage
-        const storageRef = ref(storage, "profiles/" + user.uid + ".png");
-        getDownloadURL(storageRef)
-            .then(url => {
-                profileImg.src = url + "?t=" + Date.now(); // منع الكاش
-            })
-            .catch(() => {
-                profileImg.src = "https://via.placeholder.com/100"; // صورة افتراضية إذا ما موجودة
-            });
+        // جلب امتداد الصورة من Firestore
+        try {
+            const docRef = doc(db, "users", user.uid);
+            const docSnap = await getDoc(docRef);
+            let ext = "png"; // افتراضي
+            if (docSnap.exists() && docSnap.data().profileExt) {
+                ext = docSnap.data().profileExt;
+            }
+            
+            const storageRef = ref(storage, `profiles/${user.uid}.${ext}`);
+            const url = await getDownloadURL(storageRef);
+            profileImg.src = url + "?t=" + Date.now(); // منع الكاش
+        } catch {
+            profileImg.src = "https://via.placeholder.com/100";
+        }
         
     } else {
-        // المستخدم logout
         authBox.classList.add("hidden");
         chatBox.style.display = "none";
         
@@ -885,8 +891,6 @@ onAuthStateChanged(auth, (user) => {
         }, 50);
         
         document.body.style.overflow = "hidden";
-        
-        // صورة افتراضية عند تسجيل الخروج
         profileImg.src = "https://via.placeholder.com/100";
     }
 });
@@ -958,54 +962,55 @@ document.getElementById("delete-account").onclick = async () => {
     }
     
 };
-
-// JS مستقل باستخدام auth موجود مسبقًا
+// ===== عناصر Profile =====
 const upload = document.getElementById("profile-upload");
 const img = document.getElementById("profile-img");
 const saveBtn = document.getElementById("save-profile-img");
 const profileMsg = document.getElementById("profile-msg");
 
 // عرض المعاينة فور اختيار الملف
-upload.onchange = () => {
+upload.addEventListener("change", () => {
     const file = upload.files[0];
     if (!file) return;
     img.src = URL.createObjectURL(file);
     profileMsg.innerText = "";
-};
+});
 
-// حفظ الصورة عند الضغط على زر Save
-saveBtn.onclick = async () => {
+// رفع وحفظ الصورة
+saveBtn.addEventListener("click", async () => {
     const file = upload.files[0];
     if (!file) {
         profileMsg.innerText = "⚠️ Please select a file first";
         return;
     }
-    
+
     const user = auth.currentUser;
     if (!user) {
-        alert("⚠️ Please login first");
+        profileMsg.innerText = "⚠️ Please login first";
         return;
     }
-    
+
     try {
-        const ext = file.name.split('.').pop(); // jpg, png, ...
+        const ext = file.name.split(".").pop();
         const storageRef = ref(storage, `profiles/${user.uid}.${ext}`);
-        
+
         // رفع الصورة
         await uploadBytes(storageRef, file);
-        
-        // تحميل الصورة مباشرة بعد الرفع
+
+        // تحميل الصورة بعد الرفع مباشرة
         const url = await getDownloadURL(storageRef);
-        img.src = url + "?t=" + Date.now(); // منع الكاش
-        
-        // حفظ امتداد الصورة في Firestore حتى تعرفه لاحقًا
+        img.src = url + "?t=" + Date.now();
+
+        // حفظ امتداد الصورة في Firestore
         await setDoc(doc(db, "users", user.uid), { profileExt: ext }, { merge: true });
-        
+
         profileMsg.innerText = "✅ Profile image saved!";
     } catch (e) {
         profileMsg.innerText = "❌ " + e.message;
     }
-};
+});
+
+
 // تحميل الصورة عند فتح الصفحة (إذا موجودة)
 window.addEventListener("load", async () => {
     const user = auth.currentUser;
