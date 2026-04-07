@@ -104,7 +104,7 @@ body {
 
 
 #clear-history-btn {
-	background-color: var(--secondary-color);
+	background: linear-gradient(90deg, #8a2be2, #00f5ff);
 	color: var(--neutral-dark);
 	box-shadow: none;
 }
@@ -343,7 +343,7 @@ width:355px;
 .upload-button {
 	display: inline-block;
 	padding: 8px 15px;
-	background-color: var(--code-bg);
+	background: linear-gradient(90deg, #8a2be2, #00f5ff);
 	border: none;
 	border-radius: 9999px;
 	cursor: pointer;
@@ -352,7 +352,7 @@ width:355px;
 	transition: background-color var(--transition-speed) ease;
 }
 .upload-button:hover {
-	background-color: var(--bubble-bot);
+	background: linear-gradient(90deg, #8a2be2, #00f5ff);
 }
 #file-input {
 	display: none;
@@ -435,28 +435,28 @@ width:355px;
 	transform: translateZ(0);
 }
 #mic-btn {
-	background: var(--mic-btn-color);
-	color: var(--neutral-dark);
+	background: linear-gradient(90deg, #8a2be2, #00f5ff);
+	color: #fff;
 }
 #mic-btn:hover {
-	background: #3cb093;
+	background: #8a2be2;
 }
 #mic-btn:active {
 	transform: scale(0.95) rotateX(5deg);
 	box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
 }
 #mic-btn.recording {
-	background-color: var(--btn-danger);
+	background: linear-gradient(90deg, #8a2be2, #00f5ff);
 	color: white;
 	animation: pulse 1s infinite;
 }
 #send-btn {
-	background: var(--btn-primary);
+	background: linear-gradient(90deg, #8a2be2, #00f5ff);
 	border-radius: 50%;
 	margin-right: var(--input-padding-vertical);
 }
 #send-btn:hover {
-	background: var(--btn-primary-hover);
+	background: #8a2be2;
 }
 #send-btn:active {
 	transform: scale(0.95) rotateX(5deg);
@@ -600,7 +600,7 @@ width:355px;
 	box-shadow: 0 4px 12px var(--shadow);
 }
 #history-panel button#close-history-btn:hover {
-	background-color: var(--btn-primary-hover);
+	background: linear-gradient(90deg, #8a2be2, #00f5ff);
 	transform: translateY(-2px);
 }
 .copy-code-btn {
@@ -907,6 +907,7 @@ width:355px;
 		font-size: 0.7rem;
 	}
 	#history-panel {
+		
 		padding: 12px;
 	}
 	#history-panel h2 {
