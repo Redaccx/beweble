@@ -13,6 +13,24 @@ background:#020617;
 color:white;
 }
 
+#appContent{
+display:none;
+}
+
+#authOverlay{
+position:fixed;
+inset:0;
+background:#020617;
+display:flex;
+align-items:center;
+justify-content:center;
+z-index:9999;
+color:white;
+font-size:20px;
+flex-direction:column;
+gap:10px;
+}
+
 .topbar{
 display:flex;
 justify-content:space-between;
@@ -93,8 +111,7 @@ box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 transition: 0.25s ease;
 position: relative;
 overflow: hidden;
-
-height: 3000px;
+height: 180px;
 display:flex;
 flex-direction:column;
 justify-content:space-between;
@@ -164,12 +181,24 @@ font-size:12px;
 color:#a1a1aa;
 margin-bottom:5px;
 }
+
+#desc {
+height: 40px;
+resize: none;
+overflow: hidden;
+white-space: nowrap;
+}
 </style>
 </head>
 
 <body>
 
-<!-- TOP BAR -->
+<!-- 🔐 AUTH OVERLAY -->
+<div id="authOverlay">Checking login...</div>
+
+<!-- 🔥 APP CONTENT -->
+<div id="appContent">
+
 <div class="topbar">
 <div class="left">
 <input id="search" placeholder="Search...">
@@ -188,12 +217,19 @@ margin-bottom:5px;
 <div id="popup" class="popup">
 <div class="popup-content">
 
-<h3>Create Tool</h3>
+<h3 id="popupTitle">Create Tool</h3>
 
 <input id="name" placeholder="Tool Name">
 
-<textarea id="desc" placeholder="Description (max 15 words)" oninput="updateWordCount()"></textarea>
-<div id="wordCount">0/15</div>
+<textarea id="desc" placeholder="Description" oninput="updateWordCount()"></textarea>
+<div id="wordCount">0/30</div>
+
+<select id="visibility">
+  <option value="public">Public</option>
+  <option value="private">Private</option>
+</select>
+
+<input id="password" placeholder="Password (required for private)" style="display:none;">
 
 <textarea id="html" placeholder="HTML"></textarea>
 <textarea id="css" placeholder="CSS"></textarea>
@@ -208,14 +244,12 @@ margin-bottom:5px;
 <!-- VIEW -->
 <div id="viewPopup" class="popup">
 <div class="popup-content">
-
 <h3>Preview</h3>
-
-<iframe id="viewFrame" style="width:100%;height:300px;border:none;background:white"></iframe>
-
+<iframe id="viewFrame" style="width:100%;height:600px;border:none;background:white"></iframe>
 <button onclick="closeView()">Close</button>
-
 </div>
+</div>
+
 </div>
 
 <script type="module">
@@ -237,10 +271,7 @@ increment
 const firebaseConfig = {
 apiKey: "AIzaSyAgqj5rWFXuwldXm5-yFZj0POdS6rRYepo",
 authDomain: "support-c1836.firebaseapp.com",
-projectId: "support-c1836",
-storageBucket: "support-c1836.firebasestorage.app",
-messagingSenderId: "475150183599",
-appId: "1:475150183599:web:4c8a3f40f645b160b0f85a"
+projectId: "support-c1836"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -249,19 +280,77 @@ const db = getFirestore(app);
 
 let filter = "all";
 let unsubscribe = null;
+let editingId = null;
 
-/* POPUPS */
-window.openPopup = ()=> document.getElementById("popup").style.display="flex";
+/* AUTH CHECK */
+onAuthStateChanged(auth,user=>{
+const overlay = document.getElementById("authOverlay");
+const appContent = document.getElementById("appContent");
+
+if(!user){
+window.location.href = "index.html";
+return;
+}
+
+overlay.style.display="none";
+appContent.style.display="block";
+
+loadTools();
+});
+
+/* POPUP */
+window.openPopup = ()=>{
+document.getElementById("popup").style.display="flex";
+document.getElementById("popupTitle").innerText = editingId ? "Edit Tool" : "Create Tool";
+};
 
 window.closePopup = ()=>{
 document.getElementById("popup").style.display="none";
+
+editingId = null;
+document.getElementById("name").value="";
+document.getElementById("desc").value="";
+document.getElementById("html").value="";
+document.getElementById("css").value="";
+document.getElementById("js").value="";
+document.getElementById("wordCount").innerText="0/30";
+
+document.getElementById("password").style.display="none";
+document.getElementById("password").value="";
 };
 
-window.openView = (html,css,js)=>{
+/* visibility */
+document.getElementById("visibility").onchange = (e)=>{
+const pass = document.getElementById("password");
+if(e.target.value === "private"){
+pass.style.display = "block";
+} else {
+pass.style.display = "none";
+pass.value = "";
+}
+};
+
+/* VIEW */
+window.openView = (html, css, js) => {
+const frame = document.getElementById("viewFrame");
+const doc = frame.contentDocument || frame.contentWindow.document;
+
+doc.open();
+doc.write(`
+<!DOCTYPE html>
+<html>
+<head>
+<style>${css}</style>
+</head>
+<body>
+${html}
+<script>${js}<\/script>
+</body>
+</html>
+`);
+doc.close();
+
 document.getElementById("viewPopup").style.display="flex";
-document.getElementById("viewFrame").srcdoc=`
-<html><head><style>${css}</style></head>
-<body>${html}<script>${js}<\/script></body></html>`;
 };
 
 window.closeView = ()=>{
@@ -275,43 +364,72 @@ loadTools();
 };
 
 /* WORD LIMIT */
-function limitWords(text, maxWords = 15){
-return text.trim().split(/\s+/).slice(0, maxWords).join(" ");
+function limitChars(text,max=30){
+return text.slice(0,max);
 }
 
-window.updateWordCount = ()=>{
-let text = document.getElementById("desc").value;
-let words = text.trim().split(/\s+/).filter(w=>w.length>0);
+window.updateWordCount=()=>{
+let text=document.getElementById("desc").value;
+text=text.replace(/\n/g," ");
 
-if(words.length > 15){
-document.getElementById("desc").value = limitWords(text,15);
-words = words.slice(0,15);
+if(text.length>30){
+text=limitChars(text,30);
+document.getElementById("desc").value=text;
 }
 
-document.getElementById("wordCount").innerText = words.length + "/15";
+document.getElementById("wordCount").innerText=text.length+"/30";
 };
 
 /* SAVE */
-window.saveTool = async ()=>{
-const user = auth.currentUser;
+window.saveTool=async()=>{
+const user=auth.currentUser;
+if(!user){return;}
 
-await addDoc(collection(db,"tools"),{
+const visibility=document.getElementById("visibility").value;
+const password=document.getElementById("password").value;
+
+if(visibility==="private"&&!password){
+alert("Password required");
+return;
+}
+
+const data={
 name:document.getElementById("name").value,
-desc:limitWords(document.getElementById("desc").value,15),
+desc:limitChars(document.getElementById("desc").value,30),
 html:document.getElementById("html").value,
 css:document.getElementById("css").value,
 js:document.getElementById("js").value,
 uid:user.uid,
 owner:user.email,
+visibility,
+password:visibility==="private"?password:null
+};
+
+if(editingId){
+await updateDoc(doc(db,"tools",editingId),data);
+editingId=null;
+}else{
+await addDoc(collection(db,"tools"),{
+...data,
 views:0,
 createdAt:serverTimestamp()
 });
+}
 
 closePopup();
 };
 
-/* RUN + VIEW COUNT */
+/* RUN */
 async function runTool(t,id){
+
+if(t.visibility==="private"){
+const pass=prompt("Enter password:");
+if(pass!==t.password){
+alert("Wrong password");
+return;
+}
+}
+
 await updateDoc(doc(db,"tools",id),{
 views:increment(1)
 });
@@ -324,29 +442,31 @@ function loadTools(){
 
 if(unsubscribe) unsubscribe();
 
-unsubscribe = onSnapshot(collection(db,"tools"), snap=>{
+unsubscribe=onSnapshot(collection(db,"tools"),snap=>{
 
-const list = document.getElementById("list");
+const list=document.getElementById("list");
 list.innerHTML="";
 
 snap.forEach(d=>{
 
-const t = d.data();
-const id = d.id;
+const t=d.data();
+const id=d.id;
+const isMine=auth.currentUser?.uid===t.uid;
+const isPublic=t.visibility==="public";
 
-const isMine = auth.currentUser?.uid === t.uid;
+if(filter==="mine"){
+if(!isMine)return;
+}else{
+if(!isPublic&&!isMine)return;
+}
 
-/* FILTER */
-if(filter === "mine" && !isMine) return;
-
-const card = document.createElement("div");
+const card=document.createElement("div");
 card.className="card";
 
-let actions = `<button class="run-btn">Run</button>`;
+let actions=`<button class="run-btn">Run</button>`;
 
-/* EDIT + DELETE only MY TOOLS */
-if(isMine && filter === "mine"){
-actions += `
+if(isMine&&filter==="mine"){
+actions+=`
 <button class="edit-btn">Edit</button>
 <button class="del-btn">Delete</button>
 `;
@@ -355,55 +475,41 @@ actions += `
 card.innerHTML=`
 <h3>${t.name}</h3>
 <div class="meta">${t.owner}</div>
-<div class="small">👁️ ${t.views || 0} views</div>
-<div class="small">${t.desc || ""}</div>
-
-<div class="actions">
-${actions}
-</div>
+<div class="small">👁️ ${t.views||0} views</div>
+<div class="small">🔒 ${t.visibility}</div>
+<div class="small">${t.desc||""}</div>
+<div class="actions">${actions}</div>
 `;
 
-/* RUN */
-card.querySelector(".run-btn").onclick=()=>{
-runTool(t,id);
-};
+card.querySelector(".run-btn").onclick=()=>runTool(t,id);
 
-/* EDIT */
-if(isMine && filter === "mine"){
+if(isMine&&filter==="mine"){
 card.querySelector(".edit-btn").onclick=()=>{
+editingId=id;
+
 document.getElementById("name").value=t.name;
-document.getElementById("desc").value=t.desc || "";
+document.getElementById("desc").value=t.desc||"";
 document.getElementById("html").value=t.html;
 document.getElementById("css").value=t.css;
 document.getElementById("js").value=t.js;
-document.getElementById("wordCount").innerText =
-(t.desc||"").trim().split(/\s+/).filter(w=>w).length + "/15";
+
+updateWordCount();
 openPopup();
 };
 }
 
-/* DELETE */
-if(isMine && filter === "mine"){
+if(isMine&&filter==="mine"){
 card.querySelector(".del-btn").onclick=async()=>{
-if(confirm("Delete this tool?")){
 await deleteDoc(doc(db,"tools",id));
-}
 };
 }
 
 list.appendChild(card);
+
 });
 
 });
 }
-
-onAuthStateChanged(auth,user=>{
-if(!user){
-alert("Login required");
-return;
-}
-loadTools();
-});
 
 </script>
 
