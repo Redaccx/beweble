@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tools</title>
+
+<style>
+body{
+margin:0;
+font-family:Nunito Sans;
+background:#020617;
+color:white;
+}
+
+.topbar{
+display:flex;
+justify-content:space-between;
+padding:10px;
+background:#0f172a;
+position:sticky;
+top:0;
+z-index:10;
+}
+
+.left,.right{
+display:flex;
+gap:10px;
+align-items:center;
+}
+
+input{
+padding:8px;
+border-radius:8px;
+border:none;
+background:#111827;
+color:white;
+}
+
+button{
+padding:8px 12px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+background:#1f2937;
+color:white;
+}
+
+button:hover{background:#8a2be2}
+
+.popup{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.7);
+display:none;
+align-items:center;
+justify-content:center;
+}
+
+.popup-content{
+background:#111827;
+padding:15px;
+width:90%;
+max-width:600px;
+border-radius:10px;
+}
+
+textarea{
+width:100%;
+height:80px;
+margin:5px 0;
+background:#0b1020;
+color:#00f5ff;
+border:none;
+padding:10px;
+font-family:monospace;
+}
+
+.container {
+padding: 10px;
+display: grid;
+grid-template-columns: repeat(2, 1fr);
+gap: 12px;
+}
+
+.card {
+background: rgba(17, 24, 39, 0.8);
+backdrop-filter: blur(10px);
+padding: 16px;
+border-radius: 16px;
+border: 1px solid rgba(255, 255, 255, 0.08);
+box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+transition: 0.25s ease;
+position: relative;
+overflow: hidden;
+
+height: 3000px;
+display:flex;
+flex-direction:column;
+justify-content:space-between;
+}
+
+.card::before{
+content:"";
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:3px;
+background:linear-gradient(90deg,#22c55e,#3b82f6,#8b5cf6);
+opacity:0.8;
+}
+
+.card:hover{
+transform: translateY(-6px) scale(1.01);
+box-shadow:0 15px 40px rgba(0,0,0,0.7);
+}
+
+.card h3{
+margin:0;
+font-size:18px;
+color:#00f5ff;
+}
+
+.meta{
+font-size:12px;
+color:#a1a1aa;
+margin-top:6px;
+}
+
+.small{
+font-size:11px;
+color:#71717a;
+margin-top:3px;
+}
+
+.actions{
+display:flex;
+gap:8px;
+margin-top:12px;
+flex-wrap:wrap;
+}
+
+.run-btn,
+.edit-btn,
+.del-btn{
+padding:7px 12px;
+border-radius:10px;
+font-size:13px;
+}
+
+.run-btn{background:linear-gradient(135deg,#22c55e,#16a34a);}
+.edit-btn{background:linear-gradient(135deg,#3b82f6,#2563eb);}
+.del-btn{background:linear-gradient(135deg,#ef4444,#dc2626);}
+
+.run-btn:hover,
+.edit-btn:hover,
+.del-btn:hover{
+transform:scale(1.05);
+}
+
+#wordCount{
+font-size:12px;
+color:#a1a1aa;
+margin-bottom:5px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+<div class="left">
+<input id="search" placeholder="Search...">
+<button onclick="setFilter('all')">All</button>
+<button onclick="setFilter('mine')">My Tools</button>
+</div>
+
+<div class="right">
+<button onclick="openPopup()">+ Add Tool</button>
+</div>
+</div>
+
+<div id="list" class="container"></div>
+
+<!-- POPUP -->
+<div id="popup" class="popup">
+<div class="popup-content">
+
+<h3>Create Tool</h3>
+
+<input id="name" placeholder="Tool Name">
+
+<textarea id="desc" placeholder="Description (max 15 words)" oninput="updateWordCount()"></textarea>
+<div id="wordCount">0/15</div>
+
+<textarea id="html" placeholder="HTML"></textarea>
+<textarea id="css" placeholder="CSS"></textarea>
+<textarea id="js" placeholder="JS"></textarea>
+
+<button onclick="saveTool()">Save</button>
+<button onclick="closePopup()">Close</button>
+
+</div>
+</div>
+
+<!-- VIEW -->
+<div id="viewPopup" class="popup">
+<div class="popup-content">
+
+<h3>Preview</h3>
+
+<iframe id="viewFrame" style="width:100%;height:300px;border:none;background:white"></iframe>
+
+<button onclick="closeView()">Close</button>
+
+</div>
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import {
+getFirestore,
+collection,
+addDoc,
+onSnapshot,
+deleteDoc,
+doc,
+serverTimestamp,
+updateDoc,
+increment
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyAgqj5rWFXuwldXm5-yFZj0POdS6rRYepo",
+authDomain: "support-c1836.firebaseapp.com",
+projectId: "support-c1836",
+storageBucket: "support-c1836.firebasestorage.app",
+messagingSenderId: "475150183599",
+appId: "1:475150183599:web:4c8a3f40f645b160b0f85a"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+let filter = "all";
+let unsubscribe = null;
+
+/* POPUPS */
+window.openPopup = ()=> document.getElementById("popup").style.display="flex";
+
+window.closePopup = ()=>{
+document.getElementById("popup").style.display="none";
+};
+
+window.openView = (html,css,js)=>{
+document.getElementById("viewPopup").style.display="flex";
+document.getElementById("viewFrame").srcdoc=`
+<html><head><style>${css}</style></head>
+<body>${html}<script>${js}<\/script></body></html>`;
+};
+
+window.closeView = ()=>{
+document.getElementById("viewPopup").style.display="none";
+};
+
+/* FILTER */
+window.setFilter = (f)=>{
+filter = f;
+loadTools();
+};
+
+/* WORD LIMIT */
+function limitWords(text, maxWords = 15){
+return text.trim().split(/\s+/).slice(0, maxWords).join(" ");
+}
+
+window.updateWordCount = ()=>{
+let text = document.getElementById("desc").value;
+let words = text.trim().split(/\s+/).filter(w=>w.length>0);
+
+if(words.length > 15){
+document.getElementById("desc").value = limitWords(text,15);
+words = words.slice(0,15);
+}
+
+document.getElementById("wordCount").innerText = words.length + "/15";
+};
+
+/* SAVE */
+window.saveTool = async ()=>{
+const user = auth.currentUser;
+
+await addDoc(collection(db,"tools"),{
+name:document.getElementById("name").value,
+desc:limitWords(document.getElementById("desc").value,15),
+html:document.getElementById("html").value,
+css:document.getElementById("css").value,
+js:document.getElementById("js").value,
+uid:user.uid,
+owner:user.email,
+views:0,
+createdAt:serverTimestamp()
+});
+
+closePopup();
+};
+
+/* RUN + VIEW COUNT */
+async function runTool(t,id){
+await updateDoc(doc(db,"tools",id),{
+views:increment(1)
+});
+
+openView(t.html,t.css,t.js);
+}
+
+/* LOAD */
+function loadTools(){
+
+if(unsubscribe) unsubscribe();
+
+unsubscribe = onSnapshot(collection(db,"tools"), snap=>{
+
+const list = document.getElementById("list");
+list.innerHTML="";
+
+snap.forEach(d=>{
+
+const t = d.data();
+const id = d.id;
+
+const isMine = auth.currentUser?.uid === t.uid;
+
+/* FILTER */
+if(filter === "mine" && !isMine) return;
+
+const card = document.createElement("div");
+card.className="card";
+
+let actions = `<button class="run-btn">Run</button>`;
+
+/* EDIT + DELETE only MY TOOLS */
+if(isMine && filter === "mine"){
+actions += `
+<button class="edit-btn">Edit</button>
+<button class="del-btn">Delete</button>
+`;
+}
+
+card.innerHTML=`
+<h3>${t.name}</h3>
+<div class="meta">${t.owner}</div>
+<div class="small">👁️ ${t.views || 0} views</div>
+<div class="small">${t.desc || ""}</div>
+
+<div class="actions">
+${actions}
+</div>
+`;
+
+/* RUN */
+card.querySelector(".run-btn").onclick=()=>{
+runTool(t,id);
+};
+
+/* EDIT */
+if(isMine && filter === "mine"){
+card.querySelector(".edit-btn").onclick=()=>{
+document.getElementById("name").value=t.name;
+document.getElementById("desc").value=t.desc || "";
+document.getElementById("html").value=t.html;
+document.getElementById("css").value=t.css;
+document.getElementById("js").value=t.js;
+document.getElementById("wordCount").innerText =
+(t.desc||"").trim().split(/\s+/).filter(w=>w).length + "/15";
+openPopup();
+};
+}
+
+/* DELETE */
+if(isMine && filter === "mine"){
+card.querySelector(".del-btn").onclick=async()=>{
+if(confirm("Delete this tool?")){
+await deleteDoc(doc(db,"tools",id));
+}
+};
+}
+
+list.appendChild(card);
+});
+
+});
+}
+
+onAuthStateChanged(auth,user=>{
+if(!user){
+alert("Login required");
+return;
+}
+loadTools();
+});
+
+</script>
+
+</body>
+</html>
