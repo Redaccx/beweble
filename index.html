@@ -388,7 +388,7 @@
   display: inline-block;
   width: 10px;             /* حجم النقطة */
   height: 10px;
-  background-color: purple; /* اللون البنفسجي */
+  background-color:green; /* اللون البنفسجي */
   border-radius: 50%;       /* لتصبح دائرة */
   margin-right: 6px;        /* مسافة بين النقطة والكلمة */
   vertical-align: middle;
@@ -797,7 +797,62 @@
     color: #fff;
     margin-right: 10px;
 }
+#tools-btn i {
+    color: #b765ff;
+    margin-right: 10px;
+}
 
+/* container */
+.tools-container {
+    position: relative;
+    display: block; /* بدل inline-block عشان ما يعمل مشاكل فراغ */
+}
+
+/* main link */
+#tools-btn {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+/* arrow */
+.arrow {
+    margin-left: 7px;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+/* submenu */
+.tools-menu {
+    display: none;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    margin-left: 15px; /* نزول submenu بشكل مرتب */
+}
+
+/* submenu items */
+.tools-menu li {
+    padding:0;
+}
+
+.tools-menu a {
+    font-size: 14px;
+}
+/* hover */
+.tools-menu li:hover {
+    background: #444;
+}
+
+/* فتح القائمة */
+.tools-container.active .tools-menu {
+    display: block;
+}
+
+/* تدوير السهم */
+.tools-container.active .arrow {
+    transform: rotate(90deg);
+}
   #close-history-btn {
     background: linear-gradient(90deg, #8a2be2, #00f5ff);
     color: white;
@@ -813,6 +868,12 @@
     opacity: 0.9;
     transform: scale(1.03);
   }
+  
+.special {
+  background-color: #ff4d4d; /* لون مختلف لهذا العنصر فقط */
+}
+
+
 
 </style>
 
@@ -903,6 +964,20 @@
     <a id="history-btn">
         <i class="fa-solid fa-clock-rotate-left"></i> History
     </a>
+</li>
+<li class="tools-container">
+    <a id="tools-btn">
+        <i class="fa fa-wrench"></i> Tools <span class="arrow">
+    <i class="fa fa-chevron-right"></i>
+</span>
+    </a>
+    
+  <ul class="tools-menu">
+    <li><a href="#"><span class="purple-dot special"></span> Code Helper</a></li>
+    <li><a href="#"><span class="purple-dot special"></span> Encrypt Code</a></li>
+    <li><a href="#"><span class="purple-dot"></span> WhatsApp Generator</a></li>
+    <li><a href="others"><span class="purple-dot special"></span>Others</a></li>
+</ul>
 </li>
 <li>
     <a id="profile-btn">
@@ -1380,6 +1455,24 @@ alert("Error sending message, please try again.");
 
 
 
+    const btn = document.getElementById("tools-btn");
+const container = document.querySelector(".tools-container");
+
+btn.addEventListener("click", () => {
+container.classList.toggle("active");
+});
+
+document.getElementById("side-menu").addEventListener("click", (e) => {
+const tools = e.target.closest("#tools-btn");
+
+// إذا ضغط على Tools لا تسكر
+if (tools) return;
+
+// إذا ضغط على أي رابط عادي
+if (e.target.closest("a")) {
+document.getElementById("side-menu").classList.remove("open");
+}
+});
 </script>
 
 </body>
