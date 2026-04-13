@@ -112,7 +112,7 @@ box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 transition: 0.25s ease;
 position: relative;
 overflow: hidden;
-height: 180px;
+height: 200px;
 display:flex;
 flex-direction:column;
 justify-content:space-between;
@@ -236,6 +236,48 @@ white-space: nowrap;
 .export-btn:hover{
   transform:scale(1.05);
 }
+
+#commentsList {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 10px;
+}
+
+.comment {
+    background: #0b1020;
+    padding: 10px;
+    margin: 6px 0;
+    border-radius: 10px;
+}
+
+.comment b {
+    color: #00f5ff;
+    font-size: 13px;
+}
+
+.comment p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+.comment .actions {
+    margin-top: 5px;
+}
+
+.comment-btn {
+    width: 98%;
+    text-align: center;
+    background: linear-gradient(90deg, #8a2be2, #00f5ff);
+    border: none;
+    padding: 8px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.comment-btn:hover {
+    transform: scale(1.03);
+}
 </style>
 </head>
 
@@ -288,7 +330,20 @@ white-space: nowrap;
 
 </div>
 </div>
-
+<div id="commentPopup" class="popup">
+    <div class="popup-content">
+        
+        <h3>Comments</h3>
+        
+        <div id="commentsList"></div>
+        
+        <textarea id="newComment" placeholder="Write comment..."></textarea>
+        
+        <button onclick="addComment()">Send</button>
+        <button onclick="closeComments()">Close</button>
+        
+    </div>
+</div>
 <!-- VIEW -->
 <div id="viewPopup" class="popup">
 <div class="popup-content">
@@ -332,7 +387,8 @@ let filter = "all";
 let searchText = "";
 let unsubscribe = null;
 let editingId = null;
-
+let currentToolId = null;
+let toolOwnerId = null;
 
 /* AUTH CHECK */
 onAuthStateChanged(auth, user => {
@@ -389,30 +445,59 @@ pass.value = "";
 };
 
 /* VIEW */
+/* VIEW */
 window.openView = (html, css, js) => {
-const frame = document.getElementById("viewFrame");
-const doc = frame.contentDocument || frame.contentWindow.document;
-
-doc.open();
-doc.write(`
-<!DOCTYPE html>
-<html>
-<head>
-<style>${css}</style>
-</head>
-<body>
-${html}
-<script>${js}<\/script>
-</body>
-</html>
-`);
-doc.close();
-
-document.getElementById("viewPopup").style.display="flex";
+    const frame = document.getElementById("viewFrame");
+    const doc = frame.contentDocument || frame.contentWindow.document;
+    
+    doc.open();
+    doc.write(`
+  <!DOCTYPE html>
+  <html>
+  <head><style>${css}</style></head>
+  <body>
+  ${html}
+  <script>${js}<\/script>
+  </body>
+  </html>
+  `);
+    doc.close();
+    
+    document.getElementById("viewPopup").style.display = "flex";
 };
 
-window.closeView = ()=>{
-document.getElementById("viewPopup").style.display="none";
+window.closeView = () => {
+    document.getElementById("viewPopup").style.display = "none";
+};
+
+/* 👇 هون حط التعليقات */
+/* COMMENTS */
+window.openComments = (toolId, ownerId) => {
+    currentToolId = toolId;
+    toolOwnerId = ownerId;
+    
+    document.getElementById("commentPopup").style.display = "flex";
+    loadComments(toolId);
+};
+
+window.closeComments = () => {
+    document.getElementById("commentPopup").style.display = "none";
+};
+
+/* 👇 هون حطها */
+window.addComment = async () => {
+    
+    const text = document.getElementById("newComment").value.trim();
+    if (!text) return;
+    
+    await addDoc(collection(db, "tools", currentToolId, "comments"), {
+        text,
+        uid: auth.currentUser.uid,
+        owner: auth.currentUser.email,
+        createdAt: serverTimestamp()
+    });
+    
+    document.getElementById("newComment").value = "";
 };
 
 /* FILTER */
@@ -539,7 +624,7 @@ if (filter === "all") {
   <button class="share-btn"><i class="fa fa-share"></i></button>
  <button class="export-btn">
   <i class="fa fa-download"></i>
-</button>
+<button class="comment-btn">View Comments</button>
 `;
   
   if (isMine && filter === "mine") {
@@ -561,20 +646,24 @@ card.innerHTML = `
     <i class="fa fa-eye"></i> ${t.views || 0} views
   </div>
 
-<div class="small">
-  <i class="fa ${t.visibility === 'private' ? 'fa-lock' : 'fa-unlock'}"></i>
-  ${t.visibility === 'private' ? 'private' : 'public'}
-</div>
+  <div class="small">
+    <i class="fa ${t.visibility === 'private' ? 'fa-lock' : 'fa-unlock'}"></i>
+    ${t.visibility === 'private' ? 'private' : 'public'}
+  </div>
 
   <div class="small">
     <i class="fa fa-align-left"></i> ${t.desc || ""}
   </div>
 
   <div class="actions">${actions}</div>
+
+  <!-- 👇 الزر بالنص -->
+  <button class="comment-btn">View Comments</button>
 `;
   card.querySelector(".run-btn").onclick = () => runTool(t, id);
   card.querySelector(".share-btn").onclick = () => {
   const url = `${window.location.origin}/view.html?id=${id}`;
+  card.querySelector(".comment-btn").onclick = () => openComments(id, t.uid);
   
   navigator.clipboard.writeText(url)
     .then(() => alert("Link copied!"))
@@ -616,6 +705,69 @@ if (exportBtn) exportBtn.onclick = () => exportTool(t);
 });
 
 });
+}
+
+
+function loadComments(toolId) {
+    
+    const list = document.getElementById("commentsList");
+    
+    onSnapshot(collection(db, "tools", toolId, "comments"), snap => {
+        
+        list.innerHTML = "";
+        
+        snap.forEach(d => {
+            const c = d.data();
+            const id = d.id;
+            
+            const currentUser = auth.currentUser;
+            
+            const isCommentOwner = currentUser.uid === c.uid;
+            const isToolOwner = currentUser.uid === toolOwnerId;
+            
+            const canDelete = isCommentOwner || isToolOwner;
+            
+            const div = document.createElement("div");
+            div.className = "comment";
+            
+            div.innerHTML = `
+        <b>${c.owner}</b>
+        <p>${c.text}</p>
+
+        <div class="actions">
+          ${
+            canDelete ? `
+              ${isCommentOwner ? `<button class="edit-btn">Edit</button>` : ""}
+              <button class="del-btn">Delete</button>
+            ` : ""
+          }
+        </div>
+      `;
+            
+            // حذف
+            if (canDelete) {
+                div.querySelector(".del-btn").onclick = async () => {
+                    await deleteDoc(doc(db, "tools", toolId, "comments", id));
+                };
+            }
+            
+            // تعديل (فقط صاحب التعليق)
+            if (isCommentOwner) {
+                div.querySelector(".edit-btn").onclick = async () => {
+                    const newText = prompt("Edit comment:", c.text);
+                    if (newText) {
+                        await updateDoc(doc(db, "tools", toolId, "comments", id), {
+                            text: newText
+                        });
+                    }
+                };
+            }
+            
+            list.appendChild(div);
+        });
+        
+    });
+    
 }
 
 function exportTool(t) {
