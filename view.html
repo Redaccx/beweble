@@ -1,156 +1,185 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <title>Tool View</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial;
-            background: #0f172a;
-            color: white;
-        }
-        
-        #authOverlay {
-            position: fixed;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #0f172a;
-            font-size: 18px;
-            z-index: 9999;
-            flex-direction: column;
-            gap: 10px;
-        }
-        
-        #content {
-            display: none;
-            padding: 20px;
-        }
-        
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            background: white;
-            border-radius: 10px;
-        }
-        
-        input {
-            padding: 10px;
-            border-radius: 8px;
-            border: none;
-            outline: none;
-        }
-        
-        button {
-            padding: 10px 14px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            background: #8a2be2;
-            color: white;
-        }
-    </style>
+<meta charset="UTF-8">
+<title>Tool View</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+html, body {
+margin:0;
+padding:0;
+width:100%;
+height:100%;
+overflow:hidden;
+background:#0f172a;
+font-family:Arial;
+}
+
+/* 🔐 Overlay */
+#authOverlay{
+position:fixed;
+inset:0;
+display:flex;
+align-items:center;
+justify-content:center;
+flex-direction:column;
+gap:12px;
+background:#0f172a;
+color:white;
+z-index:9999;
+}
+
+/* 🔑 password box */
+#passBox{
+display:flex;
+gap:10px;
+}
+
+input{
+padding:10px;
+border:none;
+border-radius:8px;
+outline:none;
+}
+
+button{
+padding:10px 14px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+background:#8a2be2;
+color:white;
+}
+
+/* 🖥 fullscreen frame */
+#content{
+display:none;
+width:100vw;
+height:100vh;
+}
+
+iframe{
+width:100%;
+height:100%;
+border:none;
+background:white;
+}
+</style>
 </head>
 
 <body>
-    
-    <div id="authOverlay">Checking...</div>
-    
-    <div id="content">
-        <iframe id="frame"></iframe>
-    </div>
-    
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-        
-        const firebaseConfig = {
-            apiKey: "AIzaSyAgqj5rWFXuwldXm5-yFZj0POdS6rRYepo",
-            authDomain: "support-c1836.firebaseapp.com",
-            projectId: "support-c1836"
-        };
-        
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        
-        const id = new URLSearchParams(location.search).get("id");
-        
-        let toolData = null;
-        
-        const overlay = document.getElementById("authOverlay");
-        const content = document.getElementById("content");
-        
-        onAuthStateChanged(auth, async (user) => {
-            
-            if (!user) {
-                location.href = "index.html";
-                return;
-            }
-            
-            if (!id) {
-                overlay.innerText = "No tool ID";
-                return;
-            }
-            
-            const snap = await getDoc(doc(db, "tools", id));
-            
-            if (!snap.exists()) {
-                overlay.innerText = "Tool not found";
-                return;
-            }
-            
-            toolData = snap.data();
-            
-            // 🔐 PRIVATE
-            if (toolData.visibility === "private") {
-                
-                const pass = prompt("Enter password:");
-                
-                if (pass !== toolData.password) {
-                    overlay.innerText = "Wrong password";
-                    return;
-                }
-            }
-            
-            // ✔ PUBLIC أو صحيح password
-            showTool();
-            
-        });
-        
-        function showTool() {
-            
-            overlay.style.display = "none";
-            content.style.display = "block";
-            
-            const frame = document.getElementById("frame");
-            const docFrame = frame.contentDocument || frame.contentWindow.document;
-            
-            docFrame.open();
-            docFrame.write(`
+
+<!-- 🔐 LOCK SCREEN -->
+<div id="authOverlay">
+<div id="msg">Loading...</div>
+
+<div id="passBox" style="display:none;">
+<input id="passInput" type="password" placeholder="Enter password">
+<button onclick="checkPass()">Enter</button>
+</div>
+</div>
+
+<!-- 🖥 TOOL -->
+<div id="content">
+<iframe id="frame"></iframe>
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyAgqj5rWFXuwldXm5-yFZj0POdS6rRYepo",
+authDomain: "support-c1836.firebaseapp.com",
+projectId: "support-c1836"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+const id = new URLSearchParams(location.search).get("id");
+
+let tool = null;
+
+const overlay = document.getElementById("authOverlay");
+const msg = document.getElementById("msg");
+const passBox = document.getElementById("passBox");
+
+onAuthStateChanged(auth, async (user) => {
+
+if (!user) {
+location.href = "index.html";
+return;
+}
+
+if (!id) {
+msg.innerText = "No tool ID";
+return;
+}
+
+const snap = await getDoc(doc(db, "tools", id));
+
+if (!snap.exists()) {
+msg.innerText = "Tool not found";
+return;
+}
+
+tool = snap.data();
+
+// 🔐 PRIVATE
+if (tool.visibility === "private") {
+msg.innerText = "Enter password to continue";
+passBox.style.display = "flex";
+return;
+}
+
+// ✔ PUBLIC
+showTool();
+
+});
+
+window.checkPass = function(){
+
+const val = document.getElementById("passInput").value;
+
+if (val !== tool.password) {
+alert("Wrong password");
+return;
+}
+
+showTool();
+};
+
+function showTool(){
+
+overlay.style.display = "none";
+document.getElementById("content").style.display = "block";
+
+const frame = document.getElementById("frame");
+const docFrame = frame.contentDocument || frame.contentWindow.document;
+
+docFrame.open();
+docFrame.write(`
 <!DOCTYPE html>
 <html>
 <head>
-<style>${toolData.css || ""}</style>
+<style>${tool.css || ""}</style>
 </head>
 <body>
-${toolData.html || ""}
-<script>${toolData.js || ""}<\/script>
+${tool.html || ""}
+<script>${tool.js || ""}<\/script>
 </body>
 </html>
 `);
-            docFrame.close();
-            
-        }
-    </script>
-    
-</body>
+docFrame.close();
 
+}
+
+</script>
+
+</body>
 </html>
