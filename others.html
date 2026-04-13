@@ -623,7 +623,7 @@ function exportTool(t) {
   const escapeJS = (code = "") =>
     code.replace(/<\/script>/g, "<\\/script>");
   
-  const htmlContent = `
+  const content = `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -651,12 +651,12 @@ ${escapeJS(t.js || "")}
 </html>
 `;
   
-  const blob = new Blob([htmlContent], { type: "text/html" });
+  const blob = new Blob([content], { type: "text/plain" });
   const url = URL.createObjectURL(blob);
   
   const a = document.createElement("a");
   a.href = url;
-  a.download = "index.html";
+  a.download = "tool.txt";
   a.click();
   
   URL.revokeObjectURL(url);
