@@ -727,29 +727,37 @@ const likeBtn = card.querySelector(".like-btn");
 
 if (likeBtn) {
   likeBtn.onclick = async () => {
-    const uid = auth.currentUser.uid;
+  const uid = auth.currentUser.uid;
+  
+  const ref = doc(db, "tools", toolId, "comments", c.id);
+  const snap = await getDoc(ref);
+  const data = snap.data();
+  
+  const likedBy = data.likedBy || [];
+  const likes = data.likes || 0;
+  
+  const alreadyLiked = likedBy.includes(uid);
+  
+  const icon = likeBtn.querySelector("i"); // 👈 هون المكان الصحيح
+  
+  if (alreadyLiked) {
+    await updateDoc(ref, {
+      likes: likes - 1,
+      likedBy: likedBy.filter(u => u !== uid)
+    });
     
-    const ref = doc(db, "tools", id);
-    const snap = await getDoc(ref);
-    const data = snap.data();
+    icon.classList.remove("fa-heart");
+    icon.classList.add("fa-heart-o");
+  } else {
+    await updateDoc(ref, {
+      likes: likes + 1,
+      likedBy: [...likedBy, uid]
+    });
     
-    const likedBy = data.likedBy || [];
-    const likes = data.likes || 0;
-    
-    const alreadyLiked = likedBy.includes(uid);
-    
-    if (alreadyLiked) {
-      await updateDoc(ref, {
-        likes: likes - 1,
-        likedBy: likedBy.filter(u => u !== uid)
-      });
-    } else {
-      await updateDoc(ref, {
-        likes: likes + 1,
-        likedBy: [...likedBy, uid]
-      });
-    }
-  };
+    icon.classList.remove("fa-heart-o");
+    icon.classList.add("fa-heart");
+  }
+};
 }
 
   if (isMine && filter === "mine") {
@@ -800,7 +808,7 @@ function loadComments(toolId) {
       comments.push({ id: d.id, ...d.data() });
     });
     
-    // 🔥 الأحدث فوق
+    // الأحدث فوق
     comments.sort((a, b) =>
       (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0)
     );
@@ -821,57 +829,69 @@ function loadComments(toolId) {
       div.className = "comment";
       
       div.innerHTML = `
-<b>${c.owner}</b>
-<p>${c.text}</p>
+        <b>${c.owner}</b>
+        <p>${c.text}</p>
 
-<small>
-  ${c.createdAt?.toDate
-  ? new Date(c.createdAt.toDate()).toLocaleString()
-  : "Just now"}
-</small>
+        <small>
+          ${c.createdAt?.toDate
+            ? new Date(c.createdAt.toDate()).toLocaleString()
+            : "Just now"}
+        </small>
 
-<button class="like-comment-btn">
-  <i class="fa fa-heart"></i>
-  <span>${c.likes || 0}</span>
-</button>
+        <button class="like-comment-btn">
+          <i class="fa fa-heart-o"></i>
+          <span>${c.likes || 0}</span>
+        </button>
 
-<div class="actions">
-  ${isCommentOwner ? `<button class="edit-btn">Edit</button>` : ""}
-  ${canDelete ? `<button class="del-btn">Delete</button>` : ""}
-</div>
-`;
+        <div class="actions">
+          ${isCommentOwner ? `<button class="edit-btn">Edit</button>` : ""}
+          ${canDelete ? `<button class="del-btn">Delete</button>` : ""}
+        </div>
+      `;
       
       // =======================
-      // ❤️ LIKE SYSTEM (IMPORTANT)
+      // ❤️ LIKE SYSTEM
       // =======================
       const likeBtn = div.querySelector(".like-comment-btn");
+      const icon = likeBtn.querySelector("i");
       
-      if (likeBtn) {
-        likeBtn.onclick = async () => {
-          const uid = auth.currentUser.uid;
-          
-          const ref = doc(db, "tools", toolId, "comments", c.id);
-          const snap = await getDoc(ref);
-          const data = snap.data();
-          
-          const likedBy = data.likedBy || [];
-          const likes = data.likes || 0;
-          
-          const alreadyLiked = likedBy.includes(uid);
-          
-          if (alreadyLiked) {
-            await updateDoc(ref, {
-              likes: likes - 1,
-              likedBy: likedBy.filter(u => u !== uid)
-            });
-          } else {
-            await updateDoc(ref, {
-              likes: likes + 1,
-              likedBy: [...likedBy, uid]
-            });
-          }
-        };
+      // 👇 حالة القلب عند التحميل
+      if (c.likedBy?.includes(currentUser.uid)) {
+        icon.classList.remove("fa-heart-o");
+        icon.classList.add("fa-heart");
       }
+      
+      likeBtn.onclick = async () => {
+        const uid = currentUser.uid;
+        
+        const ref = doc(db, "tools", toolId, "comments", c.id);
+        const snap = await getDoc(ref);
+        const data = snap.data();
+        
+        const likedBy = data.likedBy || [];
+        const likes = data.likes || 0;
+        
+        const alreadyLiked = likedBy.includes(uid);
+        
+        if (alreadyLiked) {
+          await updateDoc(ref, {
+            likes: likes - 1,
+            likedBy: likedBy.filter(u => u !== uid)
+          });
+          
+          icon.classList.remove("fa-heart");
+          icon.classList.add("fa-heart-o");
+          
+        } else {
+          await updateDoc(ref, {
+            likes: likes + 1,
+            likedBy: [...likedBy, uid]
+          });
+          
+          icon.classList.remove("fa-heart-o");
+          icon.classList.add("fa-heart");
+        }
+      };
       
       // delete
       if (canDelete) {
@@ -894,7 +914,6 @@ function loadComments(toolId) {
       
       list.appendChild(div);
     });
-    
   });
 }
 function exportTool(t) {
