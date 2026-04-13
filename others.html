@@ -514,7 +514,13 @@ snap.forEach(d => {
   const isPublic = t.visibility === "public";
   
   if (filter === "mine" && !isMine) return;
-  if (filter === "all" && !isPublic && !isMine) return;
+  // show everything in "all"
+if (filter === "all") {
+  // لا تخفي شيء
+} else {
+  if (filter === "mine" && !isMine) return;
+  if (filter === "public" && !isPublic) return;
+}
   
   if (searchText && !textMatch) return;
   
