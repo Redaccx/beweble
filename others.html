@@ -112,7 +112,7 @@ box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 transition: 0.25s ease;
 position: relative;
 overflow: hidden;
-height: 200px;
+height: 185px;
 display:flex;
 flex-direction:column;
 justify-content:space-between;
@@ -237,52 +237,228 @@ white-space: nowrap;
   transform:scale(1.05);
 }
 
-#commentsList {
-    max-height: 300px;
-    overflow-y: auto;
-    margin-bottom: 10px;
+/* =========================
+   POPUP BACKDROP
+========================= */
+#commentPopup.popup{
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(6px);
 }
 
-.comment {
-    background: #0b1020;
-    padding: 10px;
-    margin: 6px 0;
-    border-radius: 10px;
+/* =========================
+   MAIN MODAL
+========================= */
+#commentPopup .popup-content{
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(22px);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 20px;
+  padding: 14px;
+  width: 92%;
+  max-width: 600px;
+  box-shadow: 0 25px 70px rgba(0,0,0,0.6);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  animation: popIn 0.2s ease;
 }
 
-.comment small {
-  display: block;
-  margin-top: 4px;
-  opacity: 0.7;
+@keyframes popIn{
+  from{transform:scale(0.95);opacity:0;}
+  to{transform:scale(1);opacity:1;}
 }
 
-.comment b {
-    color: #00f5ff;
-    font-size: 13px;
+/* =========================
+   TITLE
+========================= */
+#commentPopup h3{
+  margin: 0;
+  font-size: 16px;
+  text-align: center;
+  color: #00f5ff;
 }
 
-.comment p {
-    margin: 5px 0;
-    font-size: 14px;
+/* =========================
+   COMMENTS LIST
+========================= */
+#commentsList{
+  max-height: 320px;
+  overflow-y: auto;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-.comment .actions {
-    margin-top: 5px;
+/* scrollbar */
+#commentsList::-webkit-scrollbar{
+  width: 5px;
+}
+#commentsList::-webkit-scrollbar-thumb{
+  background: linear-gradient(#8a2be2,#00f5ff);
+  border-radius: 10px;
 }
 
-.comment-btn {
-    width: 98%;
-    text-align: center;
-    background: none !important;
-    border: none;
-    padding: 8px;
-    border-radius: 10px;
-    cursor: pointer;
-    margin-top: 10px;
+/* =========================
+   COMMENT CARD
+========================= */
+.comment{
+  background: rgba(11, 16, 32, 0.8);
+  border: 1px solid rgba(255,255,255,0.06);
+  padding: 8px 10px;
+  border-radius: 14px;
+  position: relative;
+  transition: 0.2s ease;
 }
 
-.comment-btn:hover {
-    transform: scale(1.03);
+.comment:hover{
+  transform: translateY(-1px);
+  border-color: rgba(0,245,255,0.2);
+}
+
+/* username */
+.comment b{
+  font-size: 12px;
+  color: #00f5ff;
+}
+
+/* text */
+.comment p{
+  margin: 4px 0;
+  font-size: 13px;
+  color: #e5e7eb;
+}
+
+/* time */
+.comment small{
+  font-size: 10px;
+  opacity: 0.5;
+}
+.comment-btn{
+  margin:5px;
+  background: none !important;
+}
+
+/* =========================
+   LIKE BUTTON
+========================= */
+.like-comment-btn{
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  background: rgba(255,255,255,0.05) !important;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 999px;
+  padding: 3px 7px;
+  font-size: 11px;
+  color: #fb7185;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: 0.2s;
+}
+
+.like-comment-btn:hover{
+  transform: scale(1.05);
+  background: rgba(244,63,94,0.12) !important;
+}
+
+/* =========================
+   ACTION BUTTONS (EDIT / DELETE)
+========================= */
+.comment .actions{
+  display: flex;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.comment .edit-btn,
+.comment .del-btn{
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+/* edit */
+.comment .edit-btn{
+  background: rgba(59,130,246,0.2);
+  color: #60a5fa;
+  border: 1px solid rgba(59,130,246,0.3);
+}
+
+.comment .edit-btn:hover{
+  background: rgba(59,130,246,0.35);
+  color: white;
+}
+
+/* delete */
+.comment .del-btn{
+  background: rgba(239,68,68,0.2);
+  color: #f87171;
+  border: 1px solid rgba(239,68,68,0.3);
+}
+
+.comment .del-btn:hover{
+  background: rgba(239,68,68,0.35);
+  color: white;
+}
+
+/* =========================
+   INPUT
+========================= */
+#newComment{
+  width: 94%;
+  height: 65px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(11,16,32,0.8);
+  color: white;
+  padding: 8px;
+  font-size: 13px;
+  resize: none;
+  outline: none;
+}
+
+#newComment:focus{
+  border-color: #00f5ff;
+  box-shadow: 0 0 0 2px rgba(0,245,255,0.15);
+}
+
+/* =========================
+   BUTTONS ROW (SMALL)
+========================= */
+#commentPopup .popup-content button{
+  padding: 7px 10px;
+  font-size: 12px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+/* SEND */
+#commentPopup button[onclick="addComment()"]{
+  background: linear-gradient(90deg,#8a2be2,#00f5ff);
+  color: white;
+}
+
+#commentPopup button[onclick="addComment()"]:hover{
+  transform: scale(1.03);
+}
+
+/* CLOSE */
+#commentPopup button[onclick="closeComments()"]{
+  background: rgba(255,255,255,0.06);
+  color: #e5e7eb;
+}
+
+#commentPopup button[onclick="closeComments()"]:hover{
+  background: rgba(255,255,255,0.12);
+  color: white;
 }
 
 .like-comment-btn {
