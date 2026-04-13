@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <title>Tools</title>
 
 <style>
@@ -188,6 +189,48 @@ resize: none;
 overflow: hidden;
 white-space: nowrap;
 }
+.fav-btn {
+  background: transparent;
+  border: none;
+  font-size: 18px;
+  color: white;
+  cursor: pointer;
+}
+
+.fav-btn i {
+  transition: 0.2s;
+}
+
+.fav-btn:hover i {
+  transform: scale(1.2);
+  color: #facc15;
+}
+.share-btn {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+  padding: 7px 12px;
+  border-radius: 10px;
+  font-size: 13px;
+  border: none;
+  cursor: pointer;
+}
+
+.share-btn:hover {
+  transform: scale(1.05);
+}
+
+.export-btn{
+  background: linear-gradient(135deg, #10b981, #059669);
+  color:white;
+  padding:7px 12px;
+  border-radius:10px;
+  font-size:13px;
+  border:none;
+  cursor:pointer;
+}
+.export-btn:hover{
+  transform:scale(1.05);
+}
 </style>
 </head>
 
@@ -265,6 +308,8 @@ deleteDoc,
 doc,
 serverTimestamp,
 updateDoc,
+query,
+where,
 increment
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
@@ -279,23 +324,31 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 let filter = "all";
+let searchText = "";
 let unsubscribe = null;
 let editingId = null;
 
+
 /* AUTH CHECK */
-onAuthStateChanged(auth,user=>{
-const overlay = document.getElementById("authOverlay");
-const appContent = document.getElementById("appContent");
-
-if(!user){
-window.location.href = "index.html";
-return;
-}
-
-overlay.style.display="none";
-appContent.style.display="block";
-
-loadTools();
+onAuthStateChanged(auth, user => {
+  const overlay = document.getElementById("authOverlay");
+  const appContent = document.getElementById("appContent");
+  
+  if (!user) {
+    window.location.href = "index.html";
+    return;
+  }
+  
+  overlay.style.display = "none";
+  appContent.style.display = "block";
+  
+  loadTools();
+  
+  document.getElementById("search").addEventListener("input", (e) => {
+    searchText = e.target.value.toLowerCase();
+    loadTools();
+  });
+  
 });
 
 /* POPUP */
@@ -402,7 +455,9 @@ js:document.getElementById("js").value,
 uid:user.uid,
 owner:user.email,
 visibility,
-password:visibility==="private"?password:null
+password: visibility === "private" ?
+  document.getElementById("password").value :
+  null
 };
 
 if(editingId){
@@ -430,10 +485,9 @@ return;
 }
 }
 
-await updateDoc(doc(db,"tools",id),{
-views:increment(1)
+await updateDoc(doc(db, "tools", id), {
+  views: increment(1)
 });
-
 openView(t.html,t.css,t.js);
 }
 
@@ -447,70 +501,133 @@ unsubscribe=onSnapshot(collection(db,"tools"),snap=>{
 const list=document.getElementById("list");
 list.innerHTML="";
 
-snap.forEach(d=>{
-
-const t=d.data();
-const id=d.id;
-const isMine=auth.currentUser?.uid===t.uid;
-const isPublic=t.visibility==="public";
-
-if(filter==="mine"){
-if(!isMine)return;
-}else{
-if(!isPublic&&!isMine)return;
-}
-
-const card=document.createElement("div");
-card.className="card";
-
-let actions=`<button class="run-btn">Run</button>`;
-
-if(isMine&&filter==="mine"){
-actions+=`
-<button class="edit-btn">Edit</button>
-<button class="del-btn">Delete</button>
+snap.forEach(d => {
+  
+  const t = d.data();
+  const id = d.id;
+  
+  const textMatch =
+    (t.name?.toLowerCase().includes(searchText) ||
+      t.desc?.toLowerCase().includes(searchText));
+  
+  const isMine = auth.currentUser?.uid === t.uid;
+  const isPublic = t.visibility === "public";
+  
+  if (filter === "mine" && !isMine) return;
+  if (filter === "all" && !isPublic && !isMine) return;
+  
+  if (searchText && !textMatch) return;
+  
+  const card = document.createElement("div");
+  card.className = "card";
+  
+  let actions = `
+  <button class="run-btn">Run</button>
+  <button class="share-btn"><i class="fa fa-share"></i></button>
+ <button class="export-btn">
+  <i class="fa fa-download"></i>
+</button>
 `;
-}
+  
+  if (isMine && filter === "mine") {
+    actions += `
+      <button class="edit-btn">Edit</button>
+      <button class="del-btn">Delete</button>
+      <button class="export-btn">Export</button>
+    `;
+  }
+  
+card.innerHTML = `
+  <h3>${t.name}</h3>
 
-card.innerHTML=`
-<h3>${t.name}</h3>
-<div class="meta">${t.owner}</div>
-<div class="small">👁️ ${t.views||0} views</div>
-<div class="small">🔒 ${t.visibility}</div>
-<div class="small">${t.desc||""}</div>
-<div class="actions">${actions}</div>
+  <div class="meta">
+    <i class="fa fa-user"></i> ${t.owner}
+  </div>
+
+  <div class="small">
+    <i class="fa fa-eye"></i> ${t.views || 0} views
+  </div>
+
+<div class="small">
+  <i class="fa ${t.visibility === 'private' ? 'fa-lock' : 'fa-unlock'}"></i>
+  ${t.visibility === 'private' ? 'private' : 'public'}
+</div>
+
+  <div class="small">
+    <i class="fa fa-align-left"></i> ${t.desc || ""}
+  </div>
+
+  <div class="actions">${actions}</div>
 `;
-
-card.querySelector(".run-btn").onclick=()=>runTool(t,id);
-
-if(isMine&&filter==="mine"){
-card.querySelector(".edit-btn").onclick=()=>{
-editingId=id;
-
-document.getElementById("name").value=t.name;
-document.getElementById("desc").value=t.desc||"";
-document.getElementById("html").value=t.html;
-document.getElementById("css").value=t.css;
-document.getElementById("js").value=t.js;
-
-updateWordCount();
-openPopup();
+  card.querySelector(".run-btn").onclick = () => runTool(t, id);
+  card.querySelector(".share-btn").onclick = () => {
+  const url = `${window.location.origin}/view.html?id=${id}`;
+  
+  navigator.clipboard.writeText(url)
+    .then(() => alert("Link copied!"))
+    .catch(() => prompt("Copy link:", url));
 };
-}
+const exportBtn = card.querySelector(".export-btn");
+if (exportBtn) exportBtn.onclick = () => exportTool(t);
 
-if(isMine&&filter==="mine"){
-card.querySelector(".del-btn").onclick=async()=>{
-await deleteDoc(doc(db,"tools",id));
-};
-}
-
-list.appendChild(card);
-
+  if (isMine && filter === "mine") {
+    card.querySelector(".edit-btn").onclick = () => {
+      document.getElementById("visibility").value = t.visibility;
+      
+      if (t.visibility === "private") {
+        document.getElementById("password").style.display = "block";
+        document.getElementById("password").value = t.password || "";
+      } else {
+        document.getElementById("password").style.display = "none";
+      }
+      
+      editingId = id;
+      
+      document.getElementById("name").value = t.name;
+      document.getElementById("desc").value = t.desc || "";
+      document.getElementById("html").value = t.html;
+      document.getElementById("css").value = t.css;
+      document.getElementById("js").value = t.js;
+      
+      updateWordCount();
+      openPopup();
+    };
+    
+    card.querySelector(".del-btn").onclick = async () => {
+      await deleteDoc(doc(db, "tools", id));
+    };
+  }
+  
+  list.appendChild(card);
+  
 });
 
 });
 }
 
+function exportTool(t) {
+  const data = {
+    name: t.name,
+    desc: t.desc,
+    html: t.html,
+    css: t.css,
+    js: t.js,
+    visibility: t.visibility
+  };
+  
+  const blob = new Blob([JSON.stringify(data, null, 2)], {
+    type: "application/json"
+  });
+  
+  const url = URL.createObjectURL(blob);
+  
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `${t.name || "tool"}.json`;
+  a.click();
+  
+  URL.revokeObjectURL(url);
+}
 </script>
 
 </body>
