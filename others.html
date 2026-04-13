@@ -250,6 +250,12 @@ white-space: nowrap;
     border-radius: 10px;
 }
 
+.comment small {
+  display: block;
+  margin-top: 4px;
+  opacity: 0.7;
+}
+
 .comment b {
     color: #00f5ff;
     font-size: 13px;
@@ -277,6 +283,25 @@ white-space: nowrap;
 
 .comment-btn:hover {
     transform: scale(1.03);
+}
+
+.like-comment-btn {
+  background: none !important;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  color: #f43f5e;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  float: right;
+}
+
+.like-comment-btn:active,
+.like-comment-btn:focus {
+  background: none !important;
+  box-shadow: none !important;
 }
 </style>
 </head>
@@ -360,17 +385,19 @@ white-space: nowrap;
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import {
-getFirestore,
-collection,
-addDoc,
-onSnapshot,
-deleteDoc,
-doc,
-serverTimestamp,
-updateDoc,
-query,
-where,
-increment
+  getFirestore,
+  collection,
+  addDoc,
+  onSnapshot,
+  deleteDoc,
+  doc,
+  serverTimestamp,
+  updateDoc,
+  query,
+  where,
+  increment,
+  getDocs,
+  getDoc
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -486,18 +513,33 @@ window.closeComments = () => {
 
 /* 👇 هون حطها */
 window.addComment = async () => {
-    
-    const text = document.getElementById("newComment").value.trim();
-    if (!text) return;
-    
-    await addDoc(collection(db, "tools", currentToolId, "comments"), {
-        text,
-        uid: auth.currentUser.uid,
-        owner: auth.currentUser.email,
-        createdAt: serverTimestamp()
-    });
-    
-    document.getElementById("newComment").value = "";
+  const text = document.getElementById("newComment").value.trim();
+  if (!text) return;
+  
+  const uid = auth.currentUser.uid;
+  
+  const q = query(
+    collection(db, "tools", currentToolId, "comments"),
+    where("uid", "==", uid)
+  );
+  
+  const snap = await getDocs(q);
+  
+  if (!snap.empty) {
+    alert("You already commented!");
+    return;
+  }
+  
+  await addDoc(collection(db, "tools", currentToolId, "comments"), {
+  text,
+  uid,
+  owner: auth.currentUser.email,
+  likes: 0,
+  likedBy: [],
+  createdAt: serverTimestamp()
+});
+  
+  document.getElementById("newComment").value = "";
 };
 
 /* FILTER */
@@ -554,10 +596,13 @@ if(editingId){
 await updateDoc(doc(db,"tools",editingId),data);
 editingId=null;
 }else{
-await addDoc(collection(db,"tools"),{
-...data,
-views:0,
-createdAt:serverTimestamp()
+await addDoc(collection(db, "tools", currentToolId, "comments"), {
+  text,
+  uid,
+  owner: auth.currentUser.email,
+  likes: 0,
+  likedBy: [],
+  createdAt: serverTimestamp()
 });
 }
 
@@ -657,6 +702,7 @@ card.innerHTML = `
 
   <div class="actions">${actions}</div>
 
+
   <button class="comment-btn">View Comments</button>
 `;
   card.querySelector(".run-btn").onclick = () => runTool(t, id);
@@ -677,6 +723,35 @@ if (commentBtn) {
 const exportBtn = card.querySelector(".export-btn");
 if (exportBtn) exportBtn.onclick = () => exportTool(t);
 
+const likeBtn = card.querySelector(".like-btn");
+
+if (likeBtn) {
+  likeBtn.onclick = async () => {
+    const uid = auth.currentUser.uid;
+    
+    const ref = doc(db, "tools", id);
+    const snap = await getDoc(ref);
+    const data = snap.data();
+    
+    const likedBy = data.likedBy || [];
+    const likes = data.likes || 0;
+    
+    const alreadyLiked = likedBy.includes(uid);
+    
+    if (alreadyLiked) {
+      await updateDoc(ref, {
+        likes: likes - 1,
+        likedBy: likedBy.filter(u => u !== uid)
+      });
+    } else {
+      await updateDoc(ref, {
+        likes: likes + 1,
+        likedBy: [...likedBy, uid]
+      });
+    }
+  };
+}
+
   if (isMine && filter === "mine") {
     card.querySelector(".edit-btn").onclick = () => {
       document.getElementById("visibility").value = t.visibility;
@@ -687,6 +762,8 @@ if (exportBtn) exportBtn.onclick = () => exportTool(t);
       } else {
         document.getElementById("password").style.display = "none";
       }
+      
+      
       
       editingId = id;
       
@@ -712,64 +789,114 @@ if (exportBtn) exportBtn.onclick = () => exportTool(t);
 });
 }
 
-
 function loadComments(toolId) {
+  const list = document.getElementById("commentsList");
+  
+  onSnapshot(collection(db, "tools", toolId, "comments"), snap => {
     
-    const list = document.getElementById("commentsList");
+    const comments = [];
     
-    onSnapshot(collection(db, "tools", toolId, "comments"), snap => {
-        
-        list.innerHTML = "";
-        
-        snap.forEach(d => {
-            const c = d.data();
-            const id = d.id;
-            
-            const currentUser = auth.currentUser;
-            if (!currentUser) return;
-            
-            const isCommentOwner = currentUser.uid === c.uid;
-            const isToolOwner = currentUser.uid === toolOwnerId;
-            
-            const canDelete = isCommentOwner || isToolOwner;
-            const canEdit = isCommentOwner;
-            
-            const div = document.createElement("div");
-            div.className = "comment";
-            
-            div.innerHTML = `
-        <b>${c.owner}</b>
-        <p>${c.text}</p>
-
-        <div class="actions">
-          ${canEdit ? `<button class="edit-btn">Edit</button>` : ""}
-          ${canDelete ? `<button class="del-btn">Delete</button>` : ""}
-        </div>
-      `;
-            
-            if (canDelete) {
-                div.querySelector(".del-btn").onclick = async () => {
-                    await deleteDoc(doc(db, "tools", toolId, "comments", id));
-                };
-            }
-            
-            if (canEdit) {
-                div.querySelector(".edit-btn").onclick = async () => {
-                    const newText = prompt("Edit comment:", c.text);
-                    if (newText && newText.trim()) {
-                        await updateDoc(doc(db, "tools", toolId, "comments", id), {
-                            text: newText.trim()
-                        });
-                    }
-                };
-            }
-            
-            list.appendChild(div);
-        });
-        
+    snap.forEach(d => {
+      comments.push({ id: d.id, ...d.data() });
     });
-}
+    
+    // 🔥 الأحدث فوق
+    comments.sort((a, b) =>
+      (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0)
+    );
+    
+    list.innerHTML = "";
+    
+    comments.forEach(c => {
+      
+      const currentUser = auth.currentUser;
+      if (!currentUser) return;
+      
+      const isCommentOwner = currentUser.uid === c.uid;
+      const isToolOwner = currentUser.uid === toolOwnerId;
+      
+      const canDelete = isCommentOwner || isToolOwner;
+      
+      const div = document.createElement("div");
+      div.className = "comment";
+      
+      div.innerHTML = `
+<b>${c.owner}</b>
+<p>${c.text}</p>
 
+<small>
+  ${c.createdAt?.toDate
+  ? new Date(c.createdAt.toDate()).toLocaleString()
+  : "Just now"}
+</small>
+
+<button class="like-comment-btn">
+  <i class="fa fa-heart"></i>
+  <span>${c.likes || 0}</span>
+</button>
+
+<div class="actions">
+  ${isCommentOwner ? `<button class="edit-btn">Edit</button>` : ""}
+  ${canDelete ? `<button class="del-btn">Delete</button>` : ""}
+</div>
+`;
+      
+      // =======================
+      // ❤️ LIKE SYSTEM (IMPORTANT)
+      // =======================
+      const likeBtn = div.querySelector(".like-comment-btn");
+      
+      if (likeBtn) {
+        likeBtn.onclick = async () => {
+          const uid = auth.currentUser.uid;
+          
+          const ref = doc(db, "tools", toolId, "comments", c.id);
+          const snap = await getDoc(ref);
+          const data = snap.data();
+          
+          const likedBy = data.likedBy || [];
+          const likes = data.likes || 0;
+          
+          const alreadyLiked = likedBy.includes(uid);
+          
+          if (alreadyLiked) {
+            await updateDoc(ref, {
+              likes: likes - 1,
+              likedBy: likedBy.filter(u => u !== uid)
+            });
+          } else {
+            await updateDoc(ref, {
+              likes: likes + 1,
+              likedBy: [...likedBy, uid]
+            });
+          }
+        };
+      }
+      
+      // delete
+      if (canDelete) {
+        div.querySelector(".del-btn").onclick = async () => {
+          await deleteDoc(doc(db, "tools", toolId, "comments", c.id));
+        };
+      }
+      
+      // edit
+      if (isCommentOwner) {
+        div.querySelector(".edit-btn").onclick = async () => {
+          const newText = prompt("Edit comment:", c.text);
+          if (newText?.trim()) {
+            await updateDoc(doc(db, "tools", toolId, "comments", c.id), {
+              text: newText.trim()
+            });
+          }
+        };
+      }
+      
+      list.appendChild(div);
+    });
+    
+  });
+}
 function exportTool(t) {
   
   const escapeJS = (code = "") =>
