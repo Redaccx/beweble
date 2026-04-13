@@ -479,6 +479,32 @@ white-space: nowrap;
   background: none !important;
   box-shadow: none !important;
 }
+.status-dot{
+  position:absolute;
+  top:10px;
+  right:10px; /* 👈 بدل left */
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  box-shadow:0 0 8px currentColor;
+}
+
+/* الحالات */
+.status-green{
+  background:#22c55e;
+  color:#22c55e;
+}
+
+.status-yellow{
+  background:#facc15;
+  color:#facc15;
+}
+
+.status-red{
+  background:#ef4444;
+  color:#ef4444;
+}
+
 </style>
 </head>
 
@@ -520,6 +546,11 @@ white-space: nowrap;
   <option value="private">Private</option>
 </select>
 
+<select id="status">
+  <option value="green">🟢 Active</option>
+  <option value="yellow">🟡 Maintenance</option>
+  <option value="red">🔴 Stopped</option>
+</select>
 <input id="password" placeholder="Password (required for private)" style="display:none;">
 
 <textarea id="html" placeholder="HTML"></textarea>
@@ -531,6 +562,8 @@ white-space: nowrap;
 
 </div>
 </div>
+
+
 <div id="commentPopup" class="popup">
     <div class="popup-content">
         
@@ -765,14 +798,15 @@ owner:user.email,
 visibility,
 password: visibility === "private" ?
   document.getElementById("password").value :
-  null
+  null,
+  status: document.getElementById("status").value
 };
 
 if(editingId){
 await updateDoc(doc(db,"tools",editingId),data);
 editingId=null;
 }else{
-await addDoc(collection(db, "tools", currentToolId, "comments"), {
+await addDoc(collection(db, "tools"), data, {
   text,
   uid,
   owner: auth.currentUser.email,
@@ -857,6 +891,7 @@ if (filter === "all") {
   }
   
 card.innerHTML = `
+<div class="status-dot status-${t.status || 'green'}"></div>
   <h3>${t.name}</h3>
 
   <div class="meta">
