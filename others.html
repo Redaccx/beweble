@@ -727,7 +727,7 @@ const likeBtn = card.querySelector(".like-btn");
 
 if (likeBtn) {
   likeBtn.onclick = async () => {
-  const uid = auth.currentUser.uid;
+  const uid = currentUser.uid;
   
   const ref = doc(db, "tools", toolId, "comments", c.id);
   const snap = await getDoc(ref);
@@ -738,16 +738,15 @@ if (likeBtn) {
   
   const alreadyLiked = likedBy.includes(uid);
   
-  const icon = likeBtn.querySelector("i"); // 👈 هون المكان الصحيح
-  
   if (alreadyLiked) {
     await updateDoc(ref, {
-      likes: likes - 1,
+      likes: Math.max(0, likes - 1),
       likedBy: likedBy.filter(u => u !== uid)
     });
     
     icon.classList.remove("fa-heart");
     icon.classList.add("fa-heart-o");
+    
   } else {
     await updateDoc(ref, {
       likes: likes + 1,
