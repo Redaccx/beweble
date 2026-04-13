@@ -22,6 +22,8 @@ justify-content:center;
 background:#0f172a;
 font-size:18px;
 z-index:9999;
+flex-direction:column;
+gap:10px;
 }
 
 #content{
@@ -36,15 +38,29 @@ border:none;
 background:white;
 border-radius:10px;
 }
+
+input{
+padding:10px;
+border-radius:8px;
+border:none;
+outline:none;
+}
+
+button{
+padding:10px 14px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+background:#8a2be2;
+color:white;
+}
 </style>
 </head>
 
 <body>
 
-<!-- 🔐 LOCK SCREEN -->
-<div id="authOverlay">Checking login...</div>
+<div id="authOverlay">Checking...</div>
 
-<!-- 🔥 CONTENT -->
 <div id="content">
 <iframe id="frame"></iframe>
 </div>
@@ -53,11 +69,7 @@ border-radius:10px;
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import {
-getFirestore,
-doc,
-getDoc
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
 apiKey: "AIzaSyAgqj5rWFXuwldXm5-yFZj0POdS6rRYepo",
@@ -69,21 +81,22 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-const params = new URLSearchParams(window.location.search);
-const id = params.get("id");
+const id = new URLSearchParams(location.search).get("id");
 
-onAuthStateChanged(auth, async (user) => {
+let toolData = null;
 
 const overlay = document.getElementById("authOverlay");
 const content = document.getElementById("content");
 
+onAuthStateChanged(auth, async (user) => {
+
 if (!user) {
-window.location.href = "index.html";
+location.href = "index.html";
 return;
 }
 
 if (!id) {
-overlay.innerText = "No tool ID found";
+overlay.innerText = "No tool ID";
 return;
 }
 
@@ -94,13 +107,25 @@ overlay.innerText = "Tool not found";
 return;
 }
 
-const t = snap.data();
+toolData = snap.data();
 
-// 🔐 private check
-if (t.visibility === "private" && t.uid !== user.uid) {
-overlay.innerText = "This tool is private";
+// 🔐 PRIVATE
+if (toolData.visibility === "private") {
+
+const pass = prompt("Enter password:");
+
+if (pass !== toolData.password) {
+overlay.innerText = "Wrong password";
 return;
 }
+}
+
+// ✔ PUBLIC أو صحيح password
+showTool();
+
+});
+
+function showTool(){
 
 overlay.style.display = "none";
 content.style.display = "block";
@@ -113,17 +138,17 @@ docFrame.write(`
 <!DOCTYPE html>
 <html>
 <head>
-<style>${t.css || ""}</style>
+<style>${toolData.css || ""}</style>
 </head>
 <body>
-${t.html || ""}
-<script>${t.js || ""}<\/script>
+${toolData.html || ""}
+<script>${toolData.js || ""}<\/script>
 </body>
 </html>
 `);
 docFrame.close();
 
-});
+}
 
 </script>
 
