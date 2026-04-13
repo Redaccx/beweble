@@ -321,7 +321,7 @@ body {
 	text-shadow: 0 0 5px rgba(96, 165, 250, 0.4), 0 0 10px rgba(167, 139, 250, 0.3);
 }
 .input-container {
-	width: 100%;
+	width: 95%;
 	max-width: 1500px;
 	align-self: center;
 	padding: 12px 0;
@@ -872,7 +872,7 @@ width:355px;
 		padding-right: 20px;
 	}
 	.message {
-		max-width: 100%;
+		max-width: 80%;
 		padding: 10px 14px;
 		font-size: 0.9rem;
 	}
