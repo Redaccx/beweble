@@ -606,24 +606,44 @@ if (exportBtn) exportBtn.onclick = () => exportTool(t);
 }
 
 function exportTool(t) {
-  const data = {
-    name: t.name,
-    desc: t.desc,
-    html: t.html,
-    css: t.css,
-    js: t.js,
-    visibility: t.visibility
-  };
   
-  const blob = new Blob([JSON.stringify(data, null, 2)], {
-    type: "application/json"
-  });
+  const escapeJS = (code = "") =>
+    code.replace(/<\/script>/g, "<\\/script>");
   
+  const htmlContent = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>${t.name || "tool"}</title>
+
+<style>
+${t.css || ""}
+</style>
+</head>
+
+<body>
+
+${t.html || ""}
+
+<script>
+try {
+${escapeJS(t.js || "")}
+} catch (e) {
+  console.error(e);
+}
+<\/script>
+
+</body>
+</html>
+`;
+  
+  const blob = new Blob([htmlContent], { type: "text/html" });
   const url = URL.createObjectURL(blob);
   
   const a = document.createElement("a");
   a.href = url;
-  a.download = `${t.name || "tool"}.json`;
+  a.download = "index.html";
   a.click();
   
   URL.revokeObjectURL(url);
