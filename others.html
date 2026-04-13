@@ -623,8 +623,8 @@ if (filter === "all") {
   <button class="run-btn">Run</button>
   <button class="share-btn"><i class="fa fa-share"></i></button>
  <button class="export-btn">
-  <i class="fa fa-download"></i>
-<button class="comment-btn">View Comments</button>
+  <i class="fa fa-download"></i></button>
+
 `;
   
   if (isMine && filter === "mine") {
@@ -648,7 +648,7 @@ card.innerHTML = `
 
   <div class="small">
     <i class="fa ${t.visibility === 'private' ? 'fa-lock' : 'fa-unlock'}"></i>
-    ${t.visibility === 'private' ? 'private' : 'public'}
+    ${t.visibility}
   </div>
 
   <div class="small">
@@ -657,18 +657,23 @@ card.innerHTML = `
 
   <div class="actions">${actions}</div>
 
-  <!-- 👇 الزر بالنص -->
   <button class="comment-btn">View Comments</button>
 `;
   card.querySelector(".run-btn").onclick = () => runTool(t, id);
   card.querySelector(".share-btn").onclick = () => {
-  const url = `${window.location.origin}/view.html?id=${id}`;
-  card.querySelector(".comment-btn").onclick = () => openComments(id, t.uid);
-  
-  navigator.clipboard.writeText(url)
-    .then(() => alert("Link copied!"))
-    .catch(() => prompt("Copy link:", url));
+    const url = `${window.location.origin}/view.html?id=${id}`;
+    
+    navigator.clipboard.writeText(url)
+        .then(() => alert("Link copied!"))
+        .catch(() => prompt("Copy link:", url));
 };
+  const commentBtn = card.querySelector(".comment-btn");
+
+if (commentBtn) {
+    commentBtn.onclick = () => {
+        openComments(id, t.uid);
+    };
+}
 const exportBtn = card.querySelector(".export-btn");
 if (exportBtn) exportBtn.onclick = () => exportTool(t);
 
@@ -721,11 +726,13 @@ function loadComments(toolId) {
             const id = d.id;
             
             const currentUser = auth.currentUser;
+            if (!currentUser) return;
             
             const isCommentOwner = currentUser.uid === c.uid;
             const isToolOwner = currentUser.uid === toolOwnerId;
             
             const canDelete = isCommentOwner || isToolOwner;
+            const canEdit = isCommentOwner;
             
             const div = document.createElement("div");
             div.className = "comment";
@@ -735,29 +742,23 @@ function loadComments(toolId) {
         <p>${c.text}</p>
 
         <div class="actions">
-          ${
-            canDelete ? `
-              ${isCommentOwner ? `<button class="edit-btn">Edit</button>` : ""}
-              <button class="del-btn">Delete</button>
-            ` : ""
-          }
+          ${canEdit ? `<button class="edit-btn">Edit</button>` : ""}
+          ${canDelete ? `<button class="del-btn">Delete</button>` : ""}
         </div>
       `;
             
-            // حذف
             if (canDelete) {
                 div.querySelector(".del-btn").onclick = async () => {
                     await deleteDoc(doc(db, "tools", toolId, "comments", id));
                 };
             }
             
-            // تعديل (فقط صاحب التعليق)
-            if (isCommentOwner) {
+            if (canEdit) {
                 div.querySelector(".edit-btn").onclick = async () => {
                     const newText = prompt("Edit comment:", c.text);
-                    if (newText) {
+                    if (newText && newText.trim()) {
                         await updateDoc(doc(db, "tools", toolId, "comments", id), {
-                            text: newText
+                            text: newText.trim()
                         });
                     }
                 };
@@ -767,7 +768,6 @@ function loadComments(toolId) {
         });
         
     });
-    
 }
 
 function exportTool(t) {
