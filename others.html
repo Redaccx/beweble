@@ -588,43 +588,46 @@ white-space: nowrap;
 </div>
 
 </div>
+<footer style="
+  position:fixed;
+  bottom:0;
+  left:0;
+  width:100%;
+  text-align:center;
+  padding:16px;
+  font-size:13px;
+  color:#a1a1aa;
+  background:rgba(2,6,23,0.85);
+  backdrop-filter:blur(12px);
+  border-top:1px solid rgba(255,255,255,0.08);
+  box-shadow:0 -5px 25px rgba(0,0,0,0.7);
+  z-index:100;
+">
+  © 2026 
+  <span style="
+    font-weight:bold;
+    background:linear-gradient(90deg,#8a2be2,#00f5ff);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    animation: glow 3s ease-in-out infinite;
+  ">
+    Beweble AI
+  </span> 
+  All Rights Reserved
+</footer>
 
+<style>
+@keyframes glow {
+  0% {filter: brightness(1);}
+  50% {filter: brightness(1.6);}
+  100% {filter: brightness(1);}
+}
+</style>
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import {
-  getFirestore,
-  collection,
-  addDoc,
-  onSnapshot,
-  deleteDoc,
-  doc,
-  serverTimestamp,
-  updateDoc,
-  query,
-  where,
-  increment,
-  getDocs,
-  getDoc
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-const firebaseConfig = {
-apiKey: "AIzaSyAgqj5rWFXuwldXm5-yFZj0POdS6rRYepo",
-authDomain: "support-c1836.firebaseapp.com",
-projectId: "support-c1836"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-let filter = "all";
-let searchText = "";
-let unsubscribe = null;
-let editingId = null;
-let currentToolId = null;
-let toolOwnerId = null;
+function _0xad69(){const _0x5ae72c=['AIzaSyAgqj5rWFXuwldXm5-yFZj0POdS6rRYepo','support-c1836','1149442JoSFKD','6632514IHEzlW','767057sKRJCM','3NuFFVc','2456234PhFMQF','support-c1836.firebaseapp.com','1919601CxquYa','8TWSgaT','3474330SyMnMA','3432140dKeyAP'];_0xad69=function(){return _0x5ae72c;};return _0xad69();}const _0x1e8173=_0x3273;(function(_0x5df19f,_0x162e80){const _0x17609d=_0x3273,_0x19c9c4=_0x5df19f();while(!![]){try{const _0x15c25d=parseInt(_0x17609d(0xc5))/0x1+-parseInt(_0x17609d(0xc7))/0x2+parseInt(_0x17609d(0xc6))/0x3*(parseInt(_0x17609d(0xcc))/0x4)+-parseInt(_0x17609d(0xcb))/0x5+parseInt(_0x17609d(0xc4))/0x6+parseInt(_0x17609d(0xc3))/0x7+parseInt(_0x17609d(0xca))/0x8*(-parseInt(_0x17609d(0xc9))/0x9);if(_0x15c25d===_0x162e80)break;else _0x19c9c4['push'](_0x19c9c4['shift']());}catch(_0x3b429f){_0x19c9c4['push'](_0x19c9c4['shift']());}}}(_0xad69,0xb92ad));function _0x3273(_0x880905,_0x2947c8){_0x880905=_0x880905-0xc3;const _0xad69d7=_0xad69();let _0x3273a5=_0xad69d7[_0x880905];return _0x3273a5;}import{getFirestore,collection,addDoc,onSnapshot,deleteDoc,doc,serverTimestamp,updateDoc,query,where,increment,getDocs,getDoc}from'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';const firebaseConfig={'apiKey':_0x1e8173(0xcd),'authDomain':_0x1e8173(0xc8),'projectId':_0x1e8173(0xce)},app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app);let filter='all',searchText='',unsubscribe=null,editingId=null,currentToolId=null,toolOwnerId=null;
 
 /* AUTH CHECK */
 onAuthStateChanged(auth, user => {
@@ -1028,13 +1031,12 @@ function loadComments(toolId) {
       `;
       
       // =======================
-      // ❤️ LIKE SYSTEM (FIXED)
+      // ❤️ LIKE SYSTEM
       // =======================
       const likeBtn = div.querySelector(".like-comment-btn");
       const icon = likeBtn.querySelector("i");
-      const count = likeBtn.querySelector("span");
       
-      // حالة القلب عند التحميل
+      // 👇 حالة القلب عند التحميل
       if (c.likedBy?.includes(currentUser.uid)) {
         icon.classList.remove("fa-heart-o");
         icon.classList.add("fa-heart");
@@ -1043,43 +1045,43 @@ function loadComments(toolId) {
       likeBtn.onclick = async () => {
         const uid = currentUser.uid;
         
-        let likedBy = c.likedBy || [];
-        let likes = c.likes || 0;
+        const ref = doc(db, "tools", toolId, "comments", c.id);
+        const snap = await getDoc(ref);
+        const data = snap.data();
+        
+        const likedBy = data.likedBy || [];
+        const likes = data.likes || 0;
         
         const alreadyLiked = likedBy.includes(uid);
         
         if (alreadyLiked) {
-          likedBy = likedBy.filter(u => u !== uid);
-          likes = Math.max(0, likes - 1);
+          await updateDoc(ref, {
+            likes: likes - 1,
+            likedBy: likedBy.filter(u => u !== uid)
+          });
           
           icon.classList.remove("fa-heart");
           icon.classList.add("fa-heart-o");
           
         } else {
-          likedBy.push(uid);
-          likes += 1;
+          await updateDoc(ref, {
+            likes: likes + 1,
+            likedBy: [...likedBy, uid]
+          });
           
           icon.classList.remove("fa-heart-o");
           icon.classList.add("fa-heart");
         }
-        
-        // 🔥 تحديث فوري للواجهة
-        count.innerText = likes;
-        
-        await updateDoc(doc(db, "tools", toolId, "comments", c.id), {
-          likes,
-          likedBy
-        });
       };
       
-      // 🗑 DELETE
+      // delete
       if (canDelete) {
         div.querySelector(".del-btn").onclick = async () => {
           await deleteDoc(doc(db, "tools", toolId, "comments", c.id));
         };
       }
       
-      // ✏️ EDIT
+      // edit
       if (isCommentOwner) {
         div.querySelector(".edit-btn").onclick = async () => {
           const newText = prompt("Edit comment:", c.text);
