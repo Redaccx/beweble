@@ -173,8 +173,8 @@ font-size:13px;
 }
 
 .run-btn{background:linear-gradient(90deg, #8a2be2, #00f5ff);}
-.edit-btn{background: none !important;}
-.del-btn{background: none !important;}
+.edit-btn{background:linear-gradient(90deg, green, #00f5ff);}
+.del-btn{background: linear-gradient(90deg, #8a2be2, red);}
 
 .run-btn:hover,
 .edit-btn:hover,
@@ -211,7 +211,7 @@ white-space: nowrap;
   color: #facc15;
 }
 .share-btn {
-  background: linear-gradient(135deg, #10b981, #059669);
+  background:linear-gradient(90deg, green, #00f5ff);
   color: white;
   padding: 7px 12px;
   border-radius: 10px;
@@ -225,7 +225,7 @@ white-space: nowrap;
 }
 
 .export-btn{
-  background: none !important;
+  background:linear-gradient(90deg, green, #00f5ff);
   color:white;
   padding:7px 12px;
   border-radius:10px;
@@ -837,174 +837,142 @@ openView(t.html,t.css,t.js);
 }
 
 /* LOAD */
-function loadTools(){
-
-if(unsubscribe) unsubscribe();
-
-unsubscribe=onSnapshot(collection(db,"tools"),snap=>{
-
-const list=document.getElementById("list");
-list.innerHTML="";
-
-snap.forEach(d => {
+function loadTools() {
   
-  const t = d.data();
-  const id = d.id;
+  if (unsubscribe) unsubscribe();
   
-  const textMatch =
-    (t.name?.toLowerCase().includes(searchText) ||
-      t.desc?.toLowerCase().includes(searchText));
-  
-  const isMine = auth.currentUser?.uid === t.uid;
-  const isPublic = t.visibility === "public";
-  
-  if (filter === "mine" && !isMine) return;
-  // show everything in "all"
-if (filter === "all") {
-  // لا تخفي شيء
-} else {
-  if (filter === "mine" && !isMine) return;
-  if (filter === "public" && !isPublic) return;
-}
-  
-  if (searchText && !textMatch) return;
-  
-  const card = document.createElement("div");
-  card.className = "card";
-  if (filter === "mine") {
-  card.classList.add("big");
-}
-  let actions = `
-  <button class="run-btn">Run</button>
-  <button class="share-btn"><i class="fa fa-share"></i></button>
- <button class="export-btn">
-  <i class="fa fa-download"></i></button>
-
-`;
-  
-  if (isMine && filter === "mine") {
-    actions += `
-      <button class="edit-btn">Edit</button>
-      <button class="del-btn">Delete</button>
-      <button class="export-btn">Export</button>
-    `;
-  }
-  
-card.innerHTML = `
-<div class="status-dot status-${t.status || 'green'}"></div>
-  <h3>${t.name}</h3>
-
-  <div class="meta">
-    <i class="fa fa-user"></i> ${t.owner}
-  </div>
-
-  <div class="small">
-    <i class="fa fa-eye"></i> ${t.views || 0} views
-  </div>
-
-  <div class="small">
-    <i class="fa ${t.visibility === 'private' ? 'fa-lock' : 'fa-unlock'}"></i>
-    ${t.visibility}
-  </div>
-
-  <div class="small">
-    <i class="fa fa-align-left"></i> ${t.desc || ""}
-  </div>
-
-  <div class="actions">${actions}</div>
-
-
-  <button class="comment-btn">View Comments</button>
-`;
-  card.querySelector(".run-btn").onclick = () => runTool(t, id);
-  card.querySelector(".share-btn").onclick = () => {
-    const url = `${window.location.origin}/view.html?id=${id}`;
+  unsubscribe = onSnapshot(collection(db, "tools"), snap => {
     
-    navigator.clipboard.writeText(url)
-        .then(() => alert("Link copied!"))
-        .catch(() => prompt("Copy link:", url));
-};
-  const commentBtn = card.querySelector(".comment-btn");
-
-if (commentBtn) {
-    commentBtn.onclick = () => {
-        openComments(id, t.uid);
-    };
-}
-const exportBtn = card.querySelector(".export-btn");
-if (exportBtn) exportBtn.onclick = () => exportTool(t);
-
-const likeBtn = card.querySelector(".like-btn");
-
-if (likeBtn) {
-  likeBtn.onclick = async () => {
-  const uid = currentUser.uid;
-  
-  const ref = doc(db, "tools", toolId, "comments", c.id);
-  const snap = await getDoc(ref);
-  const data = snap.data();
-  
-  const likedBy = data.likedBy || [];
-  const likes = data.likes || 0;
-  
-  const alreadyLiked = likedBy.includes(uid);
-  
-  if (alreadyLiked) {
-    await updateDoc(ref, {
-      likes: Math.max(0, likes - 1),
-      likedBy: likedBy.filter(u => u !== uid)
-    });
+    const list = document.getElementById("list");
+    list.innerHTML = "";
     
-    icon.classList.remove("fa-heart");
-    icon.classList.add("fa-heart-o");
-    
-  } else {
-    await updateDoc(ref, {
-      likes: likes + 1,
-      likedBy: [...likedBy, uid]
-    });
-    
-    icon.classList.remove("fa-heart-o");
-    icon.classList.add("fa-heart");
-  }
-};
-}
-
-  if (isMine && filter === "mine") {
-    card.querySelector(".edit-btn").onclick = () => {
-      document.getElementById("visibility").value = t.visibility;
+    snap.forEach(d => {
       
-      if (t.visibility === "private") {
-        document.getElementById("password").style.display = "block";
-        document.getElementById("password").value = t.password || "";
-      } else {
-        document.getElementById("password").style.display = "none";
+      const t = d.data();
+      const id = d.id;
+      
+      const textMatch =
+        (t.name?.toLowerCase().includes(searchText) ||
+          t.desc?.toLowerCase().includes(searchText));
+      
+      const isMine = auth.currentUser?.uid === t.uid;
+      const isPublic = t.visibility === "public";
+      
+      if (filter === "mine" && !isMine) return;
+      
+      if (filter !== "all") {
+        if (filter === "mine" && !isMine) return;
+        if (filter === "public" && !isPublic) return;
       }
       
+      if (searchText && !textMatch) return;
       
+      const card = document.createElement("div");
+      card.className = "card";
       
-      editingId = id;
+      if (filter === "mine") {
+        card.classList.add("big");
+      }
       
-      document.getElementById("name").value = t.name;
-      document.getElementById("desc").value = t.desc || "";
-      document.getElementById("html").value = t.html;
-      document.getElementById("css").value = t.css;
-      document.getElementById("js").value = t.js;
+      let actions = `
+    <button class="run-btn">Run</button>
+    <button class="share-btn"><i class="fa fa-share"></i></button>
+    <button class="export-btn"><i class="fa fa-download"></i></button>
+  `;
       
-      updateWordCount();
-      openPopup();
-    };
-    
-    card.querySelector(".del-btn").onclick = async () => {
-      await deleteDoc(doc(db, "tools", id));
-    };
-  }
-  
-  list.appendChild(card);
-  
-});
+      if (isMine && filter === "mine") {
+        actions += `
+      <button class="edit-btn">Edit</button>
+      <button class="del-btn">Delete</button>
+    `;
+      }
+      
+      card.innerHTML = `
+    <div class="status-dot status-${t.status || 'green'}"></div>
 
-});
+    <h3>${t.name}</h3>
+
+    <div class="meta">
+      <i class="fa fa-user"></i> ${t.owner}
+    </div>
+
+    <div class="small">
+      <i class="fa fa-eye"></i> ${t.views || 0} views
+    </div>
+
+    <div class="small">
+      <i class="fa ${t.visibility === 'private' ? 'fa-lock' : 'fa-unlock'}"></i>
+      ${t.visibility}
+    </div>
+
+    <div class="small">
+      <i class="fa fa-align-left"></i> ${t.desc || ""}
+    </div>
+
+    <div class="actions">${actions}</div>
+
+    <button class="comment-btn">View Comments</button>
+  `;
+      
+      // ▶️ RUN
+      card.querySelector(".run-btn").onclick = () => runTool(t, id);
+      
+      // 🔗 SHARE
+      card.querySelector(".share-btn").onclick = () => {
+        const url = `${window.location.origin}/view.html?id=${id}`;
+        
+        navigator.clipboard.writeText(url)
+          .then(() => alert("Link copied!"))
+          .catch(() => prompt("Copy link:", url));
+      };
+      
+      // 💬 COMMENTS
+      const commentBtn = card.querySelector(".comment-btn");
+      if (commentBtn) {
+        commentBtn.onclick = () => openComments(id, t.uid);
+      }
+      
+      // 📥 EXPORT
+      const exportBtn = card.querySelector(".export-btn");
+      if (exportBtn) {
+        exportBtn.onclick = () => exportTool(t);
+      }
+      
+      // ✏️ EDIT + 🗑 DELETE
+      if (isMine && filter === "mine") {
+        
+        card.querySelector(".edit-btn").onclick = () => {
+          document.getElementById("visibility").value = t.visibility;
+          
+          if (t.visibility === "private") {
+            document.getElementById("password").style.display = "block";
+            document.getElementById("password").value = t.password || "";
+          } else {
+            document.getElementById("password").style.display = "none";
+          }
+          
+          editingId = id;
+          
+          document.getElementById("name").value = t.name;
+          document.getElementById("desc").value = t.desc || "";
+          document.getElementById("html").value = t.html;
+          document.getElementById("css").value = t.css;
+          document.getElementById("js").value = t.js;
+          
+          updateWordCount();
+          openPopup();
+        };
+        
+        card.querySelector(".del-btn").onclick = async () => {
+          await deleteDoc(doc(db, "tools", id));
+        };
+      }
+      
+      list.appendChild(card);
+      
+    });
+    
+  });
 }
 
 function loadComments(toolId) {
@@ -1060,12 +1028,13 @@ function loadComments(toolId) {
       `;
       
       // =======================
-      // ❤️ LIKE SYSTEM
+      // ❤️ LIKE SYSTEM (FIXED)
       // =======================
       const likeBtn = div.querySelector(".like-comment-btn");
       const icon = likeBtn.querySelector("i");
+      const count = likeBtn.querySelector("span");
       
-      // 👇 حالة القلب عند التحميل
+      // حالة القلب عند التحميل
       if (c.likedBy?.includes(currentUser.uid)) {
         icon.classList.remove("fa-heart-o");
         icon.classList.add("fa-heart");
@@ -1074,43 +1043,43 @@ function loadComments(toolId) {
       likeBtn.onclick = async () => {
         const uid = currentUser.uid;
         
-        const ref = doc(db, "tools", toolId, "comments", c.id);
-        const snap = await getDoc(ref);
-        const data = snap.data();
-        
-        const likedBy = data.likedBy || [];
-        const likes = data.likes || 0;
+        let likedBy = c.likedBy || [];
+        let likes = c.likes || 0;
         
         const alreadyLiked = likedBy.includes(uid);
         
         if (alreadyLiked) {
-          await updateDoc(ref, {
-            likes: likes - 1,
-            likedBy: likedBy.filter(u => u !== uid)
-          });
+          likedBy = likedBy.filter(u => u !== uid);
+          likes = Math.max(0, likes - 1);
           
           icon.classList.remove("fa-heart");
           icon.classList.add("fa-heart-o");
           
         } else {
-          await updateDoc(ref, {
-            likes: likes + 1,
-            likedBy: [...likedBy, uid]
-          });
+          likedBy.push(uid);
+          likes += 1;
           
           icon.classList.remove("fa-heart-o");
           icon.classList.add("fa-heart");
         }
+        
+        // 🔥 تحديث فوري للواجهة
+        count.innerText = likes;
+        
+        await updateDoc(doc(db, "tools", toolId, "comments", c.id), {
+          likes,
+          likedBy
+        });
       };
       
-      // delete
+      // 🗑 DELETE
       if (canDelete) {
         div.querySelector(".del-btn").onclick = async () => {
           await deleteDoc(doc(db, "tools", toolId, "comments", c.id));
         };
       }
       
-      // edit
+      // ✏️ EDIT
       if (isCommentOwner) {
         div.querySelector(".edit-btn").onclick = async () => {
           const newText = prompt("Edit comment:", c.text);
