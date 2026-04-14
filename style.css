@@ -321,7 +321,7 @@ body {
 	text-shadow: 0 0 5px rgba(96, 165, 250, 0.4), 0 0 10px rgba(167, 139, 250, 0.3);
 }
 .input-container {
-	width: 96%;
+	width: 100%;
 	max-width: 1500px;
 	align-self: center;
 	padding: 12px 0;
@@ -807,6 +807,7 @@ width:355px;
 	}
 	.input-container {
 		padding: 10px 0;
+		width:363px;
 	}
 	.chat-input-area {
 		border-radius: 16px;
@@ -956,3 +957,4 @@ textarea {
 	height: 1px;
 	opacity: 0;
 }
+
