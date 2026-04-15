@@ -929,7 +929,9 @@ button:hover {
 .special {
   background-color: #ff4d4d; /* لون مختلف لهذا العنصر فقط */
 }
-
+.upload-button i {
+    font-size: 0.95em;
+}
 
 
 </style>
@@ -1155,7 +1157,9 @@ button:hover {
 <div class="input-container">
 
 <div class="file-upload-area">
-<label for="file-input" class="upload-button"> 📎 Attach File </label>
+<label for="file-input" class="upload-button">
+    <i class="fa fa-paperclip"></i> Attach File
+</label>
 <input type="file" id="file-input" multiple accept="*/*">
 <div id="selected-files-display" class="selected-files-display"></div>
 </div>
