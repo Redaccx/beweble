@@ -76,14 +76,24 @@ align-items:center;
 justify-content:center;
 }
 
-.popup-content{
-background:#111827;
-padding:15px;
-width:90%;
-max-width:600px;
-border-radius:10px;
+.popup-content {
+  background: rgba(17, 24, 39, 0.75);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  
+  padding: 15px;
+  width: 90%;
+  max-width: 600px;
+  
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+  
+  /* 🔥 الحل */
+  max-height: 80vh;
+  overflow-y: auto;
 }
-
 textarea{
 width:94%;
 height:80px;
@@ -581,9 +591,10 @@ white-space: nowrap;
 <!-- VIEW -->
 <div id="viewPopup" class="popup">
 <div class="popup-content">
+  <button onclick="closeView()">Close</button>
 <h3>Preview</h3>
 <iframe id="viewFrame" style="width:100%;height:600px;border:none;background:white"></iframe>
-<button onclick="closeView()">Close</button>
+
 </div>
 </div>
 
@@ -623,20 +634,64 @@ white-space: nowrap;
   100% {filter: brightness(1);}
 }
 </style>
+
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-function _0xad69(){const _0x5ae72c=['AIzaSyAgqj5rWFXuwldXm5-yFZj0POdS6rRYepo','support-c1836','1149442JoSFKD','6632514IHEzlW','767057sKRJCM','3NuFFVc','2456234PhFMQF','support-c1836.firebaseapp.com','1919601CxquYa','8TWSgaT','3474330SyMnMA','3432140dKeyAP'];_0xad69=function(){return _0x5ae72c;};return _0xad69();}const _0x1e8173=_0x3273;(function(_0x5df19f,_0x162e80){const _0x17609d=_0x3273,_0x19c9c4=_0x5df19f();while(!![]){try{const _0x15c25d=parseInt(_0x17609d(0xc5))/0x1+-parseInt(_0x17609d(0xc7))/0x2+parseInt(_0x17609d(0xc6))/0x3*(parseInt(_0x17609d(0xcc))/0x4)+-parseInt(_0x17609d(0xcb))/0x5+parseInt(_0x17609d(0xc4))/0x6+parseInt(_0x17609d(0xc3))/0x7+parseInt(_0x17609d(0xca))/0x8*(-parseInt(_0x17609d(0xc9))/0x9);if(_0x15c25d===_0x162e80)break;else _0x19c9c4['push'](_0x19c9c4['shift']());}catch(_0x3b429f){_0x19c9c4['push'](_0x19c9c4['shift']());}}}(_0xad69,0xb92ad));function _0x3273(_0x880905,_0x2947c8){_0x880905=_0x880905-0xc3;const _0xad69d7=_0xad69();let _0x3273a5=_0xad69d7[_0x880905];return _0x3273a5;}import{getFirestore,collection,addDoc,onSnapshot,deleteDoc,doc,serverTimestamp,updateDoc,query,where,increment,getDocs,getDoc}from'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';const firebaseConfig={'apiKey':_0x1e8173(0xcd),'authDomain':_0x1e8173(0xc8),'projectId':_0x1e8173(0xce)},app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app);let filter='all',searchText='',unsubscribe=null,editingId=null,currentToolId=null,toolOwnerId=null;
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  onSnapshot,
+  deleteDoc,
+  doc,
+  serverTimestamp,
+  updateDoc,
+  query,
+  where,
+  orderBy,
+  increment,
+  getDocs,
+  getDoc,
+  setDoc // 🔥 لازم تضيفها
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyAgqj5rWFXuwldXm5-yFZj0POdS6rRYepo",
+authDomain: "support-c1836.firebaseapp.com",
+projectId: "support-c1836"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+let filter = "all";
+let searchText = "";
+let unsubscribe = null;
+let editingId = null;
+let currentToolId = null;
+let toolOwnerId = null;
 
 /* AUTH CHECK */
-onAuthStateChanged(auth, user => {
+onAuthStateChanged(auth, async (user) => {
   const overlay = document.getElementById("authOverlay");
   const appContent = document.getElementById("appContent");
   
   if (!user) {
     window.location.href = "index.html";
     return;
+  }
+  
+  // 🔥 إنشاء username أول مرة فقط
+  const userRef = doc(db, "users", user.uid);
+  const snap = await getDoc(userRef);
+  
+  if (!snap.exists()) {
+    await setDoc(userRef, {
+  username: "User_" + user.uid.slice(0, 6)
+});
   }
   
   overlay.style.display = "none";
@@ -648,7 +703,6 @@ onAuthStateChanged(auth, user => {
     searchText = e.target.value.toLowerCase();
     loadTools();
   });
-  
 });
 
 /* POPUP */
@@ -728,28 +782,24 @@ window.addComment = async () => {
   const text = document.getElementById("newComment").value.trim();
   if (!text) return;
   
-  const uid = auth.currentUser.uid;
+  const user = auth.currentUser;
+  const uid = user.uid;
   
-  const q = query(
-    collection(db, "tools", currentToolId, "comments"),
-    where("uid", "==", uid)
-  );
+  // 🔥 جيب username من Firestore
+  const userSnap = await getDoc(doc(db, "users", uid));
   
-  const snap = await getDocs(q);
-  
-  if (!snap.empty) {
-    alert("You already commented!");
-    return;
-  }
+  const username = userSnap.exists() ?
+    userSnap.data().username :
+    user.email.split("@")[0];
   
   await addDoc(collection(db, "tools", currentToolId, "comments"), {
-  text,
-  uid,
-  owner: auth.currentUser.email,
-  likes: 0,
-  likedBy: [],
-  createdAt: serverTimestamp()
-});
+    text,
+    uid,
+    owner: username, // ✅ هون الاسم الصحيح
+    likes: 0,
+    likedBy: [],
+    createdAt: serverTimestamp()
+  });
   
   document.getElementById("newComment").value = "";
 };
@@ -778,48 +828,54 @@ document.getElementById("wordCount").innerText=text.length+"/30";
 };
 
 /* SAVE */
-window.saveTool=async()=>{
-const user=auth.currentUser;
-if(!user){return;}
-
-const visibility=document.getElementById("visibility").value;
-const password=document.getElementById("password").value;
-
-if(visibility==="private"&&!password){
-alert("Password required");
-return;
-}
-
-const data={
-name:document.getElementById("name").value,
-desc:limitChars(document.getElementById("desc").value,30),
-html:document.getElementById("html").value,
-css:document.getElementById("css").value,
-js:document.getElementById("js").value,
-uid:user.uid,
-owner:user.email,
-visibility,
-password: visibility === "private" ?
-  document.getElementById("password").value :
-  null,
-  status: document.getElementById("status").value
-};
-
-if(editingId){
-await updateDoc(doc(db,"tools",editingId),data);
-editingId=null;
-}else{
-await addDoc(collection(db, "tools"), data, {
-  text,
-  uid,
-  owner: auth.currentUser.email,
-  likes: 0,
-  likedBy: [],
-  createdAt: serverTimestamp()
-});
-}
-
-closePopup();
+window.saveTool = async () => {
+  const user = auth.currentUser;
+  if (!user) return;
+  
+  const visibility = document.getElementById("visibility").value;
+  const password = document.getElementById("password").value;
+  
+  if (visibility === "private" && !password) {
+    alert("Password required");
+    return;
+  }
+  
+  // 🔥 جلب username من Firestore
+  const userSnap = await getDoc(doc(db, "users", user.uid));
+  const username =
+    userSnap.exists() ?
+    userSnap.data().username :
+    user.email.split("@")[0];
+  
+  const data = {
+    name: document.getElementById("name").value,
+    desc: limitChars(document.getElementById("desc").value, 30),
+    html: document.getElementById("html").value,
+    css: document.getElementById("css").value,
+    js: document.getElementById("js").value,
+    ownerId: user.uid,  
+    ownerName: username,
+  uid: user.uid,
+  email: user.email,
+    visibility,
+    password: visibility === "private" ? password : null,
+    status: document.getElementById("status").value
+  };
+  
+  if (editingId) {
+    await updateDoc(doc(db, "tools", editingId), data);
+    editingId = null;
+  } else {
+    await addDoc(collection(db, "tools"), {
+      ...data,
+      likes: 0,
+      likedBy: [],
+      views: 0,
+      createdAt: serverTimestamp()
+    });
+  }
+  
+  closePopup();
 };
 
 /* RUN */
@@ -844,258 +900,261 @@ function loadTools() {
   
   if (unsubscribe) unsubscribe();
   
-  unsubscribe = onSnapshot(collection(db, "tools"), snap => {
+  const list = document.getElementById("list");
+  
+  unsubscribe = onSnapshot(
+    collection(db, "tools"),
     
-    const list = document.getElementById("list");
-    list.innerHTML = "";
-    
-    snap.forEach(d => {
+    snap => {
+      list.innerHTML = "";
       
-      const t = d.data();
-      const id = d.id;
-      
-      const textMatch =
-        (t.name?.toLowerCase().includes(searchText) ||
-          t.desc?.toLowerCase().includes(searchText));
-      
-      const isMine = auth.currentUser?.uid === t.uid;
-      const isPublic = t.visibility === "public";
-      
-      if (filter === "mine" && !isMine) return;
-      
-      if (filter !== "all") {
+      snap.forEach(d => {
+        const t = d.data();
+        const id = d.id;
+        
+        // 🔍 search
+        const textMatch =
+          (t.name?.toLowerCase().includes(searchText) ||
+            t.desc?.toLowerCase().includes(searchText));
+        
+       const isMine = t.ownerId === auth.currentUser?.uid;
+        const isPublic = t.visibility === "public";
+        
+        // 🎯 filter (مبسّطة)
         if (filter === "mine" && !isMine) return;
         if (filter === "public" && !isPublic) return;
-      }
-      
-      if (searchText && !textMatch) return;
-      
-      const card = document.createElement("div");
-      card.className = "card";
-      
-      if (filter === "mine") {
-        card.classList.add("big");
-      }
-      
-      let actions = `
-    <button class="run-btn">Run</button>
-    <button class="share-btn"><i class="fa fa-share"></i></button>
-    <button class="export-btn"><i class="fa fa-download"></i></button>
-  `;
-      
-      if (isMine && filter === "mine") {
-        actions += `
-      <button class="edit-btn">Edit</button>
-      <button class="del-btn">Delete</button>
-    `;
-      }
-      
-      card.innerHTML = `
-    <div class="status-dot status-${t.status || 'green'}"></div>
-
-    <h3>${t.name}</h3>
-
-    <div class="meta">
-      <i class="fa fa-user"></i> ${t.owner}
-    </div>
-
-    <div class="small">
-      <i class="fa fa-eye"></i> ${t.views || 0} views
-    </div>
-
-    <div class="small">
-      <i class="fa ${t.visibility === 'private' ? 'fa-lock' : 'fa-unlock'}"></i>
-      ${t.visibility}
-    </div>
-
-    <div class="small">
-      <i class="fa fa-align-left"></i> ${t.desc || ""}
-    </div>
-
-    <div class="actions">${actions}</div>
-
-    <button class="comment-btn">View Comments</button>
-  `;
-      
-      // ▶️ RUN
-      card.querySelector(".run-btn").onclick = () => runTool(t, id);
-      
-      // 🔗 SHARE
-      card.querySelector(".share-btn").onclick = () => {
-        const url = `${window.location.origin}/view.html?id=${id}`;
+        if (searchText && !textMatch) return;
         
-        navigator.clipboard.writeText(url)
-          .then(() => alert("Link copied!"))
-          .catch(() => prompt("Copy link:", url));
-      };
-      
-      // 💬 COMMENTS
-      const commentBtn = card.querySelector(".comment-btn");
-      if (commentBtn) {
-        commentBtn.onclick = () => openComments(id, t.uid);
-      }
-      
-      // 📥 EXPORT
-      const exportBtn = card.querySelector(".export-btn");
-      if (exportBtn) {
-        exportBtn.onclick = () => exportTool(t);
-      }
-      
-      // ✏️ EDIT + 🗑 DELETE
-      if (isMine && filter === "mine") {
+        const card = document.createElement("div");
+        card.className = "card";
         
-        card.querySelector(".edit-btn").onclick = () => {
-          document.getElementById("visibility").value = t.visibility;
+        if (filter === "mine") {
+          card.classList.add("big");
+        }
+        
+        // 🎯 actions
+        let actions = `
+          <button class="run-btn">Run</button>
+          <button class="share-btn"><i class="fa fa-share"></i></button>
+          <button class="export-btn"><i class="fa fa-download"></i></button>
+        `;
+        
+        if (isMine && filter === "mine") {
+          actions += `
+            <button class="edit-btn">Edit</button>
+            <button class="del-btn">Delete</button>
+          `;
+        }
+        
+        // 🧱 UI
+        card.innerHTML = `
+          <div class="status-dot status-${t.status || 'green'}"></div>
+
+          <h3>${t.name}</h3>
+
+          <div class="meta">
+            <i class="fa fa-user"></i> ${t.ownerName || t.owner || "User"}
+          </div>
+
+          <div class="small">
+            <i class="fa fa-eye"></i> ${t.views || 0} views
+          </div>
+
+          <div class="small">
+            <i class="fa ${t.visibility === 'private' ? 'fa-lock' : 'fa-unlock'}"></i>
+            ${t.visibility}
+          </div>
+
+          <div class="small">
+            <i class="fa fa-align-left"></i> ${t.desc || ""}
+          </div>
+
+          <div class="actions">${actions}</div>
+
+          <button class="comment-btn">View Comments</button>
+        `;
+        
+        // ▶️ RUN
+        card.querySelector(".run-btn").onclick = () => runTool(t, id);
+        
+        // 🔗 SHARE
+        card.querySelector(".share-btn").onclick = () => {
+          const url = `${window.location.origin}/view.html?id=${id}`;
           
-          if (t.visibility === "private") {
-            document.getElementById("password").style.display = "block";
-            document.getElementById("password").value = t.password || "";
-          } else {
-            document.getElementById("password").style.display = "none";
-          }
-          
-          editingId = id;
-          
-          document.getElementById("name").value = t.name;
-          document.getElementById("desc").value = t.desc || "";
-          document.getElementById("html").value = t.html;
-          document.getElementById("css").value = t.css;
-          document.getElementById("js").value = t.js;
-          
-          updateWordCount();
-          openPopup();
+          navigator.clipboard.writeText(url)
+            .then(() => alert("Link copied!"))
+            .catch(() => prompt("Copy link:", url));
         };
         
-        card.querySelector(".del-btn").onclick = async () => {
-          await deleteDoc(doc(db, "tools", id));
-        };
-      }
-      
-      list.appendChild(card);
-      
-    });
+        // 💬 COMMENTS
+        card.querySelector(".comment-btn").onclick = () => openComments(id, t.uid);
+        
+        // 📥 EXPORT
+        card.querySelector(".export-btn").onclick = () => exportTool(t);
+        
+        // ✏️ EDIT + 🗑 DELETE
+        if (isMine && filter === "mine") {
+          
+          card.querySelector(".edit-btn").onclick = () => {
+            
+            document.getElementById("visibility").value = t.visibility;
+            
+            if (t.visibility === "private") {
+              document.getElementById("password").style.display = "block";
+              document.getElementById("password").value = t.password || "";
+            } else {
+              document.getElementById("password").style.display = "none";
+            }
+            
+            editingId = id;
+            
+            document.getElementById("name").value = t.name;
+            document.getElementById("desc").value = t.desc || "";
+            document.getElementById("html").value = t.html;
+            document.getElementById("css").value = t.css;
+            document.getElementById("js").value = t.js;
+            
+            updateWordCount();
+            openPopup();
+          };
+          
+          card.querySelector(".del-btn").onclick = async () => {
+            await deleteDoc(doc(db, "tools", id));
+          };
+        }
+        
+        list.appendChild(card);
+      });
+    },
     
-  });
+    // 🔥 مهم جدًا (بيحل errors يلي عندك)
+    err => {
+      console.error("🔥 Tools snapshot error:", err);
+    }
+  );
 }
+
+let unsubscribeComments = null;
 
 function loadComments(toolId) {
   const list = document.getElementById("commentsList");
   
-  onSnapshot(collection(db, "tools", toolId, "comments"), snap => {
-    
-    const comments = [];
-    
-    snap.forEach(d => {
-      comments.push({ id: d.id, ...d.data() });
-    });
-    
-    // الأحدث فوق
-    comments.sort((a, b) =>
-      (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0)
-    );
-    
-    list.innerHTML = "";
-    
-    comments.forEach(c => {
+  // 🧹 امسح listener القديم
+  if (unsubscribeComments) unsubscribeComments();
+  
+  // ⏳ loading
+  list.innerHTML = "Loading...";
+  
+  unsubscribeComments = onSnapshot(
+    query(
+      collection(db, "tools", toolId, "comments"),
+      orderBy("createdAt", "desc")
+    ),
+    snap => {
+      
+      list.innerHTML = "";
       
       const currentUser = auth.currentUser;
-      if (!currentUser) return;
-      
-      const isCommentOwner = currentUser.uid === c.uid;
-      const isToolOwner = currentUser.uid === toolOwnerId;
-      
-      const canDelete = isCommentOwner || isToolOwner;
-      
-      const div = document.createElement("div");
-      div.className = "comment";
-      
-      div.innerHTML = `
-        <b>${c.owner}</b>
-        <p>${c.text}</p>
 
-        <small>
-          ${c.createdAt?.toDate
-            ? new Date(c.createdAt.toDate()).toLocaleString()
-            : "Just now"}
-        </small>
 
-        <button class="like-comment-btn">
-          <i class="fa fa-heart-o"></i>
-          <span>${c.likes || 0}</span>
-        </button>
+      
+      snap.forEach(d => {
+        const c = { id: d.id, ...d.data() };
+        
+        const isCommentOwner = currentUser.uid === c.uid;
+        const isToolOwner = currentUser.uid === toolOwnerId;
+        const canDelete = isCommentOwner || isToolOwner;
+        
+        const div = document.createElement("div");
+        div.className = "comment";
+        
+        div.innerHTML = `
+          <b>${c.owner}</b>
+          <p>${c.text}</p>
 
-        <div class="actions">
-          ${isCommentOwner ? `<button class="edit-btn">Edit</button>` : ""}
-          ${canDelete ? `<button class="del-btn">Delete</button>` : ""}
-        </div>
-      `;
-      
-      // =======================
-      // ❤️ LIKE SYSTEM
-      // =======================
-      const likeBtn = div.querySelector(".like-comment-btn");
-      const icon = likeBtn.querySelector("i");
-      
-      // 👇 حالة القلب عند التحميل
-      if (c.likedBy?.includes(currentUser.uid)) {
-        icon.classList.remove("fa-heart-o");
-        icon.classList.add("fa-heart");
-      }
-      
-      likeBtn.onclick = async () => {
-        const uid = currentUser.uid;
+          <small>
+            ${c.createdAt?.toDate
+              ? new Date(c.createdAt.toDate()).toLocaleString()
+              : "Just now"}
+          </small>
+
+          <button class="like-comment-btn">
+            <i class="fa ${c.likedBy?.includes(currentUser.uid) ? "fa-heart" : "fa-heart-o"}"></i>
+            <span>${c.likes || 0}</span>
+          </button>
+
+          <div class="actions">
+            ${isCommentOwner ? `<button class="edit-btn">Edit</button>` : ""}
+            ${canDelete ? `<button class="del-btn">Delete</button>` : ""}
+          </div>
+        `;
         
-        const ref = doc(db, "tools", toolId, "comments", c.id);
-        const snap = await getDoc(ref);
-        const data = snap.data();
+        // ❤️ LIKE (محمي + سريع)
+        const likeBtn = div.querySelector(".like-comment-btn");
+        const icon = likeBtn.querySelector("i");
+        const count = likeBtn.querySelector("span");
         
-        const likedBy = data.likedBy || [];
-        const likes = data.likes || 0;
-        
-        const alreadyLiked = likedBy.includes(uid);
-        
-        if (alreadyLiked) {
-          await updateDoc(ref, {
-            likes: likes - 1,
-            likedBy: likedBy.filter(u => u !== uid)
-          });
+        likeBtn.onclick = async () => {
+          const uid = currentUser.uid;
           
-          icon.classList.remove("fa-heart");
-          icon.classList.add("fa-heart-o");
+          let likedBy = c.likedBy || [];
+          const alreadyLiked = likedBy.includes(uid);
           
-        } else {
-          await updateDoc(ref, {
-            likes: likes + 1,
-            likedBy: [...likedBy, uid]
-          });
-          
-          icon.classList.remove("fa-heart-o");
-          icon.classList.add("fa-heart");
-        }
-      };
-      
-      // delete
-      if (canDelete) {
-        div.querySelector(".del-btn").onclick = async () => {
-          await deleteDoc(doc(db, "tools", toolId, "comments", c.id));
-        };
-      }
-      
-      // edit
-      if (isCommentOwner) {
-        div.querySelector(".edit-btn").onclick = async () => {
-          const newText = prompt("Edit comment:", c.text);
-          if (newText?.trim()) {
+          if (alreadyLiked) {
+            likedBy = likedBy.filter(u => u !== uid);
+            
+            icon.classList.remove("fa-heart");
+            icon.classList.add("fa-heart-o");
+            
+            count.innerText = Math.max(0, (c.likes || 0) - 1);
+            
             await updateDoc(doc(db, "tools", toolId, "comments", c.id), {
-              text: newText.trim()
+              likes: increment(-1),
+              likedBy
+            });
+            
+          } else {
+            likedBy.push(uid);
+            
+            icon.classList.remove("fa-heart-o");
+            icon.classList.add("fa-heart");
+            
+            count.innerText = (c.likes || 0) + 1;
+            
+            await updateDoc(doc(db, "tools", toolId, "comments", c.id), {
+              likes: increment(1),
+              likedBy
             });
           }
         };
-      }
-      
-      list.appendChild(div);
-    });
-  });
+        
+        // 🗑 DELETE
+        if (canDelete) {
+          div.querySelector(".del-btn").onclick = async () => {
+            await deleteDoc(doc(db, "tools", toolId, "comments", c.id));
+          };
+        }
+        
+        // ✏️ EDIT
+        if (isCommentOwner) {
+          div.querySelector(".edit-btn").onclick = async () => {
+            const newText = prompt("Edit comment:", c.text);
+            if (newText?.trim()) {
+              await updateDoc(doc(db, "tools", toolId, "comments", c.id), {
+                text: newText.trim()
+              });
+            }
+          };
+        }
+        
+        list.appendChild(div);
+      });
+    },
+    err => {
+      console.error("🔥 Comments error:", err);
+      list.innerHTML = "Error loading comments";
+    }
+  );
 }
 function exportTool(t) {
   
@@ -1141,6 +1200,8 @@ ${escapeJS(t.js || "")}
   URL.revokeObjectURL(url);
 }
 </script>
+
+
 
 </body>
 </html>
