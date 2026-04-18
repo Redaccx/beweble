@@ -91,7 +91,7 @@ justify-content:center;
   box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
   
   /* 🔥 الحل */
-  max-height: 80vh;
+  max-height: 70vh;
   overflow-y: auto;
 }
 textarea{
@@ -781,7 +781,7 @@ shhs
 
 <h3 id="popupTitle">Create Tool</h3>
 
-<input id="name" placeholder="Tool Name">
+<input id="name" placeholder="Tool Name" maxlength="20">
 
 <textarea id="desc" placeholder="Description" oninput="updateWordCount()"></textarea>
 <div id="wordCount">0/30</div>
@@ -1565,6 +1565,20 @@ menu.querySelectorAll("button").forEach(btn => {
 document.addEventListener("click", () => {
   menu.classList.remove("show");
 });
+
+const nameInput = document.getElementById("name");
+
+nameInput.addEventListener("input", () => {
+  
+  if (nameInput.value.length > 25) {
+    
+    nameInput.value = nameInput.value.slice(0, 25);
+    
+  }
+  
+});
+
+
 </script>
 
 
