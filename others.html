@@ -7,13 +7,7 @@
 <title>Tools</title>
 
 <style>
-* {
-  box-sizing: border-box;
-}
-
-html, body {
-  width: 100%;
-  overflow-x: hidden;
+body{
 margin:0;
 font-family:Nunito Sans;
 background:#020617;
@@ -86,19 +80,18 @@ justify-content:center;
   background: rgba(17, 24, 39, 0.75);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
+  
   padding: 15px;
+  width: 90%;
+  max-width: 600px;
+  
   border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   
   box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
   
   /* 🔥 الحل */
-    width: 95%;
-  
-  max-width: 600px;
-  
   max-height: 70vh;
-  
   overflow-y: auto;
 }
 textarea{
@@ -123,20 +116,17 @@ gap: 12px;
 #search {
   padding: 10px 14px 10px 36px;
   border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  
+  border: 1px solid rgba(255,255,255,0.06);
+
   background: rgba(17, 24, 39, 0.6);
   backdrop-filter: blur(14px);
-  
+
   color: white;
   font-size: 14px;
   outline: none;
-  
-  width: 315px;
 
-max-width: 100%;
-  /* 🔥 أهم سطر */
-  
+  width: 260px;
+
   transition: all 0.3s ease;
 }
 
@@ -167,31 +157,23 @@ max-width: 100%;
 #search:focus::placeholder {
   opacity: 0.4;
 }
-
-@media (max-width: 600px) {
-  #search {
-    max-width: 100%;
-    width: 100%;
-  }
-}
 .card {
   background: rgba(17, 24, 39, 0.8);
   backdrop-filter: blur(10px);
-  padding: 14px;
+  padding: 16px;
   border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-
   transition: 0.25s ease;
   position: relative;
   overflow: hidden;
+  height:210px;
+  min-height:230px;
+ 
 
   display: flex;
   flex-direction: column;
-  gap: 8px;
-
-  min-height: 200px;
-  height: auto;   /* 🔥 أهم تعديل */
+  gap: 8px; /* 🔥 بدل space-between */
 }
 .card::before{
 content:"";
@@ -209,10 +191,10 @@ transform: translateY(-6px) scale(1.01);
 box-shadow:0 15px 40px rgba(0,0,0,0.7);
 }
 
-.card h3,
-.tool-title {
-  font-size: 16px;
-  word-break: break-word;
+.card h3{
+margin:0;
+font-size:18px;
+color:#00f5ff;
 }
 
 .card.big {
@@ -571,7 +553,7 @@ white-space: normal;
   box-shadow:0 0 8px currentColor;
 }
 
-
+shhs
 
 /* الحالات */
 .status-green{
@@ -791,20 +773,7 @@ white-space: normal;
   white-space: normal;
 }
 
-@media (max-width: 380px) {
-  .container {
-    grid-template-columns: 1fr;
-  }
-  
-  .card {
-    height: auto;
-    min-height: 200px;
-  }
-  
-  #search {
-    width: 160px;
-  }
-}
+
 </style>
 </head>
 
@@ -1473,7 +1442,6 @@ function loadComments(toolId) {
       list.innerHTML = "";
       
       const currentUser = auth.currentUser;
-if (!currentUser) return;
 
 
       
