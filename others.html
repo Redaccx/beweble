@@ -733,6 +733,56 @@ shhs
   top: 17px;
   right: 20px;
 }
+#name {
+  width: 100%;
+  max-width: 260px;
+
+  padding: 10px 14px;
+
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.08);
+
+  background: rgba(17, 24, 39, 0.7);
+  backdrop-filter: blur(12px);
+
+  color: #e5e7eb;
+  font-size: 14px;
+
+  outline: none;           /* 🔥 يمنع الخط الخارجي */
+  box-sizing: border-box;  /* 🔥 يمنع الخروج */
+
+  caret-color: #00f5ff;    /* 🔥 لون المؤشر */
+}
+
+/* 🔥 focus نظيف */
+#name:focus {
+  border-color: #a855f7;
+
+  box-shadow:
+    0 0 0 2px rgba(168, 85, 247, 0.2),
+    0 0 10px rgba(168, 85, 247, 0.25);
+}
+
+.tool-title {
+  margin: 0;
+  font-size: 18px;
+  color: #00f5ff;
+  
+  line-height: 1.3;
+  
+  /* 🔥 أهم شي */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  
+  overflow: hidden;
+  
+  word-break: break-word;
+  overflow-wrap: break-word;
+  
+  /* 🔥 يمنع اختلاف ارتفاع الكروت */
+  min-height: 46px;
+}
 </style>
 </head>
 
@@ -1199,8 +1249,9 @@ if (isMine && filter === "mine") {
         card.innerHTML = `
           <div class="status-dot status-${t.status || 'green'}"></div>
 
-          <h3>${t.name}</h3>
-
+       <h3 class="tool-title">
+  ${formatToolName(t.name)}
+</h3>
           <div class="meta">
             <i class="fa fa-user"></i> ${t.ownerName || t.owner || "User"}
           </div>
@@ -1561,24 +1612,40 @@ menu.querySelectorAll("button").forEach(btn => {
   });
 });
 
-/* سكّر عند الضغط خارجها */
+// =========================
+// CLOSE DROPDOWN ON CLICK
+// =========================
 document.addEventListener("click", () => {
   menu.classList.remove("show");
 });
 
+// =========================
+// TOOL NAME INPUT (1 line + 20 chars)
+// =========================
 const nameInput = document.getElementById("name");
 
+// 🔒 منع Enter + حد 20 حرف
 nameInput.addEventListener("input", () => {
   
-  if (nameInput.value.length > 25) {
-    
-    nameInput.value = nameInput.value.slice(0, 25);
-    
+  let value = nameInput.value;
+  
+  // 🔥 حذف أي سطر جديد (Enter أو لصق)
+  value = value.replace(/\n/g, "");
+  
+  // 🔒 حد أقصى 20 حرف
+  if (value.length > 20) {
+    value = value.slice(0, 20);
   }
   
+  nameInput.value = value;
 });
 
-
+// =========================
+// FORMAT TOOL NAME (optional)
+// =========================
+function formatToolName(name) {
+  return (name || "").trim();
+}
 </script>
 
 
