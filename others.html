@@ -770,18 +770,7 @@ shhs
   
   line-height: 1.3;
   
-  /* 🔥 أهم شي */
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  
-  overflow: hidden;
-  
-  word-break: break-word;
-  overflow-wrap: break-word;
-  
-  /* 🔥 يمنع اختلاف ارتفاع الكروت */
-  min-height: 46px;
+  white-space: normal;
 }
 </style>
 </head>
@@ -1250,7 +1239,7 @@ if (isMine && filter === "mine") {
           <div class="status-dot status-${t.status || 'green'}"></div>
 
        <h3 class="tool-title">
-  ${formatToolName(t.name)}
+  ${formatToolName(t.name || "")}
 </h3>
           <div class="meta">
             <i class="fa fa-user"></i> ${t.ownerName || t.owner || "User"}
@@ -1613,38 +1602,88 @@ menu.querySelectorAll("button").forEach(btn => {
 });
 
 // =========================
-// CLOSE DROPDOWN ON CLICK
-// =========================
-document.addEventListener("click", () => {
-  menu.classList.remove("show");
-});
-
-// =========================
-// TOOL NAME INPUT (1 line + 20 chars)
+// TOOL NAME INPUT CLEAN
 // =========================
 const nameInput = document.getElementById("name");
 
-// 🔒 منع Enter + حد 20 حرف
 nameInput.addEventListener("input", () => {
-  
   let value = nameInput.value;
   
-  // 🔥 حذف أي سطر جديد (Enter أو لصق)
+  // 🔥 منع enter
   value = value.replace(/\n/g, "");
   
-  // 🔒 حد أقصى 20 حرف
-  if (value.length > 20) {
-    value = value.slice(0, 20);
-  }
+  // 🔥 تنظيف المسافات
+  value = value.replace(/\s+/g, " ").trimStart();
   
   nameInput.value = value;
 });
 
+// 🔥 منع paste
+nameInput.addEventListener("paste", (e) => {
+  e.preventDefault();
+  
+  let text = (e.clipboardData || window.clipboardData).getData("text");
+  
+  text = text
+    .replace(/\n/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+  
+  nameInput.value = text;
+});
+
+
 // =========================
-// FORMAT TOOL NAME (optional)
+// TOOL NAME FORMAT (IMPORTANT)
 // =========================
 function formatToolName(name) {
-  return (name || "").trim();
+  if (!name) return "";
+  
+  let clean = name.trim().replace(/\s+/g, " ");
+  let words = clean.split(" ");
+  
+  // =========================
+  // كلمة واحدة
+  // =========================
+  if (words.length === 1) {
+    let word = words[0];
+    
+    if (word.length <= 13) return word;
+    
+    // إذا كلمة وحدة طويلة → نقسمها
+    let mid = Math.floor(word.length / 2);
+    
+    return `
+      ${word.slice(0, mid)}<br>
+      <span style="font-size:14px;opacity:0.8">
+        ${word.slice(mid)}
+      </span>
+    `;
+  }
+  
+  // =========================
+  // أكثر من كلمة
+  // =========================
+  let first = words[0];
+  
+  // 🔥 أول سطر max 13 حرف
+  if (first.length > 13) {
+    let mid = Math.floor(first.length / 2);
+    
+    return `
+      ${first.slice(0, mid)}<br>
+      <span style="font-size:14px;opacity:0.8">
+        ${first.slice(mid)} ${words.slice(1).join(" ")}
+      </span>
+    `;
+  }
+  
+  let rest = words.slice(1).join(" ");
+  
+  return `
+    ${first}<br>
+    <span style="font-size:14px;opacity:0.8">${rest}</span>
+  `;
 }
 </script>
 
