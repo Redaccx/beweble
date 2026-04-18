@@ -772,6 +772,21 @@ shhs
   
   white-space: normal;
 }
+
+@media (max-width: 380px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
+  
+  .card {
+    height: auto;
+    min-height: 200px;
+  }
+  
+  #search {
+    width: 160px;
+  }
+}
 </style>
 </head>
 
@@ -1440,6 +1455,7 @@ function loadComments(toolId) {
       list.innerHTML = "";
       
       const currentUser = auth.currentUser;
+if (!currentUser) return;
 
 
       
