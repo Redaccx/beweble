@@ -112,22 +112,69 @@ grid-template-columns: repeat(2, 1fr);
 gap: 12px;
 }
 
-.card {
-background: rgba(17, 24, 39, 0.8);
-backdrop-filter: blur(10px);
-padding: 16px;
-border-radius: 16px;
-border: 1px solid rgba(255, 255, 255, 0.08);
-box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-transition: 0.25s ease;
-position: relative;
-overflow: hidden;
-height: 185px;
-display:flex;
-flex-direction:column;
-justify-content:space-between;
+
+#search {
+  padding: 10px 14px 10px 36px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.06);
+
+  background: rgba(17, 24, 39, 0.6);
+  backdrop-filter: blur(14px);
+
+  color: white;
+  font-size: 14px;
+  outline: none;
+
+  width: 260px;
+
+  transition: all 0.3s ease;
 }
 
+/* placeholder */
+#search::placeholder {
+  color: #6b7280;
+  transition: 0.2s;
+}
+
+/* hover */
+#search:hover {
+  border-color: rgba(168, 85, 247, 0.4); /* بنفسجي ناعم */
+}
+
+/* 🔥 focus بنفسجي */
+#search:focus {
+  width: 230px;
+  border-color: #a855f7;
+
+  box-shadow:
+    0 0 0 2px rgba(168, 85, 247, 0.2),
+    0 0 18px rgba(168, 85, 247, 0.35);
+
+  background: rgba(17, 24, 39, 0.85);
+}
+
+/* placeholder fade */
+#search:focus::placeholder {
+  opacity: 0.4;
+}
+.card {
+  background: rgba(17, 24, 39, 0.8);
+  backdrop-filter: blur(10px);
+  padding: 16px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  transition: 0.25s ease;
+  position: relative;
+  overflow: hidden;
+  height:210px;
+  min-height:210px;
+ 
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* 🔥 بدل space-between */
+}
 .card::before{
 content:"";
 position:absolute;
@@ -151,7 +198,8 @@ color:#00f5ff;
 }
 
 .card.big {
-  height: 225px;
+  height: 200px;
+  min-height: 210px;
   padding: 20px;
 }
 
@@ -199,10 +247,12 @@ margin-bottom:5px;
 }
 
 #desc {
-height: 40px;
+
 resize: none;
 overflow: hidden;
-white-space: nowrap;
+height: auto;
+
+white-space: normal;
 }
 .fav-btn {
   background: transparent;
@@ -246,6 +296,8 @@ white-space: nowrap;
 .export-btn:hover{
   transform:scale(1.05);
 }
+
+
 
 /* =========================
    POPUP BACKDROP
@@ -491,13 +543,15 @@ white-space: nowrap;
 }
 .status-dot{
   position:absolute;
-  top:10px;
-  right:10px; /* 👈 بدل left */
+  top:17px;
+  right:39px; /* 👈 بدل left */
   width:10px;
   height:10px;
   border-radius:50%;
   box-shadow:0 0 8px currentColor;
 }
+
+shhs
 
 /* الحالات */
 .status-green{
@@ -515,6 +569,168 @@ white-space: nowrap;
   color:#ef4444;
 }
 
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+/* الزر الأساسي */
+.dropbtn {
+  width: 44px;
+  height: 44px;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  border-radius: 14px;
+  
+  background: rgba(17, 24, 39, 0.6);
+  backdrop-filter: blur(14px);
+  
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  
+  color: #a855f7;
+  font-size: 18px;
+  
+  cursor: pointer;
+  
+  transition: 0.25s ease;
+  
+  box-shadow: 0 0 0 rgba(168, 85, 247, 0);
+}
+
+/* hover glow بنفسجي */
+.dropbtn:hover {
+  transform: translateY(-2px) scale(1.05);
+  
+  border-color: rgba(168, 85, 247, 0.5);
+  
+  box-shadow:
+    0 0 12px rgba(168, 85, 247, 0.35),
+    0 0 25px rgba(168, 85, 247, 0.2);
+}
+
+/* القائمة */
+.dropdown-content {
+  position: absolute;
+  top: 115%;
+  right: 0;
+  
+  width: 190px;
+  
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(20px);
+  
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  
+  padding: 8px;
+  
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+  
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  
+  opacity: 0;
+  transform: translateY(-10px) scale(0.98);
+  pointer-events: none;
+  
+  transition: 0.25s ease;
+}
+
+/* show animation */
+.dropdown-content.show {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+/* buttons داخل القائمة */
+.dropdown-content button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  
+  padding: 10px 12px;
+  
+  border: none;
+  border-radius: 12px;
+  
+  background: transparent;
+  color: #e5e7eb;
+  
+  cursor: pointer;
+  
+  transition: 0.2s ease;
+  font-size: 13px;
+}
+
+/* hover item */
+.dropdown-content button:hover {
+  background: rgba(168, 85, 247, 0.12);
+  color: #a855f7;
+  transform: translateX(4px);
+}
+
+/* divider */
+.dropdown-content hr {
+  border: none;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 4px 0;
+}
+
+.tool-menu {
+  position: absolute;
+  top: 10px;
+  right: 10px;  /* 👈 بدل left */
+  left: auto;
+}
+
+.tool-dots {
+  background: rgba(255, 255, 255, 0.05);
+  border: none;
+  color: white;
+  padding: 5px 9px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.tool-box {
+  display: none;
+  position: absolute;
+  top: 40px;
+
+  right: 0;   /* 👈 تفتح على طرف الكارد اليمين */
+  left: auto;
+
+  background: rgba(15, 23, 42, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  z-index: 100;
+}
+.tool-box button {
+  display: block;
+  width: 120px;
+  padding: 8px;
+  background: none;
+  border: none;
+  color: white;
+  text-align: left;
+  cursor: pointer;
+}
+
+.tool-box button:hover {
+  background: rgba(168, 85, 247, 0.2);
+}
+
+.all-card .status-dot {
+  top: 17px;
+  right: 20px;
+}
 </style>
 </head>
 
@@ -528,13 +744,30 @@ white-space: nowrap;
 
 <div class="topbar">
 <div class="left">
-<input id="search" placeholder="Search...">
-<button onclick="setFilter('all')">All</button>
-<button onclick="setFilter('mine')">My Tools</button>
-</div>
+  <input id="search" placeholder="Search...">
+  
+  <div class="dropdown">
+ <button class="dropbtn" onclick="toggleMenu()">
+  <i class="fa fa-bolt"></i>
+</button>
 
-<div class="right">
-<button onclick="openPopup()">+ Add Tool</button>
+<div id="menu" class="dropdown-content">
+  <button onclick="setFilter('all')">
+    <i class="fa fa-globe"></i> All Tools
+  </button>
+  
+  <button onclick="setFilter('mine')">
+    <i class="fa fa-user"></i> My Tools
+  </button>
+  
+  <hr>
+  
+  <button onclick="openPopup()">
+    <i class="fa fa-plus"></i> Add Tool
+  </button>
+</div>
+    </div>
+  </div>
 </div>
 </div>
 
@@ -805,9 +1038,12 @@ window.addComment = async () => {
 };
 
 /* FILTER */
-window.setFilter = (f)=>{
-filter = f;
-loadTools();
+window.setFilter = (f) => {
+  filter = f;
+  
+  closePopup(); // 🔥 هذا السطر الجديد
+  
+  loadTools();
 };
 
 /* WORD LIMIT */
@@ -926,25 +1162,36 @@ function loadTools() {
         if (searchText && !textMatch) return;
         
         const card = document.createElement("div");
-        card.className = "card";
-        
-        if (filter === "mine") {
-          card.classList.add("big");
-        }
+card.className = "card";
+
+if (filter === "mine") {
+  card.classList.add("mine-card");
+} else {
+  card.classList.add("all-card");
+}
         
         // 🎯 actions
         let actions = `
-          <button class="run-btn">Run</button>
-          <button class="share-btn"><i class="fa fa-share"></i></button>
-          <button class="export-btn"><i class="fa fa-download"></i></button>
-        `;
-        
-        if (isMine && filter === "mine") {
-          actions += `
-            <button class="edit-btn">Edit</button>
-            <button class="del-btn">Delete</button>
-          `;
-        }
+  <button class="run-btn">Run</button>
+  <button class="share-btn"><i class="fa fa-share"></i></button>
+  <button class="export-btn"><i class="fa fa-download"></i></button>
+`;
+
+let myMenu = "";
+
+if (isMine && filter === "mine") {
+  myMenu = `
+  <div class="tool-menu">
+    <button class="tool-dots">⋮</button>
+
+    <div class="tool-box">
+      <button class="tool-edit">Edit</button>
+  
+      <button class="tool-delete">Delete</button>
+    </div>
+  </div>
+`;
+}
         
         // 🧱 UI
         card.innerHTML = `
@@ -970,6 +1217,7 @@ function loadTools() {
           </div>
 
           <div class="actions">${actions}</div>
+${myMenu}
 
           <button class="comment-btn">View Comments</button>
         `;
@@ -994,36 +1242,131 @@ function loadTools() {
         
         // ✏️ EDIT + 🗑 DELETE
         if (isMine && filter === "mine") {
-          
-          card.querySelector(".edit-btn").onclick = () => {
-            
-            document.getElementById("visibility").value = t.visibility;
-            
-            if (t.visibility === "private") {
-              document.getElementById("password").style.display = "block";
-              document.getElementById("password").value = t.password || "";
-            } else {
-              document.getElementById("password").style.display = "none";
-            }
-            
-            editingId = id;
-            
-            document.getElementById("name").value = t.name;
-            document.getElementById("desc").value = t.desc || "";
-            document.getElementById("html").value = t.html;
-            document.getElementById("css").value = t.css;
-            document.getElementById("js").value = t.js;
-            
-            updateWordCount();
-            openPopup();
-          };
-          
-          card.querySelector(".del-btn").onclick = async () => {
-            await deleteDoc(doc(db, "tools", id));
-          };
-        }
+  
+  // =========================
+  // (اختياري) edit/delete القديم
+  // =========================
+  card.querySelector(".edit-btn")?.addEventListener("click", () => {
+    
+    editingId = id;
+    
+    document.getElementById("visibility").value = t.visibility;
+    
+    if (t.visibility === "private") {
+      document.getElementById("password").style.display = "block";
+      document.getElementById("password").value = t.password || "";
+    } else {
+      document.getElementById("password").style.display = "none";
+    }
+    
+    document.getElementById("name").value = t.name;
+    document.getElementById("desc").value = t.desc || "";
+    document.getElementById("html").value = t.html;
+    document.getElementById("css").value = t.css;
+    document.getElementById("js").value = t.js;
+    
+    updateWordCount();
+    openPopup();
+  });
+  
+  card.querySelector(".del-btn")?.addEventListener("click", async () => {
+    await deleteDoc(doc(db, "tools", id));
+  });
+}
+
+/* =========================
+   ⋮ MENU (FIXED 100%)
+========================= */
+const dots = card.querySelector(".tool-dots");
+const box = card.querySelector(".tool-box");
+
+if (dots && box) {
+  
+  dots.onclick = (e) => {
+    e.stopPropagation();
+    
+    // 🔥 سكّر كل القوائم الثانية
+    document.querySelectorAll(".tool-box").forEach(b => {
+      if (b !== box) b.style.display = "none";
+    });
+    
+    // toggle
+    box.style.display = box.style.display === "block" ? "none" : "block";
+  };
+  
+  // 🔥 منع الإغلاق عند الضغط داخل القائمة
+  box.onclick = (e) => {
+    e.stopPropagation();
+  };
+}
+
+/* =========================
+   CLOSE ALL MENUS (مرة وحدة فقط)
+========================= */
+if (!window.__toolMenuInit) {
+  window.__toolMenuInit = true;
+  
+  document.addEventListener("click", () => {
+    document.querySelectorAll(".tool-box").forEach(b => {
+      b.style.display = "none";
+    });
+  });
+}
+
+/* =========================
+   ⋮ ACTIONS
+========================= */
+const edit = card.querySelector(".tool-edit");
+const del = card.querySelector(".tool-delete");
+const share = card.querySelector(".tool-share");
+
+/* ✏️ EDIT */
+if (edit) {
+  edit.onclick = () => {
+    box.style.display = "none";
+    
+    editingId = id;
+    
+    document.getElementById("visibility").value = t.visibility;
+    
+    if (t.visibility === "private") {
+      document.getElementById("password").style.display = "block";
+      document.getElementById("password").value = t.password || "";
+    } else {
+      document.getElementById("password").style.display = "none";
+    }
+    
+    document.getElementById("name").value = t.name;
+    document.getElementById("desc").value = t.desc || "";
+    document.getElementById("html").value = t.html;
+    document.getElementById("css").value = t.css;
+    document.getElementById("js").value = t.js;
+    
+    updateWordCount();
+    openPopup();
+  };
+}
+
+/* 🗑 DELETE */
+if (del) {
+  del.onclick = async () => {
+    box.style.display = "none";
+    await deleteDoc(doc(db, "tools", id));
+  };
+}
+
+/* 🔗 SHARE */
+if (share) {
+  share.onclick = () => {
+    box.style.display = "none";
+    const url = `${window.location.origin}/view.html?id=${id}`;
+    navigator.clipboard.writeText(url);
+    alert("Copied!");
+  };
+}
+
+list.appendChild(card);
         
-        list.appendChild(card);
       });
     },
     
@@ -1199,6 +1542,27 @@ ${escapeJS(t.js || "")}
   
   URL.revokeObjectURL(url);
 }
+
+const menu = document.getElementById("menu");
+const dropBtn = document.querySelector(".dropbtn");
+
+/* فتح/إغلاق */
+dropBtn.addEventListener("click", (e) => {
+  e.stopPropagation();
+  menu.classList.toggle("show");
+});
+
+/* 🔥 أي زر داخل القائمة يسكرها */
+menu.querySelectorAll("button").forEach(btn => {
+  btn.addEventListener("click", () => {
+    menu.classList.remove("show");
+  });
+});
+
+/* سكّر عند الضغط خارجها */
+document.addEventListener("click", () => {
+  menu.classList.remove("show");
+});
 </script>
 
 
