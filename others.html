@@ -34,22 +34,6 @@ flex-direction:column;
 gap:10px;
 }
 
-.topbar{
-display:flex;
-justify-content:space-between;
-padding:10px;
-background:#0f172a;
-position:sticky;
-top:0;
-z-index:10;
-}
-
-.left,.right{
-display:flex;
-gap:10px;
-align-items:center;
-}
-
 input{
 padding:8px;
 border-radius:8px;
@@ -159,67 +143,58 @@ font-family:monospace;
 
 }
 
-/* 🔍 search */
-
-#search {
-
-  grid-column: span 2;
-
-  padding: 10px 14px;
-
-  border-radius: 14px;
-
-  border: 1px solid rgba(255,255,255,0.06);
-
-  text-align: left;
-
-  background: rgba(17, 24, 39, 0.6);
-
-  backdrop-filter: blur(14px);
-
-  color: white;
-
-  font-size: 14px;
-
-  outline: none;
-
-  width: 100%;
-min-width: 600px;
-  min-width: 315px;
-
-  box-sizing: border-box; /* 🔥 يمنع الخروج */
-
-  overflow: hidden;
-
-  transition: all 0.3s ease;
-
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  padding:10px;
+  background:#0f172a;
+  position:sticky;
+  top:0;
+  z-index:10;
 }
 
-/* placeholder */
+/* 👇 مهم جدًا */
+.left{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  width:100%;
+}
 
-#search::placeholder {
+/* 🔍 SEARCH FIX كامل */
+#search{
+  flex:1;                 /* 🔥 أهم سطر */
+  width:100%;
+  
+  padding:10px 14px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,0.06);
 
-  color: #6b7280;
+  background:rgba(17, 24, 39, 0.6);
+  backdrop-filter:blur(14px);
 
-  transition: 0.2s;
+  color:white;
+  font-size:14px;
 
+  outline:none;
+  box-sizing:border-box;
+
+  transition:0.3s ease;
 }
 
 /* hover */
-
-#search:hover {
-
-  border-color: #a855f7;
-
+#search:hover{
+  border-color:#a855f7;
   box-shadow:
-
     0 0 0 2px rgba(168, 85, 247, 0.2),
-
     0 0 18px rgba(168, 85, 247, 0.35);
-
-  background: rgba(17, 24, 39, 0.85);
 }
 
+/* focus */
+#search:focus{
+  border-color:#a855f7;
+  background:rgba(17, 24, 39, 0.85);
+}
 
 .card {
   background: rgba(17, 24, 39, 0.8);
