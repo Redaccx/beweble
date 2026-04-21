@@ -1026,6 +1026,13 @@ shhs
   transition: 0.3s;
 }
 
+#viewDesc {
+  padding: 6px 10px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(8px);
+}
+
 </style>
 </head>
 
@@ -1136,6 +1143,13 @@ shhs
     </button>
     
     <h3>Preview</h3>
+<div id="viewDesc" style="
+  font-size:12px;
+  color:#a1a1aa;
+  margin-top:4px;
+  text-align:center;
+  line-height:1.4;
+"></div>
     
 <iframe id="viewFrame" style="width:100%;height:600px;border:none;background:white"></iframe>
 
@@ -1283,24 +1297,30 @@ pass.value = "";
 
 /* VIEW */
 /* VIEW */
-window.openView = (html, css, js) => {
-    const frame = document.getElementById("viewFrame");
-    const doc = frame.contentDocument || frame.contentWindow.document;
-    
-    doc.open();
-    doc.write(`
-  <!DOCTYPE html>
-  <html>
-  <head><style>${css}</style></head>
-  <body>
-  ${html}
-  <script>${js}<\/script>
-  </body>
-  </html>
-  `);
-    doc.close();
-    
-    document.getElementById("viewPopup").style.display = "flex";
+window.openView = (t) => {
+  const frame = document.getElementById("viewFrame");
+  const doc = frame.contentDocument || frame.contentWindow.document;
+  
+  doc.open();
+  doc.write(`
+<!DOCTYPE html>
+<html>
+<head><style>${t.css || ""}</style></head>
+<body>
+${t.html || ""}
+
+<script>${t.js || ""}<\/script>
+</body>
+</html>
+    `);
+  doc.close();
+  
+  // 🔥 فتح النافذة
+  document.getElementById("viewPopup").style.display = "flex";
+  
+  // 🔥 عنوان الوصف بشكل نظيف
+  const desc = document.getElementById("viewDesc");
+  desc.innerText = t.desc || "";
 };
 
 window.closeView = () => {
@@ -1537,7 +1557,7 @@ ${myMenu}
         `;
         
         // ▶️ RUN
-        card.querySelector(".run-btn").onclick = () => runTool(t, id);
+        card.querySelector(".run-btn").onclick = () => openView(t);
         
         // 🔗 SHARE
         card.querySelector(".share-btn").onclick = () => {
