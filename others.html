@@ -1446,20 +1446,22 @@ window.saveTool = async () => {
 };
 
 /* RUN */
-async function runTool(t,id){
-
-if(t.visibility==="private"){
-const pass=prompt("Enter password:");
-if(pass!==t.password){
-alert("Wrong password");
-return;
-}
-}
-
-await updateDoc(doc(db, "tools", id), {
-  views: increment(1)
-});
-openView(t.html,t.css,t.js);
+async function runTool(t, id) {
+  
+  if (t.visibility === "private") {
+    const pass = prompt("Enter password:");
+    if (pass !== t.password) {
+      alert("Wrong password");
+      return;
+    }
+  }
+  
+  await updateDoc(doc(db, "tools", id), {
+    views: increment(1)
+  });
+  
+  // 🔥 هي أهم نقطة
+  openView(t);
 }
 
 /* LOAD */
@@ -1557,7 +1559,7 @@ ${myMenu}
         `;
         
         // ▶️ RUN
-        card.querySelector(".run-btn").onclick = () => openView(t);
+        card.querySelector(".run-btn").onclick = () => runTool(t, id);
         
         // 🔗 SHARE
         card.querySelector(".share-btn").onclick = () => {
