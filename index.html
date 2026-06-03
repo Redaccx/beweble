@@ -1695,9 +1695,9 @@ ${details}
             document.getElementById("redirectText").style.display = "none";
         }, 2000);
         
-        setTimeout(() => {
-            window.open(whatsappURL, "_self");
-        }, 1500);
+    setTimeout(() => {
+    window.location.href = whatsappURL;
+}, 1500);
         
     } catch (err) {
         console.log(err);
