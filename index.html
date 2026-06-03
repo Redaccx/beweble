@@ -1600,9 +1600,7 @@ window.submitRequest = async function() {
     
     const requestId =
         "REQ-" +
-        Math.random().toString(36)
-        .substring(2, 8)
-        .toUpperCase();
+        Math.random().toString(36).substring(2, 8).toUpperCase();
     
     const username = document.getElementById("username").value.trim();
     const newemail = document.getElementById("newemail").value.trim();
@@ -1613,25 +1611,22 @@ window.submitRequest = async function() {
     
     const resultBox = document.getElementById("result");
     
-    /* 🔴 VALIDATION */
-    
+    /* VALIDATION */
     if (!username || !newemail || !phone || !details) {
         resultBox.style.display = "block";
         resultBox.innerHTML = "<p style='color:#ff4d4d'>❌ Please fill all fields</p>";
         return;
     }
     
-    // phone = only numbers
     if (!/^[0-9]+$/.test(phone)) {
         resultBox.style.display = "block";
         resultBox.innerHTML = "<p style='color:#ff4d4d'>❌ Phone must contain numbers only</p>";
         return;
     }
     
-    // email validation
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newemail)) {
         resultBox.style.display = "block";
-        resultBox.innerHTML = "<p style='color:#ff4d4d'>❌ Please enter a valid email</p>";
+        resultBox.innerHTML = "<p style='color:#ff4d4d'>❌ Invalid email</p>";
         return;
     }
     
@@ -1668,36 +1663,36 @@ window.submitRequest = async function() {
 
             <p id="redirectText"
                 style="margin-top:15px;color:#7b8cff;font-weight:600;">
-                You will be redirected to WhatsApp...
+                Opening WhatsApp...
             </p>
         `;
         
         const whatsappNumber = "639560038029";
         
-        const message = `
-📩 New Recovery Request
-
-🆔 Request ID: ${requestId}
-👤 Username: ${username}
-⚠️ Problem Type: ${problemType}
-📧 Email: ${newemail}
-📱 Phone: ${phone}
-🌐 Platform: ${platform}
-
-📝 Details:
-${details}
-        `;
+        /* 🔥 FIXED MESSAGE (no ? issue) */
+        const message = [
+            "📩 New Recovery Request",
+            "",
+            "🆔 Request ID: " + requestId,
+            "👤 Username: " + username,
+            "⚠️ Problem Type: " + problemType,
+            "📧 Email: " + newemail,
+            "📱 Phone: " + phone,
+            "🌐 Platform: " + platform,
+            "",
+            "📝 Details:",
+            details
+        ].join("\n");
         
         const whatsappURL =
-            `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+            "https://wa.me/" +
+            whatsappNumber +
+            "?text=" +
+            encodeURIComponent(message);
         
         setTimeout(() => {
-            document.getElementById("redirectText").style.display = "none";
-        }, 2000);
-        
-    setTimeout(() => {
-    window.location.href = whatsappURL;
-}, 1500);
+            window.open(whatsappURL, "_blank");
+        }, 1200);
         
     } catch (err) {
         console.log(err);
