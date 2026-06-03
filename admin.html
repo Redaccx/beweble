@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Beweble Admin Pro</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Outfit',sans-serif;
+}
+
+body{
+background: radial-gradient(circle at top,#121212,#070707);
+color:white;
+padding:25px;
+}
+
+/* LOGIN */
+#login{
+height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+gap:12px;
+}
+
+input{
+width:280px;
+padding:14px;
+border-radius:12px;
+border:none;
+background:#1f1f1f;
+color:white;
+outline:none;
+}
+
+button{
+width:280px;
+padding:14px;
+border:none;
+border-radius:12px;
+background:linear-gradient(135deg,#6366f1,#a855f7);
+color:white;
+font-weight:700;
+cursor:pointer;
+transition:.2s;
+}
+
+button:hover{transform:scale(1.03);}
+
+/* ADMIN */
+#admin{display:none;}
+
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px;
+flex-wrap:wrap;
+gap:10px;
+}
+
+.title{
+font-size:26px;
+font-weight:700;
+}
+
+.badge{
+padding:6px 12px;
+border-radius:999px;
+background:#1f1f1f;
+border:1px solid #333;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+gap:18px;
+}
+
+.card{
+background:rgba(255,255,255,0.04);
+border:1px solid rgba(255,255,255,0.08);
+border-radius:18px;
+padding:18px;
+backdrop-filter:blur(10px);
+transition:.2s;
+}
+
+.card:hover{
+transform:translateY(-5px);
+}
+
+.smallBtn{
+width:100%;
+margin-top:10px;
+padding:10px;
+border-radius:10px;
+border:none;
+cursor:pointer;
+font-weight:600;
+}
+
+.delete{
+background:#ef4444;
+}
+
+.update{
+background:#3b82f6;
+}
+
+select{
+width:100%;
+margin-top:10px;
+padding:10px;
+border-radius:10px;
+background:#111;
+color:white;
+border:none;
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN -->
+<div id="login">
+<h2>🔥 Admin Login</h2>
+
+<input id="email" placeholder="Email">
+<input id="password" type="password" placeholder="Password">
+
+<button id="loginBtn">Login</button>
+<p id="msg"></p>
+</div>
+
+<!-- ADMIN -->
+<div id="admin">
+
+<div class="header">
+<div class="title">⚡ Admin Dashboard</div>
+<div class="badge">Total: <span id="count">0</span></div>
+</div>
+
+<div class="grid" id="container"></div>
+
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyCjmJBV_GKL4MLYQGr3DWOOAWwK4V8AHtU",
+authDomain: "beweble.firebaseapp.com",
+projectId: "beweble",
+storageBucket: "beweble.firebasestorage.app",
+messagingSenderId: "184003889465",
+appId: "1:184003889465:web:6426d12aca892d95c600e8"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+
+const container = document.getElementById("container");
+const count = document.getElementById("count");
+const loginBox = document.getElementById("login");
+const adminBox = document.getElementById("admin");
+
+/* LOGIN */
+document.getElementById("loginBtn").onclick = async () => {
+try{
+const email = document.getElementById("email").value;
+const pass = document.getElementById("password").value;
+
+await signInWithEmailAndPassword(auth,email,pass);
+
+loginBox.style.display="none";
+adminBox.style.display="block";
+
+load();
+}
+catch(e){
+document.getElementById("msg").innerText="Login Failed";
+}
+};
+
+/* AUTH */
+onAuthStateChanged(auth,(user)=>{
+if(user){
+loginBox.style.display="none";
+adminBox.style.display="block";
+load();
+}
+});
+
+/* LOAD DATA */
+async function load(){
+container.innerHTML="";
+
+const snap = await getDocs(collection(db,"requests"));
+count.innerText = snap.size;
+
+snap.forEach(d=>{
+const data = d.data();
+
+// 🔥 TRACKING ID SYSTEM
+const trackId = data.requestId || d.id;
+
+const card = document.createElement("div");
+card.className="card";
+
+card.innerHTML=`
+<h3>🆔 ${trackId}</h3>
+
+<p><b>User:</b> ${data.username}</p>
+<p><b>Email:</b> ${data.newemail}</p>
+<p><b>Phone:</b> ${data.phone}</p>
+
+<p><b>Status:</b> ${data.status}</p>
+
+<select>
+<option>Pending</option>
+<option>In Progress</option>
+<option>Done</option>
+</select>
+
+<button class="smallBtn update">Update</button>
+<button class="smallBtn delete">Delete</button>
+`;
+
+const select = card.querySelector("select");
+const updateBtn = card.querySelector(".update");
+const deleteBtn = card.querySelector(".delete");
+
+/* UPDATE */
+updateBtn.onclick = async () => {
+await updateDoc(doc(db,"requests",d.id),{
+status: select.value
+});
+load();
+};
+
+/* DELETE */
+deleteBtn.onclick = async () => {
+if(!confirm("Delete this request?")) return;
+
+await deleteDoc(doc(db,"requests",d.id));
+load();
+};
+
+container.appendChild(card);
+});
+
+}
+
+</script>
+
+</body>
+</html>
