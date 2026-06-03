@@ -19,7 +19,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:'Outfit',sans-serif;
+font-family:'Outfit','Segoe UI Emoji','Apple Color Emoji','Noto Color Emoji',sans-serif;
 }
 
 body{
@@ -1599,8 +1599,7 @@ window.submitRequest = async function() {
     }
     
     const requestId =
-        "REQ-" +
-        Math.random().toString(36).substring(2, 8).toUpperCase();
+        "REQ-" + Math.random().toString(36).substring(2, 8).toUpperCase();
     
     const username = document.getElementById("username").value.trim();
     const newemail = document.getElementById("newemail").value.trim();
@@ -1614,19 +1613,19 @@ window.submitRequest = async function() {
     /* VALIDATION */
     if (!username || !newemail || !phone || !details) {
         resultBox.style.display = "block";
-        resultBox.innerHTML = "<p style='color:#ff4d4d'>❌ Please fill all fields</p>";
+        resultBox.innerHTML = "❌ Please fill all fields";
         return;
     }
     
     if (!/^[0-9]+$/.test(phone)) {
         resultBox.style.display = "block";
-        resultBox.innerHTML = "<p style='color:#ff4d4d'>❌ Phone must contain numbers only</p>";
+        resultBox.innerHTML = "❌ Phone must contain numbers only";
         return;
     }
     
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newemail)) {
         resultBox.style.display = "block";
-        resultBox.innerHTML = "<p style='color:#ff4d4d'>❌ Invalid email</p>";
+        resultBox.innerHTML = "❌ Invalid email";
         return;
     }
     
@@ -1658,31 +1657,27 @@ window.submitRequest = async function() {
             <button class="submitBtn"
                 style="margin-top:15px;"
                 onclick="copyCode('${requestId}')">
-                Copy Code
+                📋 Copy Code
             </button>
 
-            <p id="redirectText"
-                style="margin-top:15px;color:#7b8cff;font-weight:600;">
-                Opening WhatsApp...
+            <p style="margin-top:15px;color:#7b8cff;font-weight:600;">
+                ⏳ Opening WhatsApp...
             </p>
         `;
         
         const whatsappNumber = "639560038029";
         
-        /* 🔥 FIXED MESSAGE (no ? issue) */
-        const message = [
-            "• New Recovery Request",
-            "",
-            "• Request ID: " + requestId,
-            "• Username: " + username,
-            "• Problem Type: " + problemType,
-            "• Email: " + newemail,
-            "• Phone: " + phone,
-            "• Platform: " + platform,
-            "",
-            "• Details:",
-            details
-        ].join("\n");
+        const message = `📩 New Recovery Request
+
+🆔 Request ID: ${requestId}
+👤 Username: ${username}
+⚠️ Problem Type: ${problemType}
+📧 Email: ${newemail}
+📱 Phone: ${phone}
+📌 Platform: ${platform}
+
+📝 Details:
+${details}`;
         
         const whatsappURL =
             "https://wa.me/" +
@@ -1699,17 +1694,16 @@ window.submitRequest = async function() {
         alert("Something went wrong");
     }
 };
-/* ✅ COPY CODE FIXED */
+
+/* COPY */
 window.copyCode = async function(code) {
-    
     try {
         
         await navigator.clipboard.writeText(code);
         
-        const box =
-            document.getElementById("profileMessage");
+        const box = document.getElementById("profileMessage");
         
-        box.innerText = "Copied successfully ✅";
+        box.innerText = "✅ Copied successfully";
         box.style.background = "#4CAF50";
         box.style.color = "white";
         box.style.display = "block";
