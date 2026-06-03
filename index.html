@@ -1667,43 +1667,53 @@ window.submitRequest = async function() {
         
         const whatsappNumber = "639560038029";
         
-        const message = `📩 New Recovery Request
+        /* 🔥 EMOJI MESSAGE */
+        const message = `📩 *New Recovery Request*
 
-🆔 Request ID: ${requestId}
-👤 Username: ${username}
-⚠️ Problem Type: ${problemType}
-📧 Email: ${newemail}
-📱 Phone: ${phone}
-📌 Platform: ${platform}
+🆔 *Request ID:* ${requestId}
+👤 *Username:* ${username}
+⚠️ *Problem:* ${problemType}
+📌 *Platform:* ${platform}
 
-📝 Details:
-${details}`;
+📧 *Email:* ${newemail}
+📱 *Phone:* ${phone}
+
+📝 *Details:*
+${details}
+
+🚀 Sent from Beweble`;
         
-        const whatsappURL =
-            "https://wa.me/" +
-            whatsappNumber +
-            "?text=" +
-            encodeURIComponent(message);
+        const encodedMessage = encodeURIComponent(message);
+        
+        /* 🔥 FIX OPEN (strong method) */
+        const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
         
         setTimeout(() => {
-            window.open(whatsappURL, "_blank");
-        }, 1200);
+            const win = window.open(whatsappURL, "_blank");
+            
+            /* fallback if popup blocked */
+            if (!win) {
+                window.location.href = whatsappURL;
+            }
+            
+        }, 800);
         
     } catch (err) {
         console.log(err);
         alert("Something went wrong");
     }
 };
-
-/* COPY */
+/* ✅ COPY CODE FIXED */
 window.copyCode = async function(code) {
+    
     try {
         
         await navigator.clipboard.writeText(code);
         
-        const box = document.getElementById("profileMessage");
+        const box =
+            document.getElementById("profileMessage");
         
-        box.innerText = "✅ Copied successfully";
+        box.innerText = "Copied successfully ✅";
         box.style.background = "#4CAF50";
         box.style.color = "white";
         box.style.display = "block";
