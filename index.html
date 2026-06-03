@@ -974,6 +974,13 @@ Agree & Submit
         Send Reset Link
     </button>
     
+    <div id="resetMessage" style="
+margin-top:10px;
+font-size:14px;
+font-weight:500;
+display:none;
+text-align:center;
+"></div>
     <p onclick="showPage('loginPage')" style="cursor:pointer;color:#7b8cff;margin-top:10px;">
         Back to login
     </p>
@@ -1294,7 +1301,8 @@ import {
     deleteUser,
     sendPasswordResetEmail,
     EmailAuthProvider,
-    reauthenticateWithCredential
+    reauthenticateWithCredential,
+    fetchSignInMethodsForEmail
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 /* FIREBASE */
@@ -1584,20 +1592,145 @@ window.loginUser = async function() {
 
 /* LOGOUT */
 window.logout = async function() {
-    await signOut(auth);
-    showPage("homePage");
+    try {
+        await signOut(auth);
+        
+        showToast(
+            "Logged out!",
+            "#22c55e"
+        );
+        
+        setTimeout(() => {
+            showPage("homePage");
+        }, 1500);
+        
+    } catch (err) {
+        console.error(err);
+        
+        showToast(
+            "Logout failed!",
+            "#ef4444"
+        );
+    }
 };
+
+// Toast Message
+function showToast(text, color) {
+    let toast = document.getElementById("toastMessage");
+    
+    // إذا مو موجود، أنشئه
+    if (!toast) {
+        toast = document.createElement("div");
+        toast.id = "toastMessage";
+        
+        toast.style.position = "fixed";
+        toast.style.top = "30px";
+        toast.style.left = "50%";
+        toast.style.transform = "translateX(-50%)";
+        toast.style.padding = "14px 24px";
+        toast.style.borderRadius = "14px";
+        toast.style.fontSize = "14px";
+        toast.style.fontWeight = "600";
+        toast.style.color = "#fff";
+        toast.style.zIndex = "999999";
+        toast.style.backdropFilter = "blur(12px)";
+        toast.style.boxShadow =
+            "0 8px 30px rgba(0,0,0,.25)";
+        toast.style.opacity = "0";
+        toast.style.transition =
+            "all .35s ease";
+        
+        document.body.appendChild(toast);
+    }
+    
+    toast.textContent = text;
+    toast.style.background = color;
+    toast.style.opacity = "1";
+    toast.style.top = "40px";
+    
+    setTimeout(() => {
+        toast.style.opacity = "0";
+        toast.style.top = "20px";
+    }, 2500);
+}
 
 /* RESET */
 window.resetPassword = async function() {
+    const msg = document.getElementById("resetMessage");
+    const email = resetEmail.value.trim().toLowerCase();
+    
+    // تنظيف
+    msg.style.display = "none";
+    msg.textContent = "";
+    
+    if (!email) {
+        return showResetMessage(
+            "Please enter your email",
+            "#ef4444"
+        );
+    }
+    
     try {
-        await sendPasswordResetEmail(auth, resetEmail.value);
-        alert("Reset email sent!");
-        showPage("loginPage");
+        // جلب كل users
+        const snap = await getDocs(
+            collection(db, "users")
+        );
+        
+        // تحقق إذا الإيميل موجود
+        let accountExists = false;
+        
+        snap.forEach(doc => {
+            const data = doc.data();
+            
+            if (
+                data.email &&
+                data.email.toLowerCase() === email
+            ) {
+                accountExists = true;
+            }
+        });
+        
+        // غير موجود
+        if (!accountExists) {
+            return showResetMessage(
+                "Account not found!",
+                "#ef4444"
+            );
+        }
+        
+        // موجود → reset
+        await sendPasswordResetEmail(auth, email);
+        
+        showResetMessage(
+            "Reset email sent successfully!",
+            "#22c55e"
+        );
+        
+        setTimeout(() => {
+            showPage("loginPage");
+        }, 3000);
+        
     } catch (err) {
-        alert(err.message);
+        console.error(err);
+        
+        showResetMessage(
+            "Something went wrong!",
+            "#ef4444"
+        );
     }
 };
+
+function showResetMessage(text, color) {
+    const msg = document.getElementById("resetMessage");
+    
+    msg.style.display = "block";
+    msg.style.color = color;
+    msg.textContent = text;
+    
+    setTimeout(() => {
+        msg.style.display = "none";
+    }, 3000);
+}
 
 /* PROFILE (FIXED) */
 window.showProfile = async function() {
@@ -1694,7 +1827,7 @@ window.saveProfile = async function() {
             await updatePassword(user, newPasswordValue);
         }
         
-        showMessage("Profile updated successfully ✅", "#4CAF50");
+        showMessage("Profile updated!", "#4CAF50");
         
         // 🔥 مهم: تحديث الشاشة مباشرة
         showProfile();
