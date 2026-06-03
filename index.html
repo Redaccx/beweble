@@ -595,6 +595,135 @@ Delete
 
 </div>
 
+
+<!-- AGREEMENT POPUP -->
+<div id="agreementPopup" style="
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.75);
+z-index:99999;
+justify-content:center;
+align-items:center;
+padding:20px;
+backdrop-filter:blur(8px);
+">
+
+<div style="
+background:#181818;
+border:1px solid #2a2a2a;
+border-radius:28px;
+padding:28px;
+width:100%;
+max-width:430px;
+box-shadow:0 0 40px rgba(0,0,0,.5);
+animation:fadeIn .25s ease;
+">
+
+<h2 style="
+margin-bottom:12px;
+font-size:24px;
+font-weight:700;
+">
+Agreement & Terms
+</h2>
+
+<p style="
+color:#aaa;
+line-height:1.9;
+font-size:14px;
+margin-bottom:20px;
+max-height:280px;
+overflow:auto;
+padding-right:4px;
+">
+
+By submitting this request, you confirm that all information provided is accurate and complete.
+
+<br><br>
+
+• Any payment made is <b>strictly non-refundable</b> once submitted.
+
+<br><br>
+
+• Requests <b>cannot be cancelled</b> after our team begins processing or reviewing the case.
+
+<br><br>
+
+• Beweble Agency will start reviewing and working on your request after confirmation and payment verification.
+
+<br><br>
+
+• Processing time may vary depending on case difficulty and the accuracy of the submitted information.
+
+<br><br>
+
+• Incorrect, fake, or incomplete information may delay the process or result in failure of the request.
+
+<br><br>
+
+• We are not responsible for delays caused by third-party platforms such as Instagram, TikTok, Facebook, or Snapchat.
+
+<br><br>
+
+• You can monitor your request status anytime using your unique <b>Case ID / Request Code</b> through the tracking system.
+
+<br><br>
+
+• By clicking <b>"Agree & Submit"</b>, you fully agree to our Terms, Privacy Policy, and Request Conditions.
+
+</p>
+
+<label style="
+display:flex;
+align-items:flex-start;
+gap:10px;
+color:#ddd;
+font-size:14px;
+margin-bottom:22px;
+cursor:pointer;
+line-height:1.7;
+">
+
+<input
+type="checkbox"
+id="agreeTerms"
+style="
+width:18px;
+height:18px;
+margin-top:2px;
+accent-color:#7b8cff;
+">
+
+<span>
+I have read and agree to the Terms, Payment Policy, and Request Conditions.
+</span>
+
+</label>
+
+<div style="display:flex;gap:10px;">
+
+<button
+class="secondaryBtn"
+style="flex:1;"
+onclick="closeAgreementPopup()">
+Cancel
+</button>
+
+<button
+class="submitBtn"
+style="flex:1;"
+onclick="confirmAgreement()">
+Agree & Submit
+</button>
+
+</div>
+
+</div>
+</div>
 <!-- MAIN -->
 
 <div class="main">
@@ -904,7 +1033,7 @@ placeholder="Describe your issue"></textarea>
 
 <button
 class="submitBtn"
-onclick="submitRequest()">
+onclick="openAgreementPopup()">
 
 Submit Request
 
@@ -1911,6 +2040,31 @@ window.addEventListener("load", () => {
     showPage("homePage");
 });
 
+/* AGREEMENT POPUP */
+window.openAgreementPopup = function() {
+    document.getElementById("agreementPopup").style.display = "flex";
+};
+
+window.closeAgreementPopup = function() {
+    document.getElementById("agreementPopup").style.display = "none";
+    document.getElementById("agreeTerms").checked = false;
+};
+
+window.confirmAgreement = function() {
+    
+    const agreed =
+        document.getElementById("agreeTerms").checked;
+    
+    if (!agreed) {
+        alert("Please agree to the terms first.");
+        return;
+    }
+    
+    closeAgreementPopup();
+    
+    // يكمّل إرسال الطلب
+    submitRequest();
+};
 </script>
 
 </body>
