@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Coming Soon</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Outfit',sans-serif;
+}
+
+body{
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:#020617;
+color:white;
+overflow:hidden;
+}
+
+/* الخلفية */
+body::before{
+content:"";
+position:absolute;
+inset:0;
+background:
+radial-gradient(circle at 20% 20%, rgba(138,43,226,0.25), transparent 40%),
+radial-gradient(circle at 80% 70%, rgba(0,245,255,0.18), transparent 40%);
+filter: blur(40px);
+}
+
+/* الكرت */
+.card{
+position:relative;
+text-align:center;
+padding:40px 30px;
+border-radius:20px;
+
+background:rgba(17,24,39,0.65);
+backdrop-filter:blur(18px);
+
+border:1px solid rgba(255,255,255,0.08);
+box-shadow:0 25px 70px rgba(0,0,0,0.6);
+
+max-width:400px;
+width:90%;
+animation:float 3s ease-in-out infinite;
+}
+
+@keyframes float{
+0%{transform:translateY(0px);}
+50%{transform:translateY(-10px);}
+100%{transform:translateY(0px);}
+}
+
+/* العنوان */
+h1{
+font-size:32px;
+background:linear-gradient(90deg,#8a2be2,#00f5ff);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+margin-bottom:10px;
+}
+
+/* النص */
+p{
+color:#a1a1aa;
+font-size:14px;
+line-height:1.5;
+}
+
+/* نقطة التحميل */
+.dots{
+margin-top:20px;
+font-size:20px;
+letter-spacing:3px;
+color:#00f5ff;
+animation:blink 1.2s infinite;
+}
+
+@keyframes blink{
+0%,100%{opacity:0.2;}
+50%{opacity:1;}
+}
+
+/* زر */
+button{
+margin-top:20px;
+padding:10px 18px;
+border:none;
+border-radius:12px;
+cursor:pointer;
+
+background:linear-gradient(90deg,#8a2be2,#00f5ff);
+color:white;
+font-weight:600;
+
+transition:0.3s;
+}
+
+button:hover{
+transform:scale(1.05);
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+    <h1>Coming Soon</h1>
+    
+    <p>
+        We are working on something powerful 🚀<br>
+        Stay tuned for updates and new features.
+    </p>
+
+    <div class="dots">● ● ●</div>
+
+    <button onclick="location.href='index.html'">
+        Back Home
+    </button>
+</div>
+
+</body>
+</html>
