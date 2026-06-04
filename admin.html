@@ -203,18 +203,48 @@ border-radius:10px;
 
 <!-- ADMIN -->
 <div id="admin">
+    
+    <!-- NAV -->
+    <div style="display:flex; gap:10px; margin-bottom:20px;">
+        <button onclick="showPage('requests')" class="smallBtn update">📨 Requests</button>
+        <button onclick="showPage('users')" class="smallBtn update">👥 Users</button>
+    </div>
+    
+    <!-- DASHBOARD HEADER -->
+    <div class="header">
+        <div>⚡ Admin Dashboard</div>
+        
+        <div class="badge">Total Requests: <span id="count">0</span></div>
+        
+        <button class="logout" onclick="logout()">Logout</button>
+    </div>
 
-<div class="header">
-<div>⚡ Admin Dashboard</div>
-<div class="badge">Total: <span id="count">0</span></div>
-<button class="logout" onclick="logout()">Logout</button>
+
+<div id="requestsPage">
+
+  <h2 style="margin-bottom:12px;">📨 Requests</h2>
+
+  <input class="searchBox" id="searchInput"
+  placeholder="Search requests by username or ID">
+
+  <div class="grid" id="container"></div>
+
 </div>
 
-<input class="searchBox" id="searchInput" placeholder="Search by username or ID">
+<div id="usersPage" style="display:none;">
 
-<div class="grid" id="container"></div>
+  <h2 style="margin-bottom:12px;">👥 Registered Users</h2>
+
+  <input class="searchBox" id="usersSearchInput"
+  placeholder="Search users by username, email or UID">
+
+  <div class="grid" id="usersContainer"></div>
+
 </div>
 
+</div> <!-- end admin -->
+
+<div class="grid" id="usersContainer"></div>
 <!-- POPUP -->
 <div class="popup" id="popup">
 <div class="popupBox">
@@ -232,7 +262,13 @@ border-radius:10px;
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
-getFirestore, collection, getDocs, doc, updateDoc, deleteDoc
+    getFirestore,
+    collection,
+    getDocs,
+    doc,
+    updateDoc,
+    deleteDoc,
+    getDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 import {
@@ -254,11 +290,17 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 
 const container = document.getElementById("container");
+const usersContainer =
+    document.getElementById("usersContainer");
 const count = document.getElementById("count");
 const popup = document.getElementById("popup");
 const confirmDelete = document.getElementById("confirmDelete");
 const searchInput = document.getElementById("searchInput");
-
+const usersSearchInput =
+    document.getElementById(
+        "usersSearchInput"
+    );
+let allUsers = [];
 let all = [];
 let deleteId = null;
 
@@ -298,6 +340,7 @@ all.push({id:d.id,...d.data()});
 
 count.innerText = all.length;
 render(all);
+loadUsers();
 }
 
 /* RENDER */
@@ -355,6 +398,91 @@ container.appendChild(card);
 });
 }
 
+/* LOAD USERS */
+async function loadUsers() {
+    
+    usersContainer.innerHTML = "";
+    
+    const snap = await getDocs(collection(db, "users"));
+    
+    snap.forEach(userDoc => {
+        
+        const user = userDoc.data();
+        const disabled = user.disabled === true;
+        
+        const card = document.createElement("div");
+        card.className = "card";
+        
+        card.innerHTML = `
+            <h3>👤 ${user.username || "Unknown"}</h3>
+
+            <div class="info">
+                ${user.email || "-"}
+            </div>
+
+            <div class="info">
+                ID: ${user.uid || userDoc.id}
+            </div>
+
+            <div class="info">
+                Status:
+                <b style="color:${disabled ? "#ef4444" : "#22c55e"}">
+                    ${disabled ? "Disabled" : "Active"}
+                </b>
+            </div>
+
+            ${
+                disabled ? `
+                    <div class="info">
+                        Disabled: ${user.disabledDate || "-"}
+                    </div>
+                ` : ""
+            }
+
+            <button class="smallBtn"
+                style="background:${disabled ? "#22c55e" : "#ef4444"}">
+                ${disabled ? "Enable" : "Disable"}
+            </button>
+        `;
+        
+        card.querySelector(".smallBtn").onclick = async () => {
+            
+            try {
+                
+                const ref = doc(db, "users", userDoc.id);
+                
+                if (disabled) {
+                    
+                    await updateDoc(ref, {
+                        disabled: false,
+                        disabledDate: "",
+                        disabledReason: ""
+                    });
+                    
+                } else {
+                    
+                    await updateDoc(ref, {
+                        disabled: true,
+                        disabledDate: new Date().toLocaleDateString("en-US", {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric"
+                        }),
+                        disabledReason: "Violation of Beweble Agency Policies"
+                    });
+                }
+                
+                loadUsers();
+                
+            } catch (err) {
+                console.log(err);
+                alert("Failed ❌");
+            }
+        };
+        
+        usersContainer.appendChild(card);
+    });
+}
 /* CONFIRM DELETE */
 confirmDelete.onclick = async () => {
 await deleteDoc(doc(db,"requests",deleteId));
@@ -377,7 +505,18 @@ render(all.filter(r =>
 (r.requestId||"").toLowerCase().includes(q)
 ));
 });
-
+window.showPage = (page) => {
+    const req = document.getElementById("requestsPage");
+    const users = document.getElementById("usersPage");
+    
+    if (page === "requests") {
+        req.style.display = "block";
+        users.style.display = "none";
+    } else {
+        req.style.display = "none";
+        users.style.display = "block";
+    }
+};
 </script>
 
 </body>
