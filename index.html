@@ -1581,6 +1581,7 @@ import {
     fetchSignInMethodsForEmail
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
+import { onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 /* FIREBASE */
 const firebaseConfig = {
     apiKey: "AIzaSyCjmJBV_GKL4MLYQGr3DWOOAWwK4V8AHtU",
@@ -1622,26 +1623,53 @@ onAuthStateChanged(auth, async (user) => {
         }
         
         const data = snap.data();
-
-if (data.disabled === true) {
-    
-    appState.disabled = true;
-    
-    await signOut(auth);
-    
-    updateMenu(null);
-    
-    document.querySelectorAll(".card, #homePage").forEach(e => {
-        e.style.display = "none";
-    });
-    
-    document.getElementById("disabledPage").style.display = "block";
-    document.getElementById("disabledUsername").innerText = data.username;
-    
-    return;
-}
-
-appState.disabled = false;
+        
+        // =========================
+        // 🚨 REAL-TIME BAN LISTENER
+        // =========================
+        onSnapshot(userRef, (liveSnap) => {
+            
+            const liveData = liveSnap.data();
+            
+            if (liveData.disabled === true) {
+                
+                appState.disabled = true;
+                
+                signOut(auth);
+                
+                updateMenu(null);
+                
+                document.querySelectorAll(".card, #homePage").forEach(e => {
+                    e.style.display = "none";
+                });
+                
+                document.getElementById("disabledPage").style.display = "block";
+                document.getElementById("disabledUsername").innerText = liveData.username;
+            }
+        });
+        
+        // =========================
+        // NORMAL CHECK (ON LOGIN)
+        // =========================
+        if (data.disabled === true) {
+            
+            appState.disabled = true;
+            
+            await signOut(auth);
+            
+            updateMenu(null);
+            
+            document.querySelectorAll(".card, #homePage").forEach(e => {
+                e.style.display = "none";
+            });
+            
+            document.getElementById("disabledPage").style.display = "block";
+            document.getElementById("disabledUsername").innerText = data.username;
+            
+            return;
+        }
+        
+        appState.disabled = false;
         
         updateMenu(user);
         showPage("homePage");
