@@ -187,6 +187,66 @@ border-radius:10px;
 
 .cancel{background:#2a2a2a;}
 .danger{background:#ef4444;}
+.sidebar{
+position:fixed;
+top:0;
+left:-260px;
+width:260px;
+height:100%;
+background:#0b0b0b;
+border-right:1px solid rgba(255,255,255,0.08);
+padding:20px;
+display:flex;
+flex-direction:column;
+gap:10px;
+transition:.3s;
+z-index:10000;
+}
+
+.sidebar.open{left:0;}
+
+.sidebar button{
+width:100%;
+text-align:left;
+background:rgba(255,255,255,0.05);
+padding:12px;
+border-radius:10px;
+border:none;
+color:white;
+cursor:pointer;
+}
+
+.sidebar button:hover{background:#6366f1;}
+
+.overlay{
+position:fixed;
+top:0;left:0;
+width:100%;height:100%;
+background:rgba(0,0,0,0.6);
+display:none;
+z-index:9999;
+}
+
+.overlay.show{display:block;}
+
+.menuBtn{
+width:auto;
+padding:10px 14px;
+border-radius:10px;
+background:#6366f1;
+border:none;
+color:white;
+cursor:pointer;
+}
+
+.pageHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 15px;
+}
 </style>
 </head>
 
@@ -203,26 +263,36 @@ border-radius:10px;
 
 <!-- ADMIN -->
 <div id="admin">
+    <div id="sidebar" class="sidebar">
+    <h3>⚡ Menu</h3>
     
+    <button onclick="showPage('requests');toggleMenu()">📨 Requests</button>
+    <button onclick="showPage('users');toggleMenu()">👥 Users</button>
+    <button onclick="logout()">🚪 Logout</button>
+</div>
+
+<div id="overlay" class="overlay" onclick="toggleMenu()"></div>
     <!-- NAV -->
-    <div style="display:flex; gap:10px; margin-bottom:20px;">
-        <button onclick="showPage('requests')" class="smallBtn update">📨 Requests</button>
-        <button onclick="showPage('users')" class="smallBtn update">👥 Users</button>
-    </div>
+    
     
     <!-- DASHBOARD HEADER -->
-    <div class="header">
-        <div>⚡ Admin Dashboard</div>
-        
-        <div class="badge">Total Requests: <span id="count">0</span></div>
-        
-        <button class="logout" onclick="logout()">Logout</button>
-    </div>
+<div class="header">
+    <button class="menuBtn" onclick="toggleMenu()">☰</button>
+    
+    
+<div>⚡ Admin Dashboard</div>
+</div>
 
 
 <div id="requestsPage">
 
-  <h2 style="margin-bottom:12px;">📨 Requests</h2>
+<div class="pageHeader">
+    <h2>📨 Requests</h2>
+    
+    <div class="badge">
+        Total Requests: <span id="count">0</span>
+    </div>
+</div>
 
   <input class="searchBox" id="searchInput"
   placeholder="Search requests by username or ID">
@@ -233,7 +303,13 @@ border-radius:10px;
 
 <div id="usersPage" style="display:none;">
 
-  <h2 style="margin-bottom:12px;">👥 Registered Users</h2>
+<div class="pageHeader">
+    <h2>👥 Users</h2>
+    
+    <div class="badge">
+        Total Users: <span id="usersCount">0</span>
+    </div>
+</div>
 
   <input class="searchBox" id="usersSearchInput"
   placeholder="Search users by username, email or UID">
@@ -244,7 +320,7 @@ border-radius:10px;
 
 </div> <!-- end admin -->
 
-<div class="grid" id="usersContainer"></div>
+
 <!-- POPUP -->
 <div class="popup" id="popup">
 <div class="popupBox">
@@ -300,6 +376,7 @@ const usersSearchInput =
     document.getElementById(
         "usersSearchInput"
     );
+    const usersCount = document.getElementById("usersCount");
 let allUsers = [];
 let all = [];
 let deleteId = null;
@@ -404,7 +481,11 @@ async function loadUsers() {
     usersContainer.innerHTML = "";
     
     const snap = await getDocs(collection(db, "users"));
-    
+    const usersCount = document.getElementById("usersCount");
+
+if (usersCount) {
+    usersCount.innerText = snap.size;
+}
     snap.forEach(userDoc => {
         
         const user = userDoc.data();
@@ -506,8 +587,11 @@ render(all.filter(r =>
 ));
 });
 window.showPage = (page) => {
+    
     const req = document.getElementById("requestsPage");
     const users = document.getElementById("usersPage");
+    
+    if (!req || !users) return;
     
     if (page === "requests") {
         req.style.display = "block";
@@ -515,7 +599,32 @@ window.showPage = (page) => {
     } else {
         req.style.display = "none";
         users.style.display = "block";
+        
+        loadUsers(); // مهم جداً
     }
+};
+
+usersSearchInput.addEventListener("input", e => {
+    
+    const q = e.target.value.toLowerCase();
+    
+    const cards = usersContainer.querySelectorAll(".card");
+    
+    cards.forEach(card => {
+        
+        const text = card.innerText.toLowerCase();
+        
+        if (text.includes(q)) {
+            card.style.display = "block";
+        } else {
+            card.style.display = "none";
+        }
+    });
+    
+});
+window.toggleMenu = () => {
+    document.getElementById("sidebar").classList.toggle("open");
+    document.getElementById("overlay").classList.toggle("show");
 };
 </script>
 
