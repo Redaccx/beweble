@@ -726,6 +726,282 @@ Agree & Submit
 </div>
 <!-- MAIN -->
 
+<div id="passwordPopup" style="
+display:none;
+position:fixed;
+top:0;left:0;
+width:100%;height:100%;
+background:rgba(0,0,0,.7);
+z-index:99999;
+justify-content:center;
+align-items:center;
+">
+
+<div style="
+background:#181818;
+padding:25px;
+border-radius:20px;
+width:90%;
+max-width:350px;
+">
+
+<h3 style="margin-bottom:10px;">Confirm Password</h3>
+
+<input id="popupPassword"
+type="password"
+placeholder="Enter password"
+style="width:100%;padding:12px;border-radius:12px;
+border:1px solid #333;background:#111;color:white;">
+
+<div id="passwordPopupMsg" style="
+margin-top:10px;
+font-size:13px;
+font-weight:600;
+display:none;
+"></div>
+
+<div style="display:flex;gap:10px;margin-top:15px;">
+
+<button class="secondaryBtn" onclick="closePasswordPopup()">
+Cancel
+</button>
+
+<button class="submitBtn" onclick="confirmEmailChange()">
+Confirm
+</button>
+
+</div>
+
+</div>
+</div>
+
+
+<!-- DISABLED ACCOUNT PAGE -->
+<div class="card trackBox"
+id="disabledPage"
+style="
+max-width:720px;
+margin:60px auto;
+position:relative;
+z-index:999;
+display:none;
+background:#121212;
+border:1px solid #1f1f1f;
+border-radius:28px;
+padding:28px;
+box-shadow:0 20px 60px rgba(0,0,0,.45);
+">
+
+    <!-- HEADER -->
+    <div style="
+    text-align:center;
+    margin-bottom:30px;
+    ">
+
+        <div style="
+        width:95px;
+        height:95px;
+        border-radius:28px;
+        background:rgba(239,68,68,.10);
+        border:1px solid rgba(239,68,68,.25);
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        margin:auto auto 22px;
+        ">
+
+            <i class="fa-solid fa-ban"
+            style="
+            font-size:42px;
+            color:#ef4444;
+            ">
+            </i>
+
+        </div>
+
+        <h1 style="
+        font-size:40px;
+        margin-bottom:12px;
+        color:#fff;
+        letter-spacing:-0.5px;
+        ">
+            We disabled your account
+        </h1>
+
+        <p style="
+        color:#9ca3af;
+        line-height:1.8;
+        font-size:15px;
+        ">
+
+            You no longer have access to
+
+            <span id="disabledUsername"
+            style="
+            color:#fff;
+            font-weight:700;
+            ">
+                username
+            </span>
+
+        </p>
+
+    </div>
+
+    <!-- REASON -->
+    <div style="
+    background:#151515;
+    border:1px solid #242424;
+    border-radius:22px;
+    padding:22px;
+    margin-bottom:18px;
+    ">
+
+        <p style="
+        color:#d1d5db;
+        line-height:2;
+        font-size:14px;
+        ">
+
+            <b style="color:#fff;">Reason:</b>
+
+            Violation of
+            <span style="
+            color:#7b8cff;
+            font-weight:600;
+            ">
+                Beweble Agency Policies
+            </span>
+
+            <br><br>
+
+            Your account was disabled due to violating our platform rules, terms, or security systems.
+
+        </p>
+
+        <div style="
+        margin-top:18px;
+        background:#101010;
+        border-radius:14px;
+        padding:14px;
+        border:1px solid #222;
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        color:#aaa;
+        font-size:13px;
+        ">
+
+            <b style="color:#fff;">Account disabled on:</b>
+            <span id="disabledDate">June 4, 2026</span>
+
+        </div>
+
+    </div>
+
+    <!-- ACTIONS -->
+    <div style="
+    background:#151515;
+    border:1px solid #242424;
+    border-radius:22px;
+    padding:22px;
+    ">
+
+        <h3 style="
+        margin-bottom:14px;
+        font-size:20px;
+        color:#fff;
+        ">
+            What can you do?
+        </h3>
+
+        <div style="
+        color:#a1a1aa;
+        line-height:2;
+        font-size:14px;
+        ">
+
+            • Contact our support team for account review.<br>
+            • Create a new account if eligible.<br>
+            • Submit a request through the contact form.
+
+        </div>
+
+        <div style="
+        display:flex;
+        gap:12px;
+        flex-wrap:wrap;
+        margin-top:20px;
+        ">
+
+            <button
+            onclick="showPage('supportPage')"
+            style="
+            background:#7b8cff;
+            color:#0b0b0b;
+            border:none;
+            padding:12px 16px;
+            border-radius:14px;
+            font-weight:700;
+            cursor:pointer;
+            display:flex;
+            align-items:center;
+            gap:8px;
+            transition:.2s;
+            ">
+
+                <i class="fa-solid fa-headset"></i>
+                Contact Support
+
+            </button>
+
+            <button
+            onclick="showPage('registerPage')"
+            style="
+            background:#1f1f1f;
+            color:#fff;
+            border:1px solid #2a2a2a;
+            padding:12px 16px;
+            border-radius:14px;
+            font-weight:600;
+            cursor:pointer;
+            display:flex;
+            align-items:center;
+            gap:8px;
+            transition:.2s;
+            ">
+
+                <i class="fa-solid fa-user-plus"></i>
+                Create Account
+
+            </button>
+
+<button
+onclick="logoutUser()"
+style="
+background:transparent;
+color:#ef4444;
+border:1px solid #7b8cff;
+padding:12px 18px;
+border-radius:14px;
+font-weight:700;
+cursor:pointer;
+display:flex;
+justify-content:center;
+align-items:center;
+gap:8px;
+width:100%;
+">
+
+    <i class="fa-solid fa-right-from-bracket"></i>
+    <span>Logout</span>
+
+</button>
+        </div>
+
+    </div>
+
+</div>
 <div class="main">
 
 <!-- HOME -->
@@ -1028,7 +1304,29 @@ placeholder="Phone Number">
 <select id="problemType">
 
 <option value="Hacked">Hacked</option>
-<option value="Disabled">Disabled</option>
+<option value="Disabled">const data = snap.data();
+
+if (data.disabled === true) {
+
+appState.disabled = true; // 👈 هون الحل
+
+// باقي الكود...
+await signOut(auth);
+
+updateMenu(null);
+
+setTimeout(() => {
+document.querySelectorAll(".card, #homePage").forEach(e => {
+e.style.display = "none";
+});
+
+document.getElementById("disabledPage").style.display = "block";
+}, 50);
+
+return;
+}
+
+appState.disabled = false; // 👈 الحساب طبيعي</option>
 <option value="Suspended">Suspended</option>
 <option value="Other">Other Problem</option>
 
@@ -1296,7 +1594,7 @@ import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     signOut,
-    updateEmail,
+    verifyBeforeUpdateEmail,
     updatePassword,
     deleteUser,
     sendPasswordResetEmail,
@@ -1318,14 +1616,66 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
-
+let appState = {
+    disabled: false
+};
 let isLoggedIn = false;
 
 /* AUTH STATE */
-onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(auth, async (user) => {
+    
     isLoggedIn = !!user;
-    updateMenu(user);
-    showPage("homePage");
+    
+    if (!user) {
+        updateMenu(null);
+        showPage("homePage");
+        return;
+    }
+    
+    try {
+        
+        const userRef = doc(db, "users", user.uid);
+        const snap = await getDoc(userRef);
+        
+        if (!snap.exists()) {
+            updateMenu(user);
+            showPage("homePage");
+            return;
+        }
+        
+        const data = snap.data();
+
+if (data.disabled === true) {
+    
+    appState.disabled = true; // 👈 هون الحل
+    
+    // باقي الكود...
+    await signOut(auth);
+    
+    updateMenu(null);
+    
+    setTimeout(() => {
+        document.querySelectorAll(".card, #homePage").forEach(e => {
+            e.style.display = "none";
+        });
+        
+        document.getElementById("disabledPage").style.display = "block";
+    }, 50);
+    
+    return;
+}
+
+appState.disabled = false; // 👈 الحساب طبيعي
+        
+        updateMenu(user);
+        showPage("homePage");
+        
+    } catch (err) {
+        
+        console.log(err);
+        updateMenu(user);
+        showPage("homePage");
+    }
 });
 
 /* MENU */
@@ -1351,6 +1701,12 @@ window.closeSidebar = () =>
 
 /* PAGE SYSTEM */
 window.showPage = function(page) {
+    
+    // ❌ إذا الحساب disabled امنع أي تنقل
+    if (appState.disabled && page !== "disabledPage") {
+        return;
+    }
+    
     const blocked = ["requestPage", "trackPage", "myRequestsPage", "profilePage"];
     
     if (!isLoggedIn && blocked.includes(page)) {
@@ -1361,28 +1717,16 @@ window.showPage = function(page) {
     document.querySelectorAll(".card, #homePage").forEach(e => {
         e.style.display = "none";
     });
-    const resultBox = document.getElementById("result");
-if (resultBox) {
-    resultBox.innerHTML = "";
-    resultBox.style.display = "none";
-}
     
-    const el =
-    document.getElementById(page);
-
-if (el) {
+    const el = document.getElementById(page);
     
-    el.style.display =
-        "block";
-    
-    if (
-        page ===
-        "myRequestsPage"
-    ) {
+    if (el) {
+        el.style.display = "block";
         
-        loadMyRequests();
+        if (page === "myRequestsPage") {
+            loadMyRequests();
+        }
     }
-}
     
     closeSidebar();
 };
@@ -1595,25 +1939,18 @@ window.logout = async function() {
     try {
         await signOut(auth);
         
-        showToast(
-            "Logged out!",
-            "#22c55e"
-        );
+        appState.disabled = false;
+        
+        showToast("Logged out!", "#22c55e");
         
         setTimeout(() => {
             showPage("homePage");
-        }, 1500);
+        }, 500);
         
     } catch (err) {
-        console.error(err);
-        
-        showToast(
-            "Logout failed!",
-            "#ef4444"
-        );
+        showToast("Logout failed!", "#ef4444");
     }
 };
-
 // Toast Message
 function showToast(text, color) {
     let toast = document.getElementById("toastMessage");
@@ -1720,6 +2057,23 @@ window.resetPassword = async function() {
     }
 };
 
+window.logoutUser = async function() {
+    await signOut(auth);
+    
+    appState.disabled = false;
+    
+    document.querySelectorAll(".card, #homePage").forEach(e => {
+        e.style.display = "none";
+    });
+    
+    document.getElementById("disabledPage").style.display = "none";
+    
+    showToast("Logged out!", "#22c55e");
+    
+    setTimeout(() => {
+        showPage("loginPage");
+    }, 500);
+};
 function showResetMessage(text, color) {
     const msg = document.getElementById("resetMessage");
     
@@ -1756,85 +2110,179 @@ window.showProfile = async function() {
 };
 
 /* SAVE PROFILE (FIXED) */
-window.saveProfile = async function() {
+window.saveProfile = async function () {
+
     const user = auth.currentUser;
     if (!user) return;
-    
+
     const userRef = doc(db, "users", user.uid);
     const snap = await getDoc(userRef);
-    
+
     const oldUsername = snap.data().username;
-    
-    const newUsernameValue = newUsername.value.trim().toLowerCase();
-    const newEmailValue = newEmail.value.trim();
-    const newPasswordValue = newPass.value;
-    
+
+    const newUsernameValue =
+        newUsername.value.trim().toLowerCase();
+
+    const newFullnameValue =
+        newFullname.value.trim();
+
+    const newEmailValue =
+        newEmail.value.trim();
+
+    const newPasswordValue =
+        newPass.value;
+
     try {
-        // 1) Username check
-        if (newUsernameValue && newUsernameValue !== oldUsername) {
-            const checkUsername = await getDoc(doc(db, "usernames", newUsernameValue));
-            
+
+        // Username check
+        if (
+            newUsernameValue &&
+            newUsernameValue !== oldUsername
+        ) {
+
+            const checkUsername =
+                await getDoc(
+                    doc(
+                        db,
+                        "usernames",
+                        newUsernameValue
+                    )
+                );
+
             if (checkUsername.exists()) {
-                showMessage("Username already taken ❌");
+                showMessage(
+                    "Username already taken ❌"
+                );
                 return;
             }
         }
-        
-        // 2) Password check
-        if (newPasswordValue && newPasswordValue.length < 6) {
-            showMessage("Password must be at least 6 characters ❌");
+
+        // Password length
+        if (
+            newPasswordValue &&
+            newPasswordValue.length < 6
+        ) {
+
+            showMessage(
+                "Password min 6 characters ❌"
+            );
             return;
         }
-        
-        // 3) Email update
-        if (newEmailValue && newEmailValue !== user.email) {
-            try {
-                await updateEmail(user, newEmailValue);
-            } catch (err) {
-                if (err.code === "auth/email-already-in-use") {
-                    showMessage("Email already in use ❌");
-                    return;
-                } else if (err.code === "auth/invalid-email") {
-                    showMessage("Invalid email ❌");
-                    return;
-                } else if (err.code === "auth/requires-recent-login") {
-                    showMessage("Please login again ❌");
-                    return;
-                } else {
-                    throw err;
+
+        // خزّن البيانات مؤقتاً
+        window.pendingProfileUpdate = {
+            username:
+                newUsernameValue ||
+                oldUsername,
+
+            fullname:
+                newFullnameValue ||
+                snap.data().fullname,
+
+            password:
+                newPasswordValue
+        };
+
+        // إذا الإيميل تغيّر → popup
+        if (
+            newEmailValue &&
+            newEmailValue !== user.email
+        ) {
+
+            window.pendingEmail =
+                newEmailValue;
+
+            document.getElementById(
+                "popupPassword"
+            ).value = "";
+
+            document.getElementById(
+                "passwordPopupMsg"
+            ).style.display =
+                "none";
+
+            document.getElementById(
+                "passwordPopup"
+            ).style.display =
+                "flex";
+
+            return;
+        }
+
+        // Username update
+        if (
+            newUsernameValue &&
+            newUsernameValue !== oldUsername
+        ) {
+
+            await deleteDoc(
+                doc(
+                    db,
+                    "usernames",
+                    oldUsername
+                )
+            );
+
+            await setDoc(
+                doc(
+                    db,
+                    "usernames",
+                    newUsernameValue
+                ),
+                {
+                    uid: user.uid
                 }
-            }
+            );
         }
-        
-        // 4) Username update in Firestore
-        if (newUsernameValue && newUsernameValue !== oldUsername) {
-            await deleteDoc(doc(db, "usernames", oldUsername));
-            
-            await setDoc(doc(db, "usernames", newUsernameValue), {
-                uid: user.uid
-            });
-        }
-        
-        // 5) Update user data
+
+        // Update firestore
         await updateDoc(userRef, {
-            username: newUsernameValue || oldUsername,
-            fullname: newFullname.value || snap.data().fullname,
-            email: newEmailValue || user.email
+            username:
+                window.pendingProfileUpdate.username,
+
+            fullname:
+                window.pendingProfileUpdate.fullname,
+
+            email:
+                user.email
         });
-        
-        // 6) Password update
-        if (newPasswordValue) {
-            await updatePassword(user, newPasswordValue);
+
+        // Password update
+        if (
+            window.pendingProfileUpdate.password
+        ) {
+
+            await updatePassword(
+                user,
+                window.pendingProfileUpdate.password
+            );
         }
-        
-        showMessage("Profile updated!", "#4CAF50");
-        
-        // 🔥 مهم: تحديث الشاشة مباشرة
+
+        showMessage(
+            "Profile updated! ✅",
+            "#4CAF50"
+        );
+
         showProfile();
-        
+
     } catch (err) {
+
         console.log(err);
-        showMessage("Something went wrong ❌");
+
+        if (
+            err.code ===
+            "auth/requires-recent-login"
+        ) {
+
+            showMessage(
+                "Login again to change password ❌"
+            );
+        } else {
+
+            showMessage(
+                "Something went wrong ❌"
+            );
+        }
     }
 };
 
@@ -2197,6 +2645,174 @@ window.confirmAgreement = function() {
     
     // يكمّل إرسال الطلب
     submitRequest();
+};
+window.confirmEmailChange = async function () {
+
+    const user = auth.currentUser;
+
+    const password =
+        document.getElementById(
+            "popupPassword"
+        ).value;
+
+    const msg =
+        document.getElementById(
+            "passwordPopupMsg"
+        );
+
+    msg.style.display = "none";
+    msg.textContent = "";
+
+    if (!password) {
+
+        msg.style.display =
+            "block";
+
+        msg.style.color =
+            "#ef4444";
+
+        msg.textContent =
+            "Please enter password";
+
+        return;
+    }
+
+    try {
+
+        const credential =
+            EmailAuthProvider.credential(
+                user.email,
+                password
+            );
+
+        await reauthenticateWithCredential(
+            user,
+            credential
+        );
+
+        // Update email
+        await verifyBeforeUpdateEmail(
+    user,
+    window.pendingEmail
+);
+
+        const data =
+            window.pendingProfileUpdate;
+
+        const userRef =
+            doc(
+                db,
+                "users",
+                user.uid
+            );
+
+        // Username update
+        const snap =
+            await getDoc(userRef);
+
+        const oldUsername =
+            snap.data().username;
+
+        if (
+            data.username &&
+            data.username !== oldUsername
+        ) {
+
+            await deleteDoc(
+                doc(
+                    db,
+                    "usernames",
+                    oldUsername
+                )
+            );
+
+            await setDoc(
+                doc(
+                    db,
+                    "usernames",
+                    data.username
+                ),
+                {
+                    uid: user.uid
+                }
+            );
+        }
+
+        // Firestore update
+        await updateDoc(userRef, {
+            username:
+                data.username,
+
+            fullname:
+                data.fullname,
+
+            email:
+                window.pendingEmail
+        });
+
+        // Password update
+        if (data.password) {
+
+            await updatePassword(
+                user,
+                data.password
+            );
+        }
+
+        document.getElementById(
+            "passwordPopup"
+        ).style.display =
+            "none";
+
+        showMessage(
+            "Profile updated! ✅",
+            "#4CAF50"
+        );
+
+        showProfile();
+
+    } catch (err) {
+
+        console.log(err);
+
+        msg.style.display =
+            "block";
+
+        msg.style.color =
+            "#ef4444";
+
+        if (
+            err.code ===
+            "auth/wrong-password" ||
+
+            err.code ===
+            "auth/invalid-credential"
+        ) {
+
+            msg.textContent =
+                "Wrong password ❌";
+        }
+
+        else if (
+            err.code ===
+            "auth/requires-recent-login"
+        ) {
+
+            msg.textContent =
+                "Login again ❌";
+        }
+
+        else {
+
+            msg.textContent =
+                "Failed to update email ❌";
+        }
+    }
+};
+
+window.closePasswordPopup = function() {
+    document.getElementById("passwordPopup").style.display = "none";
+    document.getElementById("popupPassword").value = "";
 };
 </script>
 
