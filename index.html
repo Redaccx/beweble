@@ -1304,29 +1304,7 @@ placeholder="Phone Number">
 <select id="problemType">
 
 <option value="Hacked">Hacked</option>
-<option value="Disabled">const data = snap.data();
-
-if (data.disabled === true) {
-
-appState.disabled = true; // 👈 هون الحل
-
-// باقي الكود...
-await signOut(auth);
-
-updateMenu(null);
-
-setTimeout(() => {
-document.querySelectorAll(".card, #homePage").forEach(e => {
-e.style.display = "none";
-});
-
-document.getElementById("disabledPage").style.display = "block";
-}, 50);
-
-return;
-}
-
-appState.disabled = false; // 👈 الحساب طبيعي</option>
+<option value="Disabled">Disabled</option>
 <option value="Suspended">Suspended</option>
 <option value="Other">Other Problem</option>
 
@@ -1647,25 +1625,23 @@ onAuthStateChanged(auth, async (user) => {
 
 if (data.disabled === true) {
     
-    appState.disabled = true; // 👈 هون الحل
+    appState.disabled = true;
     
-    // باقي الكود...
     await signOut(auth);
     
     updateMenu(null);
     
-    setTimeout(() => {
-        document.querySelectorAll(".card, #homePage").forEach(e => {
-            e.style.display = "none";
-        });
-        
-        document.getElementById("disabledPage").style.display = "block";
-    }, 50);
+    document.querySelectorAll(".card, #homePage").forEach(e => {
+        e.style.display = "none";
+    });
+    
+    document.getElementById("disabledPage").style.display = "block";
+    document.getElementById("disabledUsername").innerText = data.username;
     
     return;
 }
 
-appState.disabled = false; // 👈 الحساب طبيعي
+appState.disabled = false;
         
         updateMenu(user);
         showPage("homePage");
@@ -2068,7 +2044,7 @@ window.logoutUser = async function() {
     
     document.getElementById("disabledPage").style.display = "none";
     
-    showToast("Logged out!", "#22c55e");
+    showToast("Logged out successfully!", "#22c55e");
     
     setTimeout(() => {
         showPage("loginPage");
