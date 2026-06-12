@@ -378,11 +378,69 @@ border-radius:22px;
 padding:25px;
 display:none;
 }
+.status {
+    font-weight: 700;
+    margin-top: 10px;
+    padding: 6px 12px;
+    border-radius: 12px;
+    display: inline-block;
+}
 
-.status{
-color:#ffcc00;
-font-weight:700;
-margin-top:10px;
+/* 🔵 Pending */
+.status-pending {
+    
+    color: #ffcc00;
+    
+}
+
+/* 🟣 Waiting Payment */
+.status-waiting-payment {
+   
+    color: #a855f7;
+    
+}
+
+/* 🔵 In Progress */
+.status-in-progress {
+   
+    color: #3b82f6;
+   
+}
+
+/* 🩵 In Review */
+.status-in-review {
+     color: #0ea5e9;
+   
+}
+
+/* 🟡 Need Details */
+.status-need-details {
+       color: #f59e0b;
+   
+}
+
+/* 🔴 Rejected */
+.status-rejected {
+       color: #ef4444;
+   
+}
+
+/* 🟠 Problem Solved */
+.status-problem-solved {
+    color: #f97316;
+   
+}
+
+/* 🟢 Recovered */
+.status-recovered {
+     color: #22c55e;
+   
+}
+
+/* 🟢 Completed */
+.status-completed {
+     color: #10b981;
+   
 }
 
 .wallet{
@@ -1681,6 +1739,22 @@ onAuthStateChanged(auth, async (user) => {
         showPage("homePage");
     }
 });
+function getStatusClass(status) {
+    
+    const map = {
+        "Pending": "status-pending",
+        "Waiting Payment": "status-waiting-payment",
+        "In Progress": "status-in-progress",
+        "In Review": "status-in-review",
+        "Need Some Details": "status-need-details",
+        "Rejected": "status-rejected",
+        "Problem Solved": "status-problem-solved",
+        "Recoverd": "status-recovered",
+        "Completed": "status-completed"
+    };
+    
+    return map[status] || "status-pending";
+}
 
 /* MENU */
 function updateMenu(user) {
@@ -2468,14 +2542,25 @@ window.trackRequest = async function() {
     snap.forEach(d => {
         const data = d.data();
         
-        trackResult.innerHTML = `
+        const statusClass = getStatusClass(data.status);
+
+trackResult.innerHTML = `
   <h2>Status</h2>
 
   <p><b>Request ID:</b> ${data.requestId}</p>
   <p><b>Username:</b> ${data.username || "N/A"}</p>
-  <p><b>Platform:</b> ${data.platform}</p>
 
-  <p class="status">${data.status}</p>
+  <p><b>Platform:</b> ${data.platform}</p>
+  <p><b>Problem:</b> ${data.problemType}</p>
+
+  <p><b>Description:</b></p>
+  <p style="color:#aaa;line-height:1.6;">
+    ${data.details || "No details"}
+  </p>
+
+  <span class="status ${statusClass}">
+    ${data.status}
+  </span>
 `;
         trackResult.style.display = "block";
     });
@@ -2520,43 +2605,38 @@ window.loadMyRequests = async function() {
 box.innerHTML += `
 <div class="featureBox">
 
-    <h3>
-    ${data.platform}
-    </h3>
+    <h3>${data.platform}</h3>
 
-    <p>
-    <b>Username:</b>
-    ${data.username || "N/A"}
+    <p><b>Username:</b> ${data.username || "N/A"}</p>
+
+    <p><b>Problem:</b> ${data.problemType}</p>
+
+    <p><b>Description:</b></p>
+    <p style="color:#aaa;line-height:1.6;font-size:13px;">
+        ${data.details || "No details"}
     </p>
 
     <p>
-    Status:
-    <b>${data.status}</b>
+      Status:
+      <span class="status ${getStatusClass(data.status)}">
+        ${data.status}
+      </span>
     </p>
 
     <div class="address">
         ${data.requestId}
     </div>
 
-    <button
-    class="secondaryBtn"
-    style="margin-top:12px;width:100%;"
-    onclick="copyCode('${data.requestId}')">
-
-    Copy Code
-
+    <button class="secondaryBtn"
+        style="margin-top:12px;width:100%;"
+        onclick="copyCode('${data.requestId}')">
+        Copy Code
     </button>
 
-    <button
-    class="submitBtn"
-    style="
-    margin-top:10px;
-    width:100%;
-    background:#d32f2f;"
-    onclick="deleteRequest('${docSnap.id}','${data.requestId}')">
-
-    Delete Request
-
+    <button class="submitBtn"
+        style="margin-top:10px;width:100%;background:#d32f2f;"
+        onclick="deleteRequest('${docSnap.id}','${data.requestId}')">
+        Delete Request
     </button>
 
 </div>
