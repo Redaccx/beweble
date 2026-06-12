@@ -442,47 +442,27 @@ card.innerHTML=`
 
 <div class="info"><b>Problem Type:</b> ${r.problemType || "-"}</div>
 
-<div class="info">
-    <b>Status:</b> ${r.status || "Pending"}
-</div>
+<div class="info"><b>Status:</b> ${r.status || "Pending"}</div>
 
 <select>
-    <option ${r.status==="Pending" ? "selected" : "" }>
-        Pending
-    </option>
-    
-    <option ${r.status==="In Review" ? "selected" : "" }>
-        In Review
-    </option>
-    
-    <option ${r.status==="In Progress" ? "selected" : "" }>
-        In Progress
-    </option>
-    
-    <option ${r.status==="Completed" ? "selected" : "" }>
-        Completed
-    </option>
-    
-    <option ${r.status==="Need Some Details" ? "selected" : "" }>
-        Need Some Details
-    </option>
-    
-    <option ${r.status==="Rejected" ? "selected" : "" }>
-        Rejected
-    </option>
+<option>Pending</option>
+<option>Waiting Payment</option>
+<option>In Progress</option>
+<option>In Review</option>
+<option>Need Some Details </option>
+<option>Rejected</option>
+<option>Problem Solved</option>
+<option>Recoverd</option>
+<option>Completed</option>
 </select>
 
-<button class="smallBtn update">
-    Update
-</button>
-
-<button class="smallBtn delete">
-    Delete
-</button>
+<button class="smallBtn update">Update</button>
+<button class="smallBtn delete">Delete</button>
 `;
 
 const select = card.querySelector("select");
 select.value = r.status || "Pending";
+
 
 /* UPDATE */
 card.querySelector(".update").onclick = async () => {
@@ -533,64 +513,11 @@ if (usersCount) {
             </div>
 
             <div class="info">
-    <b>Status:</b>
-
-    <span style="
-    padding:6px 12px;
-    border-radius:999px;
-    font-size:13px;
-    font-weight:700;
-    display:inline-block;
-    margin-left:6px;
-    background:
-    ${r.status === "Pending"
-    ? "rgba(255,204,0,.15)" :
-
-    r.status === "In Review"
-    ? "rgba(139,92,246,.15)" :
-
-    r.status === "In Progress"
-    ? "rgba(59,130,246,.15)" :
-
-    r.status === "Completed"
-    ? "rgba(34,197,94,.15)" :
-
-    r.status === "Need Some Details"
-    ? "rgba(249,115,22,.15)" :
-
-    r.status === "Rejected"
-    ? "rgba(239,68,68,.15)" :
-
-    "rgba(255,204,0,.15)"
-    };
-
-    color:
-    ${r.status === "Pending"
-    ? "#ffcc00" :
-
-    r.status === "In Review"
-    ? "#8b5cf6" :
-
-    r.status === "In Progress"
-    ? "#3b82f6" :
-
-    r.status === "Completed"
-    ? "#22c55e" :
-
-    r.status === "Need Some Details"
-    ? "#f97316" :
-
-    r.status === "Rejected"
-    ? "#ef4444" :
-
-    "#ffcc00"
-    };
-    ">
-
-    ${r.status || "Pending"}
-
-    </span>
-</div>
+                Status:
+                <b style="color:${disabled ? "#ef4444" : "#22c55e"}">
+                    ${disabled ? "Disabled" : "Active"}
+                </b>
+            </div>
 
             ${
                 disabled ? `
