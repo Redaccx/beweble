@@ -951,7 +951,7 @@ box-shadow:0 20px 60px rgba(0,0,0,.45);
         ">
 
             <b style="color:#fff;">Account disabled on:</b>
-            <span id="disabledDate">June 4, 2026</span>
+            <span id="disabledDate"></span>
 
         </div>
 
@@ -1703,6 +1703,13 @@ onAuthStateChanged(auth, async (user) => {
                 
                 document.getElementById("disabledPage").style.display = "block";
                 document.getElementById("disabledUsername").innerText = liveData.username;
+
+document.getElementById("disabledDate").innerText =
+    new Date().toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+    });
             }
         });
         
@@ -1723,6 +1730,13 @@ onAuthStateChanged(auth, async (user) => {
             
             document.getElementById("disabledPage").style.display = "block";
             document.getElementById("disabledUsername").innerText = data.username;
+
+document.getElementById("disabledDate").innerText =
+    new Date().toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+    });
             
             return;
         }
