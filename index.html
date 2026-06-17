@@ -2544,7 +2544,11 @@ window.copyCode = function(code) {
 };
 /* TRACK */
 window.trackRequest = async function() {
-    const q = query(collection(db, "requests"), where("requestId", "==", trackId.value));
+    const q = query(
+        collection(db, "requests"),
+        where("requestId", "==", trackId.value)
+    );
+    
     const snap = await getDocs(q);
     
     if (snap.empty) {
@@ -2557,29 +2561,35 @@ window.trackRequest = async function() {
         const data = d.data();
         
         const statusClass = getStatusClass(data.status);
+        
+        const requestDate = data.createdAt ?
+            new Date(data.createdAt).toLocaleString() :
+            "Unknown";
+        
+        trackResult.innerHTML = `
+          <h2>Status</h2>
 
-trackResult.innerHTML = `
-  <h2>Status</h2>
+          <p><b>Request ID:</b> ${data.requestId}</p>
+          <p><b>Username:</b> ${data.username || "N/A"}</p>
 
-  <p><b>Request ID:</b> ${data.requestId}</p>
-  <p><b>Username:</b> ${data.username || "N/A"}</p>
+          <p><b>Sent:</b> ${requestDate}</p>
 
-  <p><b>Platform:</b> ${data.platform}</p>
-  <p><b>Problem:</b> ${data.problemType}</p>
+          <p><b>Platform:</b> ${data.platform}</p>
+          <p><b>Problem:</b> ${data.problemType}</p>
 
-  <p><b>Description:</b></p>
-  <p style="color:#aaa;line-height:1.6;">
-    ${data.details || "No details"}
-  </p>
+          <p><b>Description:</b></p>
+          <p style="color:#aaa;line-height:1.6;">
+            ${data.details || "No details"}
+          </p>
 
-  <span class="status ${statusClass}">
-    ${data.status}
-  </span>
-`;
+          <span class="status ${statusClass}">
+            ${data.status}
+          </span>
+        `;
+        
         trackResult.style.display = "block";
     });
 };
-
 /* LOAD REQUESTS */
 window.loadMyRequests = async function() {
     
@@ -2612,18 +2622,23 @@ window.loadMyRequests = async function() {
     }
     
     snap.forEach(docSnap => {
-        
-        const data =
-            docSnap.data();
-        
+
+const data = docSnap.data();
+
+const requestDate = data.createdAt
+? new Date(data.createdAt).toLocaleString()
+: "Unknown";
+
 box.innerHTML += `
 <div class="featureBox">
 
-    <h3>${data.platform}</h3>
+<h3>${data.platform}</h3>
 
-    <p><b>Username:</b> ${data.username || "N/A"}</p>
+<p><b>Username:</b> ${data.username || "N/A"}</p>
 
-    <p><b>Problem:</b> ${data.problemType}</p>
+<p><b>Sent:</b> ${requestDate}</p>
+
+<p><b>Problem:</b> ${data.problemType}</p>
 
     <p><b>Description:</b></p>
     <p style="color:#aaa;line-height:1.6;font-size:13px;">
