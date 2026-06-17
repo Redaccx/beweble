@@ -293,16 +293,7 @@ cursor:pointer;
 </head>
 
 <body>
-<div id="deleteModal" class="modal">
-    <div class="modalBox">
-        <h3>Delete User?</h3>
-        
-        <div class="modalActions">
-            <button id="cancelUserDelete">Cancel</button>
-            <button id="confirmUserDelete">Delete</button>
-        </div>
-    </div>
-</div>
+
 
 
 <!-- LOGIN -->
@@ -515,7 +506,7 @@ card.innerHTML=`
 </select>
 
 <button class="smallBtn update">Update</button>
-<button class="smallBtn delete">Delete</button>
+
 `;
 
 const select = card.querySelector("select");
@@ -531,32 +522,12 @@ load();
 };
 
 /* DELETE POPUP */
-card.querySelector(".delete").onclick = () => {
-deleteId = r.id;
-popup.style.display="flex";
-};
+
 
 container.appendChild(card);
 });
 }
-let userToDelete = null;
 
-const modal = document.getElementById("deleteModal");
-
-document.getElementById("cancelUserDelete").onclick = () => {
-    modal.style.display = "none";
-};
-
-document.getElementById("confirmUserDelete").onclick = async () => {
-    
-    if (!userToDelete) return;
-    
-    await deleteDoc(doc(db, "users", userToDelete));
-    
-    modal.style.display = "none";
-    
-    loadUsers();
-};
 /* LOAD USERS */
 async function loadUsers() {
     
@@ -611,13 +582,7 @@ if (usersCount) {
                 style="background:${disabled ? "#22c55e" : "#ef4444"}">
                 ${disabled ? "Enable" : "Disable"}
             </button>
-            <button class="smallBtn deleteUser"
-
-    style="background:#ef4444">
-
-    Delete Account
-
-</button>
+        
         `;
         
         card.querySelector(".smallBtn").onclick = async () => {
@@ -654,12 +619,7 @@ if (usersCount) {
                 alert("Failed ❌");
             }
         };
-        card.querySelector(".deleteUser").onclick = () => {
     
-    userToDelete = userDoc.id;
-    
-    modal.style.display = "flex";
-};
         
         usersContainer.appendChild(card);
     });
