@@ -2432,18 +2432,18 @@ window.submitRequest = async function() {
     
     try {
         
-        await addDoc(collection(db, "requests"), {
-            uid: user.uid,
-            requestId,
-            username,
-            newemail,
-            phone,
-            platform,
-            problemType,
-            details,
-            status: "Pending",
-            createdAt: Date.now()
-        });
+     await setDoc(doc(db, "requests", requestId), {
+    uid: user.uid,
+    requestId,
+    username,
+    newemail,
+    phone,
+    platform,
+    problemType,
+    details,
+    status: "Pending",
+    createdAt: Date.now()
+});
         
         resultBox.style.display = "block";
         resultBox.innerHTML = `
