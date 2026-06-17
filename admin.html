@@ -247,10 +247,63 @@ cursor:pointer;
     gap: 10px;
     margin-bottom: 15px;
 }
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, .6);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.modalBox {
+    background: #1e293b;
+    padding: 20px;
+    border-radius: 12px;
+    width: 320px;
+    text-align: center;
+}
+
+.modalActions {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.modalActions button {
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+#confirmDelete {
+    background: #ef4444;
+    color: white;
+}
+
+#cancelDelete {
+    background: #475569;
+    color: white;
+}
 </style>
 </head>
 
 <body>
+<div id="deleteModal" class="modal">
+    <div class="modalBox">
+        <h3>Delete User?</h3>
+        
+        <div class="modalActions">
+            <button id="cancelUserDelete">Cancel</button>
+            <button id="confirmUserDelete">Delete</button>
+        </div>
+    </div>
+</div>
+
 
 <!-- LOGIN -->
 <div id="login">
@@ -442,6 +495,11 @@ card.innerHTML=`
 
 <div class="info"><b>Problem Type:</b> ${r.problemType || "-"}</div>
 
+<div class="info">
+    <b>Sent:</b>
+    ${r.createdAt ? new Date(r.createdAt).toLocaleString() : "-"}
+</div>
+
 <div class="info"><b>Status:</b> ${r.status || "Pending"}</div>
 
 <select>
@@ -481,7 +539,24 @@ popup.style.display="flex";
 container.appendChild(card);
 });
 }
+let userToDelete = null;
 
+const modal = document.getElementById("deleteModal");
+
+document.getElementById("cancelUserDelete").onclick = () => {
+    modal.style.display = "none";
+};
+
+document.getElementById("confirmUserDelete").onclick = async () => {
+    
+    if (!userToDelete) return;
+    
+    await deleteDoc(doc(db, "users", userToDelete));
+    
+    modal.style.display = "none";
+    
+    loadUsers();
+};
 /* LOAD USERS */
 async function loadUsers() {
     
@@ -496,7 +571,9 @@ if (usersCount) {
     snap.forEach(userDoc => {
         
         const user = userDoc.data();
-        const disabled = user.disabled === true;
+        const disabled = user.disabled === true;const createdDate = user.createdAt ?
+    new Date(user.createdAt).toLocaleString() :
+    "-";
         
         const card = document.createElement("div");
         card.className = "card";
@@ -511,6 +588,9 @@ if (usersCount) {
             <div class="info">
                 ID: ${user.uid || userDoc.id}
             </div>
+            <div class="info">
+    Created: ${createdDate}
+</div>
 
             <div class="info">
                 Status:
@@ -531,6 +611,13 @@ if (usersCount) {
                 style="background:${disabled ? "#22c55e" : "#ef4444"}">
                 ${disabled ? "Enable" : "Disable"}
             </button>
+            <button class="smallBtn deleteUser"
+
+    style="background:#ef4444">
+
+    Delete Account
+
+</button>
         `;
         
         card.querySelector(".smallBtn").onclick = async () => {
@@ -567,6 +654,12 @@ if (usersCount) {
                 alert("Failed ❌");
             }
         };
+        card.querySelector(".deleteUser").onclick = () => {
+    
+    userToDelete = userDoc.id;
+    
+    modal.style.display = "flex";
+};
         
         usersContainer.appendChild(card);
     });
