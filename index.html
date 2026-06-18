@@ -1710,8 +1710,11 @@ onAuthStateChanged(auth, async (user) => {
         
         const data = snap.data();
         
+        document.querySelectorAll(".menu button").forEach(b => {
+    b.style.display = "block";
+});
         // =========================
-        // 🚨 REAL-TIME BAN LISTENER
+     // 🚨 REAL-TIME BAN LISTENER
         // =========================
         unsubscribeUserListener = onSnapshot(userRef, (liveSnap) => {
             
