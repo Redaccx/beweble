@@ -530,55 +530,58 @@ width:100%;
 </button>
 
 <div class="menu">
-    <button id="homeBtn" onclick="showPage('homePage')">
+ <button id="homeBtn" onclick="showPage('homePage'); closeSidebar();">
     <i class="fa-solid fa-house"></i>
     Home
 </button>
-<button id="loginBtn" onclick="showPage('loginPage')">
+
+<button id="loginBtn" onclick="showPage('loginPage'); closeSidebar();">
     <i class="fa-solid fa-right-to-bracket"></i>
     Login
 </button>
 
-<button id="registerBtn" onclick="showPage('registerPage')">
+<button id="registerBtn" onclick="showPage('registerPage'); closeSidebar();">
     <i class="fa-solid fa-user-plus"></i>
     Create Account
 </button>
 
 <!-- بس للمسجل -->
-<button id="requestBtn" onclick="showPage('requestPage')">
+<button id="requestBtn" onclick="showPage('requestPage'); closeSidebar();">
     <i class="fa-solid fa-paper-plane"></i>
     New Request
 </button>
 
-<button id="trackBtn" onclick="showPage('trackPage')">
+<button id="trackBtn" onclick="showPage('trackPage'); closeSidebar();">
     <i class="fa-solid fa-magnifying-glass"></i>
     Track
 </button>
-<button id="toolsBtn" onclick="window.location.href='tools.html'">
+
+<button id="toolsBtn" onclick="window.location.href='tools.html'; closeSidebar();">
     <i class="fa-solid fa-screwdriver-wrench"></i>
     Tools
 </button>
-<button id="myRequestsBtn" onclick="showPage('myRequestsPage')">
+
+<button id="myRequestsBtn" onclick="showPage('myRequestsPage'); closeSidebar();">
     <i class="fa-solid fa-folder-open"></i>
     My Requests
 </button>
 
-<button id="profileBtn" onclick="showProfile()">
+<button id="profileBtn" onclick="showProfile(); closeSidebar();">
     <i class="fa-solid fa-user"></i>
     Profile
 </button>
 
-<button id="termsBtn" onclick="showPage('termsPage')">
+<button id="termsBtn" onclick="showPage('termsPage'); closeSidebar();">
     <i class="fa-solid fa-scale-balanced"></i>
     Terms
 </button>
 
-<button id="privacyBtn" onclick="showPage('privacyPage')">
+<button id="privacyBtn" onclick="showPage('privacyPage'); closeSidebar();">
     <i class="fa-solid fa-shield-halved"></i>
     Privacy
 </button>
 
-<button id="supportBtn" onclick="showPage('supportPage')">
+<button id="supportBtn" onclick="showPage('supportPage'); closeSidebar();">
     <i class="fa-solid fa-headset"></i>
     Support
 </button>
@@ -1851,10 +1854,7 @@ window.showPage = function(page) {
             loadMyRequests();
         }
     }
-    
-    
 };
-
 window.deleteRequest = function(docId, requestId) {
     
     document.getElementById("deleteRequestPopup").style.display = "flex";
