@@ -2947,6 +2947,19 @@ window.closePasswordPopup = function() {
     document.getElementById("passwordPopup").style.display = "none";
     document.getElementById("popupPassword").value = "";
 };
+
+document.addEventListener("click", function(e) {
+    const sidebar = document.getElementById("sidebar");
+    const menuBtn = document.querySelector(".menuBtn");
+    
+    const clickedInsideSidebar = sidebar.contains(e.target);
+    const clickedMenuBtn = menuBtn.contains(e.target);
+    
+    // إذا الكليك مش داخل السايدبار ولا على زر المينيو → اقفل
+    if (!clickedInsideSidebar && !clickedMenuBtn) {
+        sidebar.classList.remove("active");
+    }
+});
 </script>
 
 </body>
