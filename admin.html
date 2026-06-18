@@ -506,6 +506,7 @@ card.innerHTML=`
 </select>
 
 <button class="smallBtn update">Update</button>
+<button class="smallBtn delete">Delete</button>
 
 `;
 
@@ -520,7 +521,10 @@ status: select.value
 });
 load();
 };
-
+card.querySelector(".delete").onclick = () => {
+    deleteId = r.id;
+    popup.style.display = "flex";
+};
 /* DELETE POPUP */
 
 
