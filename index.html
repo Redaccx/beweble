@@ -1345,9 +1345,27 @@ placeholder="Username">
 id="newemail"
 placeholder="New Email">
 
-<input type="text"
-id="phone"
-placeholder="Phone Number">
+<div style="display:flex;gap:5px;">
+    
+    <select id="countryCode" style="width:40%;">
+        <option value="+961">🇱🇧 +961</option>
+        <option value="+1">🇺🇸 +1</option>
+        <option value="+44">🇬🇧 +44</option>
+        <option value="+20">🇪🇬 +20</option>
+        <option value="+966">🇸🇦 +966</option>
+        <option value="+971">🇦🇪 +971</option>
+        <option value="+90">🇹🇷 +90</option>
+        <option value="+33">🇫🇷 +33</option>
+        <option value="+49">🇩🇪 +49</option>
+        <option value="+39">🇮🇹 +39</option>
+    </select>
+
+    <input type="text"
+    id="phone"
+    placeholder="Phone Number"
+    style="width:65%;">
+    
+</div>
 
 <select id="platform">
 
@@ -2404,7 +2422,9 @@ window.submitRequest = async function() {
     
     const username = document.getElementById("username").value.trim();
     const newemail = document.getElementById("newemail").value.trim();
-    const phone = document.getElementById("phone").value.trim();
+    const countryCode = document.getElementById("countryCode").value;
+const phoneNumber = document.getElementById("phone").value.trim();
+const phone = countryCode + phoneNumber;
     const platform = document.getElementById("platform").value;
     const problemType = document.getElementById("problemType").value;
     const details = document.getElementById("details").value.trim();
@@ -2418,11 +2438,11 @@ window.submitRequest = async function() {
         return;
     }
     
-    if (!/^[0-9]+$/.test(phone)) {
-        resultBox.style.display = "block";
-        resultBox.innerHTML = "❌ Phone must contain numbers only";
-        return;
-    }
+    if (!/^\+?[0-9]+$/.test(phone)) {
+    resultBox.style.display = "block";
+    resultBox.innerHTML = "❌ Invalid phone number";
+    return;
+}
     
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newemail)) {
         resultBox.style.display = "block";
