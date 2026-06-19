@@ -1157,103 +1157,6 @@ Change
 
 </div>
 </div>
-
-<div id="insightPopup" style="
-display:none;
-position:fixed;
-inset:0;
-background:rgba(0,0,0,.75);
-backdrop-filter:blur(8px);
-z-index:99999;
-justify-content:center;
-align-items:center;
-padding:20px;
-">
-    
-    <div style="
-    width:100%;
-    max-width:420px;
-    background:#181818;
-    border:1px solid #2a2a2a;
-    border-radius:18px;
-    padding:20px;
-    color:#fff;
-    box-shadow:0 20px 60px rgba(0,0,0,.5);
-    animation: pop .2s ease-out;
-  ">
-        
-        <!-- Header -->
-        <div style="
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin-bottom:18px;
-    ">
-            <h3 style="
-        margin:0;
-        font-size:18px;
-        font-weight:700;
-        letter-spacing:.3px;
-      ">
-                Activity Insight
-            </h3>
-            
-            <button onclick="closeInsightPopup()" style="
-        background:transparent;
-        border:none;
-        color:#aaa;
-        font-size:20px;
-        cursor:pointer;
-        transition:.2s;
-      " onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#aaa'">
-                ✕
-            </button>
-        </div>
-        
-        <!-- Requests -->
-        <div style="
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      padding:14px;
-      background:#1f1f1f;
-      border:1px solid #2a2a2a;
-      border-radius:14px;
-      margin-bottom:10px;
-    ">
-            <span style="color:#aaa;font-size:14px;">
-                Requests this week
-            </span>
-            
-            <b id="requestsWeek" style="
-        color:#7b8cff;
-        font-size:15px;
-      ">
-                Loading...
-            </b>
-        </div>
-        
-        <!-- Health -->
-        <div style="
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      padding:14px;
-      background:#1f1f1f;
-      border:1px solid #2a2a2a;
-      border-radius:14px;
-    ">
-            <span style="color:#aaa;font-size:14px;">
-                Account health
-            </span>
-            
-            <b id="accountHealth" style="font-size:15px;">
-                Loading...
-            </b>
-        </div>
-        
-    </div>
-</div>
 <div class="main">
 
 <!-- HOME -->
@@ -1681,7 +1584,8 @@ Submit Request
         </span>
         
     </div>
- 
+    
+
         
         <p><b>Account Created:</b></p>
         <div class="address" id="createdBox">Loading...</div>
@@ -1689,16 +1593,11 @@ Submit Request
         <p><b>Last Login:</b></p>
         <div class="address" id="lastLoginBox">Loading...</div>
         
-  
-       
         <p><b>Web Version:</b></p>
         <div class="address">V 1.1.02</div>
         
     </div>
     
-       <button onclick="openInsightPopup()" class="secondaryBtn" style="margin-top:12px;">
-    Activity Insight
-</button>
     <!-- Clear cache فقط -->
     <button class="secondaryBtn" style="width:100%;margin-top:12px;" onclick="clearCache()">
         Clear Cache
@@ -1970,7 +1869,7 @@ let unsubscribeUserListener = null;
 
 /* AUTH STATE */
 onAuthStateChanged(auth, async (user) => {
-
+document.body.style.display = "block";
     isLoggedIn = !!user;
 
     updateMenu(user);
@@ -2221,17 +2120,6 @@ window.deleteRequest = function(docId, requestId) {
             
         };
 };
-
-window.openInsightPopup = async function() {
-    document.getElementById("insightPopup").style.display = "flex";
-    
-    await loadRequestsWeek();
-    await loadAccountHealth();
-};
-
-window.closeInsightPopup = function() {
-    document.getElementById("insightPopup").style.display = "none";
-};
 /* REGISTER (FIXED) */
 window.registerUser = async function() {
     
@@ -2423,77 +2311,6 @@ window.logout = async function() {
         showToast("Logout failed!", "#ef4444");
     }
 };
-
-
-async function loadRequestsWeek() {
-    const user = auth.currentUser;
-    if (!user) return;
-    
-    const weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
-    
-    const q = query(
-        collection(db, "requests"),
-        where("uid", "==", user.uid)
-    );
-    
-    const snap = await getDocs(q);
-    
-    let count = 0;
-    
-    snap.forEach(docSnap => {
-        const data = docSnap.data();
-        
-        if (data.createdAt && data.createdAt >= weekAgo) {
-            count++;
-        }
-    });
-    
-    document.getElementById("requestsWeek").innerText = count;
-}
-
-async function loadAccountHealth() {
-    
-    const user = auth.currentUser;
-    
-    if (!user) return;
-    
-    const ref = doc(db, "users", user.uid);
-    
-    const snap = await getDoc(ref);
-    
-    if (!snap.exists()) return;
-    
-    const data = snap.data();
-    
-    // إذا الحقل مش موجود → نضيفه تلقائيًا
-    
-    if (!data.accountHealth) {
-        
-        await setDoc(ref, {
-            
-            accountHealth: "Good"
-            
-        }, { merge: true });
-        
-    }
-    
-    const health = data.accountHealth || "Good";
-    
-    const el = document.getElementById("accountHealth");
-    
-    el.innerText = health;
-    
-    el.style.color =
-        
-        health === "Good" ? "#22c55e" :
-        
-        health === "Warning" ? "#facc15" :
-        
-        health === "Bad" ? "#ef4444" :
-        
-        "#aaa";
-    
-}
 // Toast Message
 function showToast(text, color) {
     let toast = document.getElementById("toastMessage");
