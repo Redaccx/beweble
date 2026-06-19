@@ -502,6 +502,11 @@ width:100%;
 
 }
 
+#uidBox {
+    white-space: nowrap;
+    overflow-x: auto;
+    display: block;
+}
 </style>
 
 </head>
@@ -1474,8 +1479,44 @@ Submit Request
         <i class="fa-solid fa-trash"></i>
         Delete Account
     </button>
+ <div style="margin-top:20px;text-align:left;">
+    
+    <h3 style="margin-bottom:12px;">Account Info</h3>
+    
+<div class="wallet">
+    
+    <p><b>User ID (UID):</b></p>
+    
+    <div class="address" onclick="copyUID()" style="cursor:pointer;">
+        
+        <span id="uidBox" style="color:white;font-weight:600;word-break:break-all;">
+            Loading...
+        </span>
+        
+    </div>
     
 </div>
+        
+        <p><b>Account Created:</b></p>
+        <div class="address" id="createdBox">Loading...</div>
+        
+        <p><b>Last Login:</b></p>
+        <div class="address" id="lastLoginBox">Loading...</div>
+        
+        <p><b>Web Version:</b></p>
+        <div class="address">V 1.1.02</div>
+        
+    </div>
+    
+    <!-- Clear cache فقط -->
+    <button class="secondaryBtn" style="width:100%;margin-top:12px;" onclick="clearCache()">
+        Clear Cache
+    </button>
+    
+</div>   
+</div>
+
+
 <!-- TRACK -->
 
 <div class="card trackBox" id="trackPage">
@@ -1804,6 +1845,22 @@ document.getElementById("disabledDate").innerText =
         showPage("homePage");
     }
 });
+function loadAccountInfo() {
+    const user = auth.currentUser;
+    if (!user) return;
+    
+    document.getElementById("uidBox").innerText = user.uid;
+    
+    document.getElementById("lastLoginBox").innerText =
+        user.metadata.lastSignInTime ?
+        new Date(user.metadata.lastSignInTime).toLocaleString() :
+        "N/A";
+    
+    document.getElementById("createdBox").innerText =
+        user.metadata.creationTime ?
+        new Date(user.metadata.creationTime).toLocaleString() :
+        "N/A";
+}
 function getStatusClass(status) {
     
     const map = {
@@ -1821,6 +1878,18 @@ function getStatusClass(status) {
     return map[status] || "status-pending";
 }
 
+window.clearCache = function() {
+    if ('caches' in window) {
+        caches.keys().then(names => {
+            names.forEach(name => caches.delete(name));
+        });
+    }
+    
+    localStorage.clear();
+    sessionStorage.clear();
+    
+    showToast("Cache cleared", "#22c55e");
+};
 /* MENU */
 function updateMenu(user) {
     const loggedIn = !!user;
@@ -1835,6 +1904,14 @@ function updateMenu(user) {
     document.getElementById("profileBtn").style.display = loggedIn ? "block" : "none";
     document.getElementById("settingsBtn").style.display = loggedIn ? "block" : "none";
 }
+
+window.copyUID = function() {
+    const uid = document.getElementById("uidBox").innerText;
+    
+    navigator.clipboard.writeText(uid);
+    
+    showToast("UID copied ✅", "#22c55e");
+};
 
 /* SIDEBAR */
 window.openSidebar = () =>
@@ -1876,7 +1953,9 @@ window.showPage = function(page) {
         if (page === "myRequestsPage") {
             loadMyRequests();
         }
-        
+        if (page === "settingsPage") {
+    loadAccountInfo();
+}
 
     }
 };
@@ -2981,3 +3060,7 @@ document.addEventListener("click", function(e) {
 </body>
 </html>
 
+ 
+
+    
+  
