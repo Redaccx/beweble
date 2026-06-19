@@ -487,6 +487,10 @@ card.innerHTML=`
 <div class="info"><b>Problem Type:</b> ${r.problemType || "-"}</div>
 
 <div class="info">
+    <b>Description:</b> ${r.details || "-"}
+</div>
+
+<div class="info">
     <b>Sent:</b>
     ${r.createdAt ? new Date(r.createdAt).toLocaleString() : "-"}
 </div>
