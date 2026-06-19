@@ -545,6 +545,9 @@ if (usersCount) {
 }
     snap.forEach(userDoc => {
         
+        const ref = doc(db, "users", userDoc.id);
+const userData = userDoc.data();
+        
         const user = userDoc.data();
         const disabled = user.disabled === true;const createdDate = user.createdAt ?
     new Date(user.createdAt).toLocaleString() :
@@ -573,7 +576,18 @@ if (usersCount) {
                     ${disabled ? "Disabled" : "Active"}
                 </b>
             </div>
-
+<div class="info">
+    Account Status:
+    <b style="color:${
+        user.accountHealth === "Restricted"
+        ? "#ef4444"
+        : user.accountHealth === "Warning"
+        ? "#facc15"
+        : "#22c55e"
+    }">
+        ${user.accountHealth || "Good"}
+    </b>
+</div>
             ${
                 disabled ? `
                     <div class="info">
@@ -586,8 +600,27 @@ if (usersCount) {
                 style="background:${disabled ? "#22c55e" : "#ef4444"}">
                 ${disabled ? "Enable" : "Disable"}
             </button>
+            <button class="smallBtn statusBtn" style="background:#6366f1; margin-top:8px;">
+    Change Account Status
+</button>
+            
         
         `;
+        card.querySelector(".statusBtn").onclick = async () => {
+    
+    let current = userData.accountHealth || "Good";
+    let next;
+    
+    if (current === "Good") next = "Warning";
+    else if (current === "Warning") next = "Restricted";
+    else next = "Good";
+    
+    await updateDoc(ref, {
+        accountHealth: next
+    });
+    
+    loadUsers();
+};
         
         card.querySelector(".smallBtn").onclick = async () => {
             
