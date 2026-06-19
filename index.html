@@ -1073,6 +1073,90 @@ width:100%;
     </div>
 
 </div>
+
+<div id="changePassPopup" style="
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.75);
+z-index:99999;
+justify-content:center;
+align-items:center;
+backdrop-filter:blur(8px);
+padding:20px;
+">
+
+<div style="
+background:#181818;
+border:1px solid #2a2a2a;
+padding:26px;
+border-radius:24px;
+width:100%;
+max-width:380px;
+box-shadow:0 0 40px rgba(0,0,0,.5);
+">
+
+<!-- TITLE -->
+<h3 style="
+margin-bottom:18px;
+font-size:20px;
+font-weight:700;
+text-align:center;
+">
+<i class="fa-solid fa-key" style="margin-right:8px;color:#7b8cff;"></i>
+Change Password
+</h3>
+
+<!-- INPUTS -->
+<input id="oldPass"
+type="password"
+placeholder="Current Password"
+style="
+width:100%;
+margin-bottom:12px;
+padding:14px;
+border-radius:14px;
+border:1px solid #2a2a2a;
+background:#111;
+color:white;
+outline:none;
+">
+
+<input id="newPass"
+type="password"
+placeholder="New Password"
+style="
+width:100%;
+padding:14px;
+border-radius:14px;
+border:1px solid #2a2a2a;
+background:#111;
+color:white;
+outline:none;
+">
+
+<!-- BUTTONS -->
+<div style="
+display:flex;
+gap:10px;
+margin-top:18px;
+">
+
+<button class="secondaryBtn" style="flex:1;" onclick="closePassPopup()">
+Cancel
+</button>
+
+<button class="submitBtn" style="flex:1;" onclick="confirmChangePass()">
+Change
+</button>
+
+</div>
+
+</div>
+</div>
 <div class="main">
 
 <!-- HOME -->
@@ -1444,9 +1528,7 @@ Submit Request
 
     <input id="newEmail" placeholder="New Email">
 
-    <input id="newPass"
-           type="password"
-           placeholder="New Password (optional)">
+
 
     <button class="submitBtn" onclick="saveProfile()">
         Save Changes
@@ -1470,6 +1552,11 @@ Submit Request
         Manage Profile
     </button>
     
+<button class="secondaryBtn" onclick="openPassPopup()" style="width:100%;margin-bottom:12px;">
+    <i class="fa-solid fa-key"></i>
+    Change Password
+</button>
+    
     <button class="secondaryBtn" onclick="logoutUser()" style="width:100%;margin-bottom:12px;">
         <i class="fa-solid fa-right-from-bracket"></i>
         Logout
@@ -1479,6 +1566,9 @@ Submit Request
         <i class="fa-solid fa-trash"></i>
         Delete Account
     </button>
+    
+    
+    
  <div style="margin-top:20px;text-align:left;">
     
     <h3 style="margin-bottom:12px;">Account Info</h3>
@@ -2493,6 +2583,64 @@ window.saveProfile = async function () {
     }
 };
 
+window.openPassPopup = function() {
+    document.getElementById("changePassPopup").style.display = "flex";
+};
+
+window.closePassPopup = function() {
+    document.getElementById("changePassPopup").style.display = "none";
+    document.getElementById("oldPass").value = "";
+    document.getElementById("newPass").value = "";
+};
+
+window.confirmChangePass = async function() {
+    
+    const user = auth.currentUser;
+    if (!user) return;
+    
+    const oldPass = document.getElementById("oldPass").value;
+    const newPass = document.getElementById("newPass").value;
+    
+    if (!oldPass || !newPass) {
+        showToast("Fill all fields", "#ef4444");
+        return;
+    }
+    
+    if (newPass.length < 6) {
+        showToast("Password too short", "#ef4444");
+        return;
+    }
+    
+    try {
+        
+        // 🔥 re-authenticate
+        const credential = EmailAuthProvider.credential(
+            user.email,
+            oldPass
+        );
+        
+        await reauthenticateWithCredential(user, credential);
+        
+        // 🔥 update password
+        await updatePassword(user, newPass);
+        
+        closePassPopup();
+        
+        showToast("Password changed successfully ✅", "#22c55e");
+        
+    } catch (err) {
+        
+        console.log(err);
+        
+        if (err.code === "auth/wrong-password") {
+            showToast("Wrong current password ❌", "#ef4444");
+        } else if (err.code === "auth/requires-recent-login") {
+            showToast("Login again and retry ❌", "#ef4444");
+        } else {
+            showToast("Failed to change password ❌", "#ef4444");
+        }
+    }
+};
 function showMessage(text, color = "#ff4d4d") {
     const box = document.getElementById("profileMessage");
     
