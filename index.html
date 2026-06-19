@@ -2105,17 +2105,29 @@ function getStatusClass(status) {
     return map[status] || "status-pending";
 }
 
-window.clearCache = function() {
+window.clearCache = async function() {
+    
     if ('caches' in window) {
-        caches.keys().then(names => {
-            names.forEach(name => caches.delete(name));
-        });
+        const names = await caches.keys();
+        await Promise.all(names.map(name => caches.delete(name)));
     }
     
     localStorage.clear();
     sessionStorage.clear();
     
-    showToast("Cache cleared", "#22c55e");
+    document.querySelectorAll("input, textarea").forEach(el => {
+        el.value = "";
+    });
+    
+    document.querySelectorAll("select").forEach(el => {
+        el.selectedIndex = 0;
+    });
+    
+    showToast("Cache cleared ✅", "#22c55e");
+    
+    setTimeout(() => {
+        location.reload();
+    }, 1000);
 };
 /* MENU */
 function updateMenu(user) {
