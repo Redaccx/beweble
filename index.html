@@ -571,7 +571,7 @@ width:100%;
     Profile
 </button>
 
-<button onclick="showPage('settingsPage'); closeSidebar();">
+<button id="settingsBtn" onclick="showPage('settingsPage'); closeSidebar();">
     <i class="fa-solid fa-gear"></i>
     Settings
 </button>
@@ -1460,7 +1460,7 @@ Submit Request
         Manage your account actions
     </p>
     
-    <button class="secondaryBtn" onclick="showPage('profilePage'); closeSidebar();" style="width:100%;margin-bottom:12px;">
+    <button class="secondaryBtn" onclick="showPage('profilePage'); showProfile(); closeSidebar();" style="width:100%;margin-bottom:12px;">
         <i class="fa-solid fa-user"></i>
         Manage Profile
     </button>
@@ -1833,6 +1833,7 @@ function updateMenu(user) {
     document.getElementById("trackBtn").style.display = loggedIn ? "block" : "none";
     document.getElementById("myRequestsBtn").style.display = loggedIn ? "block" : "none";
     document.getElementById("profileBtn").style.display = loggedIn ? "block" : "none";
+    document.getElementById("settingsBtn").style.display = loggedIn ? "block" : "none";
 }
 
 /* SIDEBAR */
@@ -1845,7 +1846,6 @@ window.closeSidebar = () =>
 /* PAGE SYSTEM */
 window.showPage = function(page) {
     
-    // انتظر Firebase يحدد حالة المستخدم
     if (isLoggedIn === null) return;
     
     if (appState.disabled && page !== "disabledPage") {
@@ -1876,6 +1876,8 @@ window.showPage = function(page) {
         if (page === "myRequestsPage") {
             loadMyRequests();
         }
+        
+
     }
 };
 window.deleteRequest = function(docId, requestId) {
