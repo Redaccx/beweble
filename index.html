@@ -571,6 +571,11 @@ width:100%;
     Profile
 </button>
 
+<button onclick="showPage('settingsPage'); closeSidebar();">
+    <i class="fa-solid fa-gear"></i>
+    Settings
+</button>
+
 <button id="termsBtn" onclick="showPage('termsPage'); closeSidebar();">
     <i class="fa-solid fa-scale-balanced"></i>
     Terms
@@ -1118,10 +1123,10 @@ width:100%;
                 Submit Request
             </button>
             
-            <button class="secondaryBtn">
-                <i class="fa-solid fa-code"></i>
-                Create Tool
-            </button>
+       <button class="secondaryBtn" onclick="window.location.href='tools.html'">
+    <i class="fa-solid fa-code"></i>
+    Create Tool
+</button>
             
         </div>
         
@@ -1444,17 +1449,32 @@ Submit Request
 
     <br><br>
 
-    <button class="secondaryBtn" onclick="logout()">
+
+
+</div>
+<div class="card trackBox" id="settingsPage">
+    
+    <h1>Settings</h1>
+    
+    <p class="subtitle">
+        Manage your account actions
+    </p>
+    
+    <button class="secondaryBtn" onclick="showPage('profilePage'); closeSidebar();" style="width:100%;margin-bottom:12px;">
+        <i class="fa-solid fa-user"></i>
+        Manage Profile
+    </button>
+    
+    <button class="secondaryBtn" onclick="logoutUser()" style="width:100%;margin-bottom:12px;">
+        <i class="fa-solid fa-right-from-bracket"></i>
         Logout
     </button>
-
-  <button
-class="submitBtn"
-style="background:#d32f2f;margin-top:10px;"
-onclick="openDeletePopup()">
-Delete Account
-</button>
-
+    
+    <button class="submitBtn" style="width:100%;background:#d32f2f;" onclick="openDeletePopup()">
+        <i class="fa-solid fa-trash"></i>
+        Delete Account
+    </button>
+    
 </div>
 <!-- TRACK -->
 
