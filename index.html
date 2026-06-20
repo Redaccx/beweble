@@ -2191,22 +2191,32 @@ if (!user) {
 }
 
 // 👇 هنا حط الكود
-const appealRef = doc(db, "appeals", user.email.toLowerCase());
-const appealSnap = await getDoc(appealRef);
+const btn = document.getElementById("appealBtn");
 
-if (appealSnap.exists()) {
+onSnapshot(doc(db, "appeals", user.email.toLowerCase()), (snap) => {
     
-    const btn = document.getElementById("appealBtn");
+    if (!btn) return;
     
-    if (btn) {
+    if (snap.exists()) {
+        
         btn.innerHTML = `<i class="fa-solid fa-magnifying-glass"></i> Check Result`;
         
-        btn.onclick = function() {
+        btn.onclick = () => {
             openAppealPopupOnly();
             startLiveStatus(user.email.toLowerCase());
         };
+        
+    } else {
+        
+        btn.innerHTML = `<i class="fa-solid fa-gavel"></i> Appeal Account`;
+        
+        btn.onclick = () => {
+            openAppealPopup();
+        };
+        
     }
-}
+    
+});
    
     
     try {
