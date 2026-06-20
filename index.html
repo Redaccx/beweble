@@ -2193,31 +2193,38 @@ if (!user) {
 // 👇 هنا حط الكود
 const btn = document.getElementById("appealBtn");
 
-const appealRef = doc(db, "appeals", user.email.toLowerCase());
-const appealSnap = await getDoc(appealRef);
-
-if (btn) {
+onSnapshot(doc(db, "appeals", user.email.toLowerCase()), (snap) => {
     
-    if (appealSnap.exists()) {
+    if (!btn) return;
+    
+    if (snap.exists()) {
         
         btn.innerHTML = `<i class="fa-solid fa-magnifying-glass"></i> Check Result`;
         
-        btn.onclick = function() {
+        btn.onclick = () => {
             openAppealPopupOnly();
             startLiveStatus(user.email.toLowerCase());
         };
         
     } else {
         
+        // رجع الفورم الأصلية
+        const popup = document.getElementById("appealPopup");
+        const popupContent = popup?.querySelector("div");
+        
+        if (popupContent && window.originalAppealForm) {
+            popupContent.innerHTML = window.originalAppealForm;
+        }
+        
         btn.innerHTML = `<i class="fa-solid fa-gavel"></i> Appeal Account`;
         
-        btn.onclick = function() {
+        btn.onclick = () => {
             openAppealPopup();
         };
         
     }
     
-}
+});
    
     
     try {
@@ -2584,7 +2591,17 @@ function openAppealPopupOnly() {
     popup.style.display = "flex";
     
     const popupContent = popup.querySelector("div");
-    if (!popupContent) return;
+
+if (!popupContent) return;
+
+if (!window.originalAppealForm) {
+
+    window.originalAppealForm = popupContent.innerHTML;
+
+}
+
+
+    
     
     popupContent.innerHTML = `
         <div style="text-align:center;padding:35px 25px;">
