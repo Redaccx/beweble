@@ -310,9 +310,13 @@ cursor:pointer;
     <div id="sidebar" class="sidebar">
     <h3>⚡ Menu</h3>
     
-    <button onclick="showPage('requests');toggleMenu()">📨 Requests</button>
-    <button onclick="showPage('users');toggleMenu()">👥 Users</button>
-    <button onclick="logout()">🚪 Logout</button>
+  <button onclick="showPage('requests');toggleMenu()">📨 Requests</button>
+
+<button onclick="showPage('appeals');toggleMenu()">📄 Appeals</button>
+
+<button onclick="showPage('users');toggleMenu()">👥 Users</button>
+
+<button onclick="logout()">🚪 Logout</button>
 </div>
 
 <div id="overlay" class="overlay" onclick="toggleMenu()"></div>
@@ -342,6 +346,26 @@ cursor:pointer;
   placeholder="Search requests by username or ID">
 
   <div class="grid" id="container"></div>
+
+</div>
+
+<div id="appealsPage" style="display:none;">
+
+<div class="pageHeader">
+    <h2>📄 Appeals</h2>
+
+    <div class="badge">
+        Total Appeals:
+        <span id="appealsCount">0</span>
+    </div>
+</div>
+
+<input
+class="searchBox"
+id="appealsSearchInput"
+placeholder="Search appeal by username or email">
+
+<div class="grid" id="appealsContainer"></div>
 
 </div>
 
@@ -421,9 +445,15 @@ const usersSearchInput =
         "usersSearchInput"
     );
     const usersCount = document.getElementById("usersCount");
+    const appealsContainer = document.getElementById("appealsContainer");
+const appealsSearchInput = document.getElementById("appealsSearchInput");
+const appealsCount = document.getElementById("appealsCount");
+
+let allAppeals = [];
 let allUsers = [];
 let all = [];
 let deleteId = null;
+let deleteCollection = null;
 
 /* LOGIN */
 document.getElementById("loginBtn").onclick = async () => {
@@ -462,6 +492,8 @@ all.push({id:d.id,...d.data()});
 count.innerText = all.length;
 render(all);
 loadUsers();
+loadAppeals();
+
 }
 
 /* RENDER */
@@ -502,7 +534,7 @@ card.innerHTML=`
 <option>Waiting Payment</option>
 <option>In Progress</option>
 <option>In Review</option>
-<option>Need Some Details </option>
+<option>Need Some Details Contact support</option>
 <option>Rejected</option>
 <option>Problem Solved</option>
 <option>Recoverd</option>
@@ -519,15 +551,23 @@ select.value = r.status || "Pending";
 
 
 /* UPDATE */
-card.querySelector(".update").onclick = async () => {
-await updateDoc(doc(db,"requests",r.id),{
-status: select.value
-});
-load();
+confirmDelete.onclick = async () => {
+    
+    await deleteDoc(doc(db, deleteCollection, deleteId));
+    
+    popup.style.display = "none";
+    
+    deleteId = null;
+    deleteCollection = null;
+    
+    load();
+    loadAppeals();
+    
 };
 card.querySelector(".delete").onclick = () => {
     deleteId = r.id;
-    popup.style.display = "flex";
+deleteCollection = "requests";
+popup.style.display = "flex";
 };
 /* DELETE POPUP */
 
@@ -665,6 +705,100 @@ const userData = userDoc.data();
         usersContainer.appendChild(card);
     });
 }
+
+async function loadAppeals() {
+    
+    appealsContainer.innerHTML = "";
+    
+    const snap = await getDocs(collection(db, "appeals"));
+    
+    allAppeals = [];
+    
+    snap.forEach(docSnap => {
+        allAppeals.push({
+            id: docSnap.id,
+            ...docSnap.data()
+        });
+    });
+    
+    appealsCount.innerText = allAppeals.length;
+    
+    renderAppeals(allAppeals);
+}
+
+function renderAppeals(data) {
+    
+    appealsContainer.innerHTML = "";
+    
+    data.forEach(a => {
+        
+        const card = document.createElement("div");
+        card.className = "card";
+        
+        card.innerHTML = `
+
+<h3>📄 Appeal</h3>
+
+<div class="info"><b>Username:</b> ${a.username || "-"}</div>
+
+<div class="info"><b>Full Name:</b> ${a.fullname || "-"}</div>
+
+<div class="info"><b>Email:</b> ${a.email || "-"}</div>
+
+<div class="info"><b>Phone:</b> ${a.phone || "-"}</div>
+
+<div class="info"><b>Date of Birth:</b> ${a.birth || "-"}</div>
+
+<div class="info"><b>Reason:</b><br>${a.reason || "-"}</div>
+
+<div class="info"><b>Status:</b> ${a.status || "Pending"}</div>
+
+<select>
+<option>Pending</option>
+<option>In Review</option>
+<option>Need More Details contact support</option>
+<option>Reviewed</option>
+<option>Rejected</option>
+</select>
+
+<button class="smallBtn update">
+Update Status
+</button>
+
+<button class="smallBtn delete">
+Delete Appeal
+</button>
+
+`;
+        
+        const select = card.querySelector("select");
+        select.value = a.status || "Pending";
+        
+        card.querySelector(".update").onclick = async () => {
+            
+            await updateDoc(
+                doc(db, "appeals", a.id),
+                {
+                    status: select.value
+                }
+            );
+            
+            loadAppeals();
+        };
+        
+        card.querySelector(".delete").onclick = () => {
+    
+    deleteId = a.id;
+    deleteCollection = "appeals";
+    popup.style.display = "flex";
+    
+};
+        
+        appealsContainer.appendChild(card);
+        
+    });
+    
+}
 /* CONFIRM DELETE */
 confirmDelete.onclick = async () => {
 await deleteDoc(doc(db,"requests",deleteId));
@@ -689,20 +823,24 @@ render(all.filter(r =>
 });
 window.showPage = (page) => {
     
-    const req = document.getElementById("requestsPage");
-    const users = document.getElementById("usersPage");
-    
-    if (!req || !users) return;
+    document.getElementById("requestsPage").style.display = "none";
+    document.getElementById("usersPage").style.display = "none";
+    document.getElementById("appealsPage").style.display = "none";
     
     if (page === "requests") {
-        req.style.display = "block";
-        users.style.display = "none";
-    } else {
-        req.style.display = "none";
-        users.style.display = "block";
-        
-        loadUsers(); // مهم جداً
+        document.getElementById("requestsPage").style.display = "block";
     }
+    
+    if (page === "users") {
+        document.getElementById("usersPage").style.display = "block";
+        loadUsers();
+    }
+    
+    if (page === "appeals") {
+        document.getElementById("appealsPage").style.display = "block";
+        loadAppeals();
+    }
+    
 };
 
 usersSearchInput.addEventListener("input", e => {
