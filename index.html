@@ -2193,15 +2193,16 @@ if (!user) {
 // 👇 هنا حط الكود
 const btn = document.getElementById("appealBtn");
 
-onSnapshot(doc(db, "appeals", user.email.toLowerCase()), (snap) => {
+const appealRef = doc(db, "appeals", user.email.toLowerCase());
+const appealSnap = await getDoc(appealRef);
+
+if (btn) {
     
-    if (!btn) return;
-    
-    if (snap.exists()) {
+    if (appealSnap.exists()) {
         
         btn.innerHTML = `<i class="fa-solid fa-magnifying-glass"></i> Check Result`;
         
-        btn.onclick = () => {
+        btn.onclick = function() {
             openAppealPopupOnly();
             startLiveStatus(user.email.toLowerCase());
         };
@@ -2210,13 +2211,13 @@ onSnapshot(doc(db, "appeals", user.email.toLowerCase()), (snap) => {
         
         btn.innerHTML = `<i class="fa-solid fa-gavel"></i> Appeal Account`;
         
-        btn.onclick = () => {
+        btn.onclick = function() {
             openAppealPopup();
         };
         
     }
     
-});
+}
    
     
     try {
