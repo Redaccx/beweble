@@ -2240,6 +2240,7 @@ if (appealSnap.exists()) {
                 signOut(auth);
                 
                 updateMenu(null);
+                document.documentElement.style.visibility = "visible";
                 
                 document.querySelectorAll(".card, #homePage").forEach(e => {
                     e.style.display = "none";
@@ -2267,6 +2268,7 @@ document.getElementById("disabledDate").innerText =
             await signOut(auth);
             
             updateMenu(null);
+            document.documentElement.style.visibility = "visible";
             
             document.querySelectorAll(".card, #homePage").forEach(e => {
                 e.style.display = "none";
