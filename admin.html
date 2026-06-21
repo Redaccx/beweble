@@ -675,10 +675,16 @@ const userData = userDoc.data();
                 if (disabled) {
                     
                     await updateDoc(ref, {
-                        disabled: false,
-                        disabledDate: "",
-                        disabledReason: ""
-                    });
+    
+    disabled: false,
+    
+    disabledDate: "",
+    
+    disabledReason: "",
+    
+    showWelcomeBack: true
+    
+});
                     
                 } else {
                     
