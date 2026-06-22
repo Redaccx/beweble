@@ -289,6 +289,70 @@ cursor:pointer;
     background: #475569;
     color: white;
 }
+
+/* Notifications */
+
+.notifyLabel {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    color: white;
+}
+
+.notifyTextarea {
+    width: 100%;
+    height: 170px;
+    padding: 16px;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, .08);
+    background: rgba(255, 255, 255, .05);
+    color: white;
+    font-size: 15px;
+    resize: vertical;
+    outline: none;
+    transition: .25s;
+    font-family: 'Outfit', sans-serif;
+}
+
+.notifyTextarea:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 15px rgba(99, 102, 241, .35);
+}
+
+#sendNotificationBtn {
+    width: 100%;
+    padding: 16px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    font-size: 16px;
+    font-weight: 700;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    transition: .25s;
+}
+
+#sendNotificationBtn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 18px 35px rgba(99, 102, 241, .35);
+}
+
+#sendNotificationBtn i {
+    font-size: 18px;
+}
+
+.notifyTextarea::-webkit-scrollbar {
+    width: 8px;
+}
+
+.notifyTextarea::-webkit-scrollbar-thumb {
+    background: #6366f1;
+    border-radius: 20px;
+}
 </style>
 </head>
 
@@ -315,6 +379,8 @@ cursor:pointer;
 <button onclick="showPage('appeals');toggleMenu()">📄 Appeals</button>
 
 <button onclick="showPage('users');toggleMenu()">👥 Users</button>
+
+<button onclick="showPage('notifications');toggleMenu()">🔔 Notifications</button>
 
 <button onclick="logout()">🚪 Logout</button>
 </div>
@@ -385,8 +451,108 @@ placeholder="Search appeal by username or email">
   <div class="grid" id="usersContainer"></div>
 
 </div>
+<div id="notificationsPage" style="display:none;">
+
+<div class="pageHeader">
+    <h2>
+        <i class="fa-solid fa-bell"></i>
+        Notifications Center
+    </h2>
+
+    <div class="badge">
+        <i class="fa-solid fa-paper-plane"></i>
+        Send Notifications
+    </div>
+</div>
+
+<div class="card" style="max-width:850px;margin:auto;">
+
+    <div style="display:flex;flex-direction:column;gap:18px;">
+
+        <div>
+
+            <label class="notifyLabel">
+                <i class="fa-solid fa-envelope"></i>
+                Recipient Email
+            </label>
+
+            <input
+            id="notifyEmail"
+            class="searchBox"
+            style="margin:0;width:100%;"
+            placeholder="Leave empty to send notification to all users">
+
+        </div>
+
+        <div>
+
+            <label class="notifyLabel">
+                <i class="fa-solid fa-heading"></i>
+                Notification Title
+            </label>
+
+            <input
+            id="notifyTitle"
+            class="searchBox"
+            style="margin:0;width:100%;"
+            placeholder="Example: Request Updated">
+
+        </div>
+
+        <div>
+
+            <label class="notifyLabel">
+                <i class="fa-solid fa-message"></i>
+                Notification Message
+            </label>
+
+            <textarea
+            id="notifyMessage"
+            class="notifyTextarea"
+            placeholder="Write your notification here..."></textarea>
+
+        </div>
+
+    <button id="sendNotificationBtn">
+    <i class="fa-solid fa-paper-plane"></i>
+    Send Notification
+</button>
+
+<button id="deleteAllNotificationsBtn"
+style="
+margin-top:12px;
+width:100%;
+padding:16px;
+border:none;
+border-radius:14px;
+background:linear-gradient(135deg,#ef4444,#dc2626);
+color:white;
+font-size:16px;
+font-weight:700;
+cursor:pointer;
+display:flex;
+justify-content:center;
+align-items:center;
+gap:10px;
+">
+    <i class="fa-solid fa-trash"></i>
+    Delete All Notifications
+</button>
+
+    </div>
+
+</div>
+
+<br>
+
+<div class="grid" id="notificationsAdminContainer"></div>
+
+</div>
+
 
 </div> <!-- end admin -->
+
+<!-- الصق هنا -->
 
 
 <!-- POPUP -->
@@ -409,10 +575,15 @@ import {
     getFirestore,
     collection,
     getDocs,
+    addDoc,
+    query,
+    where,
     doc,
     updateDoc,
     deleteDoc,
-    getDoc
+    getDoc,
+    orderBy,
+    onSnapshot
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 import {
@@ -448,8 +619,16 @@ const usersSearchInput =
     const appealsContainer = document.getElementById("appealsContainer");
 const appealsSearchInput = document.getElementById("appealsSearchInput");
 const appealsCount = document.getElementById("appealsCount");
+const notifyEmail = document.getElementById("notifyEmail");
+const notifyTitle = document.getElementById("notifyTitle");
+const notifyMessage = document.getElementById("notifyMessage");
+const sendNotificationBtn = document.getElementById("sendNotificationBtn");
+const notificationsAdminContainer = document.getElementById("notificationsAdminContainer");
+const deleteAllNotificationsBtn =
+    document.getElementById("deleteAllNotificationsBtn");
 
 let allAppeals = [];
+let allNotifications = [];
 let allUsers = [];
 let all = [];
 let deleteId = null;
@@ -553,16 +732,33 @@ select.value = r.status || "Pending";
 /* UPDATE */
 confirmDelete.onclick = async () => {
     
-    await deleteDoc(doc(db, deleteCollection, deleteId));
+    try {
+        
+        if (deleteCollection === "notifications" && deleteId === "all") {
+            
+            const snap = await getDocs(collection(db, "notifications"));
+            
+            await Promise.all(
+                snap.docs.map(d => deleteDoc(doc(db, "notifications", d.id)))
+            );
+            
+        } else {
+            
+            await deleteDoc(doc(db, deleteCollection, deleteId));
+            
+            if (deleteCollection === "requests") load();
+            if (deleteCollection === "appeals") loadAppeals();
+            if (deleteCollection === "notifications") loadNotificationsAdmin();
+            
+        }
+        
+    } catch (e) {
+        console.log(e);
+    }
     
     popup.style.display = "none";
-    
     deleteId = null;
     deleteCollection = null;
-    
-    load();
-    loadAppeals();
-    
 };
 card.querySelector(".delete").onclick = () => {
     deleteId = r.id;
@@ -807,10 +1003,42 @@ Delete Appeal
 }
 /* CONFIRM DELETE */
 confirmDelete.onclick = async () => {
-await deleteDoc(doc(db,"requests",deleteId));
-deleteId = null;
-popup.style.display="none";
-load();
+    
+    try {
+        
+        if (deleteCollection === "notifications" && deleteId === "all") {
+            
+            const snap = await getDocs(collection(db, "notifications"));
+            
+            await Promise.all(
+                snap.docs.map(d =>
+                    deleteDoc(doc(db, "notifications", d.id))
+                )
+            );
+            
+            loadNotificationsAdmin();
+            
+        } else {
+            
+            await deleteDoc(doc(db, deleteCollection, deleteId));
+            
+            if (deleteCollection === "requests") {
+                load();
+            }
+            
+            if (deleteCollection === "appeals") {
+                loadAppeals();
+            }
+            
+        }
+        
+    } catch (e) {
+        console.log(e);
+    }
+    
+    popup.style.display = "none";
+    deleteId = null;
+    deleteCollection = null;
 };
 
 window.closePopup = () => {
@@ -832,6 +1060,7 @@ window.showPage = (page) => {
     document.getElementById("requestsPage").style.display = "none";
     document.getElementById("usersPage").style.display = "none";
     document.getElementById("appealsPage").style.display = "none";
+    document.getElementById("notificationsPage").style.display = "none";
     
     if (page === "requests") {
         document.getElementById("requestsPage").style.display = "block";
@@ -846,8 +1075,15 @@ window.showPage = (page) => {
         document.getElementById("appealsPage").style.display = "block";
         loadAppeals();
     }
-    
-};
+      if (page === "notifications") {
+      
+      document.getElementById("notificationsPage").style.display = "block";
+      
+      loadNotificationsAdmin();
+      
+  }
+  
+  };
 
 usersSearchInput.addEventListener("input", e => {
     
@@ -871,6 +1107,149 @@ window.toggleMenu = () => {
     document.getElementById("sidebar").classList.toggle("open");
     document.getElementById("overlay").classList.toggle("show");
 };
+
+/* SEND NOTIFICATION */
+sendNotificationBtn.onclick = async () => {
+    
+    const title = notifyTitle.value.trim();
+    const message = notifyMessage.value.trim();
+    const email = notifyEmail.value.trim().toLowerCase();
+    
+    if (!title || !message) {
+        alert("Enter title and message.");
+        return;
+    }
+    
+    // إرسال لجميع المستخدمين
+    if (email === "") {
+        
+        const usersSnap = await getDocs(collection(db, "users"));
+        
+        for (const userDoc of usersSnap.docs) {
+            
+            const user = userDoc.data();
+            
+            await addDoc(collection(db, "notifications"), {
+                uid: user.uid,
+                email: (user.email || "").toLowerCase(),
+                title,
+                message,
+                time: Date.now(),
+                read: false
+            });
+            
+        }
+        
+        alert("Notification sent to all users.");
+        
+    } else {
+        
+        // إرسال لمستخدم واحد
+        const q = query(
+            collection(db, "users"),
+            where("email", "==", email)
+        );
+        
+        const snap = await getDocs(q);
+        
+        if (snap.empty) {
+            alert("User not found.");
+            return;
+        }
+        
+        const user = snap.docs[0].data();
+        
+        await addDoc(collection(db, "notifications"), {
+            uid: user.uid,
+            email,
+            title,
+            message,
+            time: Date.now(),
+            read: false
+        });
+        
+        alert("Notification sent.");
+        
+    }
+    
+    notifyEmail.value = "";
+    notifyTitle.value = "";
+    notifyMessage.value = "";
+    
+};
+/* LOAD NOTIFICATIONS */
+function loadNotificationsAdmin() {
+    
+    const q = query(
+        collection(db, "notifications"),
+        orderBy("time", "desc")
+    );
+    
+    onSnapshot(q, (snapshot) => {
+        
+        notificationsAdminContainer.innerHTML = "";
+        
+        if (snapshot.empty) {
+            notificationsAdminContainer.innerHTML = `
+                <div class="card">
+                    No notifications found.
+                </div>
+            `;
+            return;
+        }
+        
+        snapshot.forEach((docSnap) => {
+            
+            const n = docSnap.data();
+            
+            const card = document.createElement("div");
+            card.className = "card";
+            
+            card.innerHTML = `
+                <h3>${n.title}</h3>
+
+                <div class="info">
+                    <b>Email:</b> ${n.email || "All Users"}
+                </div>
+
+                <div class="info">
+                    ${n.message}
+                </div>
+
+                <div class="info">
+                    ${new Date(n.time).toLocaleString()}
+                </div>
+
+                <button class="smallBtn delete">
+                    Delete
+                </button>
+            `;
+            
+          card.querySelector(".delete").onclick = () => {
+    
+    deleteCollection = "notifications";
+    deleteId = docSnap.id;
+    
+    popup.style.display = "flex";
+    
+    
+};
+            
+            notificationsAdminContainer.appendChild(card);
+            
+        });
+        
+    });
+    
+}
+deleteAllNotificationsBtn.onclick = () => {
+    
+    deleteCollection = "notifications";
+    deleteId = "all";
+    
+    popup.style.display = "flex";
+};
+
 </script>
 
 </body>
