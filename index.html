@@ -52,22 +52,55 @@ overflow-x:hidden;
     box-sizing: border-box;
 }
 
-.menuBtn{
-width:54px;
-height:54px;
-border:none;
-border-radius:18px;
-background: none;
-color:white;
-font-size:20px;
-cursor:pointer;
-transition:.25s;
+.menuBtn,
+#notificationsBtn {
+    width: 48px;
+    height: 48px;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    padding: 0;
+    margin: 0;
+    
+    background: transparent;
+    border: none;
+    cursor: pointer;
 }
 
-.menuBtn:hover{
-background:#5865f2;
+.menuBtn i,
+.notifIcon {
+    width: 42px;
+    height: 42px;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    border-radius: 14px;
+    
+    background: rgba(255, 255, 255, .08);
+    border: 1px solid rgba(255, 255, 255, .08);
+    
+    color: #fff;
+    font-size: 19px;
+    
+    transition: background .25s ease, border-color .25s ease;
 }
 
+/* hover */
+.menuBtn:hover i,
+#notificationsBtn:hover .notifIcon {
+    background: rgba(255, 255, 255, .12);
+    border-color: rgba(255, 255, 255, .14);
+}
+
+/* active */
+.menuBtn:active i,
+#notificationsBtn:active .notifIcon {
+    background: rgba(255, 255, 255, .16);
+}
 /* SIDEBAR */
 
 .sidebar{
@@ -82,6 +115,7 @@ padding:30px 20px;
 transition:.3s;
 z-index:2000;
 overflow-y:auto;
+visibility: hidden;
 }
 
 .sidebar.active{
@@ -137,6 +171,9 @@ margin-right:10px;
 .trackBox {
     width: 100%;
     max-width: 1150px;
+}
+#notificationsPage {
+    display: none;
 }
 
 .trackBox {
@@ -507,6 +544,166 @@ width:100%;
     display: block;
 }
 
+.deleteAllBtn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 12px;
+    background: #ff4d4d;
+    color: #fff;
+    font-size: 15px;
+    cursor: pointer;
+    margin-bottom: 15px;
+}
+.notification-delete {
+    
+    margin-top: 12px;
+    
+    border: none;
+    
+    background: #ff4d4d;
+    
+    color: white;
+    
+    padding: 8px 12px;
+    
+    border-radius: 8px;
+    
+    cursor: pointer;
+    
+}
+
+
+
+.dropdown {
+    position: relative;
+    width: 100%;
+}
+
+.dropdownBtn {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: none;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: white;
+    font-size: 15px;
+    font-family: inherit;
+    font-size: 15px;
+    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.dropdownBtn i {
+    margin-right: 8px;
+}
+
+.arrow {
+    transition: 0.3s;
+}
+
+.dropdown.open .arrow {
+    transform: rotate(180deg);
+}
+
+.dropdownContent {
+    display: none;
+    position: absolute;
+    top: 110%;
+    left: 0;
+    width: 100%;
+    background: #1c1c1c;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    z-index: 1000;
+}
+
+.dropdownContent button {
+    width: 100%;
+    padding: 12px;
+    background: transparent;
+    border: none;
+    color: white;
+    text-align: left;
+    cursor: pointer;
+}
+
+.dropdownContent button:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.requestLeft {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+#notificationsBtn {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transform: none !important;
+}
+
+.notifIcon {
+    position: relative;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    
+    background: rgba(255, 255, 255, .08);
+    border: 1px solid rgba(255, 255, 255, .08);
+    
+    color: #fff;
+    font-size: 19px;
+    
+    transition: background .25s ease, border-color .25s ease;
+    transform: none !important;
+}
+
+#notificationsBtn:hover .notifIcon {
+    background: rgba(255, 255, 255, .12);
+    border-color: rgba(255, 255, 255, .14);
+}
+
+#notificationBadge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    
+    min-width: 18px;
+    height: 18px;
+    
+    display: none;
+    align-items: center;
+    justify-content: center;
+    
+    padding: 0 5px;
+    
+    background: #ef4444;
+    color: #fff;
+    
+    font-size: 10px;
+    font-weight: 700;
+    
+    border-radius: 999px;
+    border: 2px solid #101827;
+}
+
 </style>
 
 </head>
@@ -516,16 +713,27 @@ width:100%;
 <!-- TOPBAR -->
 
 <div class="topbar">
-    
+
+    <button id="notificationsBtn" onclick="openNotifications()">
+        <span class="notifIcon">
+            <i class="fa-solid fa-bell"></i>
+            <span id="notificationBadge">0</span>
+        </span>
+    </button>
+
     <a href="#" onclick="showPage('homePage')" style="text-decoration:none;">
-        <img src="https://i.ibb.co/MyBzHqF3/IMG-4294.png" alt="Bewebl" style=" height:100px;margin-top:15px;">
+        <img src="https://i.ibb.co/MyBzHqF3/IMG-4294.png"
+             alt="Bewebl"
+             style="height:100px;margin-top:15px;">
     </a>
-    
+
     <button class="menuBtn" onclick="openSidebar()">
         <i class="fa-solid fa-bars"></i>
     </button>
-    
+
 </div>
+
+
 <!-- SIDEBAR -->
 
 <div class="sidebar" id="sidebar">
@@ -551,10 +759,34 @@ width:100%;
 </button>
 
 <!-- بس للمسجل -->
-<button id="requestBtn" onclick="showPage('requestPage'); closeSidebar();">
-    <i class="fa-solid fa-paper-plane"></i>
-    New Request
-</button>
+
+<div class="dropdown">
+    
+    <button id="requestBtn" class="dropdownBtn" onclick="toggleRequestMenu()">
+    
+        <span class="requestLeft">
+            <i class="fa-solid fa-paper-plane"></i>
+            <span>Requests</span>
+            <i class="fa-solid fa-chevron-down arrow"></i>
+        </span>
+        
+    </button>
+    
+    <div id="requestMenu" class="dropdownContent">
+        
+        <button onclick="showPage('requestPage'); closeSidebar();">
+            <i class="fa-solid fa-plus"></i>
+            New Request
+        </button>
+        
+        <button id="myRequestsBtn" onclick="showPage('myRequestsPage'); closeSidebar();">
+            <i class="fa-solid fa-folder-open"></i>
+            My Requests
+        </button>
+        
+    </div>
+    
+</div>
 
 <button id="trackBtn" onclick="showPage('trackPage'); closeSidebar();">
     <i class="fa-solid fa-magnifying-glass"></i>
@@ -566,10 +798,9 @@ width:100%;
     Tools
 </button>
 
-<button id="myRequestsBtn" onclick="showPage('myRequestsPage'); closeSidebar();">
-    <i class="fa-solid fa-folder-open"></i>
-    My Requests
-</button>
+
+
+
 
 <button id="profileBtn" onclick="showProfile(); closeSidebar();">
     <i class="fa-solid fa-user"></i>
@@ -2295,6 +2526,164 @@ Delete
 </div>
 
 </div>
+
+<div id="notificationsPage" style="
+    max-width:860px;
+    margin:28px auto;
+    border-radius:20px;
+    background:
+        radial-gradient(circle at top left, rgba(138,43,226,.10) 0%, transparent 42%),
+        radial-gradient(circle at top right, rgba(88,101,242,.08) 0%, transparent 45%),
+        radial-gradient(circle at bottom right, rgba(0,245,255,.06) 0%, transparent 45%),
+        radial-gradient(circle at bottom left, rgba(34,197,94,.04) 0%, transparent 42%),
+        linear-gradient(180deg,#131313 0%,#101010 55%,#0b0b0b 100%);
+    border:1px solid #232323;
+    box-shadow:
+        0 0 25px rgba(88,101,242,.05),
+        0 18px 45px rgba(0,0,0,.45);
+    overflow:hidden;
+    font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    color:#e5e7eb;
+">
+
+<!-- HEADER -->
+<div style="
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:18px 22px;
+    background:
+        linear-gradient(90deg,
+        rgba(138,43,226,.05),
+        rgba(0,245,255,.03));
+    backdrop-filter:blur(18px);
+    border-bottom:1px solid #2b2b2b;
+">
+
+    <div style="display:flex;align-items:center;gap:12px;">
+
+        <div style="
+            width:42px;
+            height:42px;
+            border-radius:14px;
+            background:linear-gradient(135deg,#8a2be2,#5865f2,#00f5ff);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            color:#fff;
+            box-shadow:
+                0 0 10px rgba(138,43,226,.15),
+                0 0 14px rgba(0,245,255,.10);
+        ">
+            <i class="fa-solid fa-bell"></i>
+        </div>
+
+        <div>
+            <div style="
+                font-size:15px;
+                font-weight:700;
+                color:#fff;
+                line-height:1.2;
+            ">
+                Notifications
+            </div>
+
+            <div style="
+                font-size:12px;
+                color:#9ca3af;
+                margin-top:2px;
+            ">
+                System updates & alerts
+            </div>
+        </div>
+
+    </div>
+
+    <button onclick="deleteAllNotifications()" style="
+        display:flex;
+        align-items:center;
+        gap:8px;
+        background:rgba(88,101,242,.08);
+        border:1px solid rgba(88,101,242,.18);
+        color:#b9c4ff;
+        font-size:12px;
+        font-weight:600;
+        padding:9px 13px;
+        border-radius:12px;
+        cursor:pointer;
+        transition:.25s;
+    "
+    onmouseover="
+        this.style.background='rgba(88,101,242,.13)';
+        this.style.borderColor='rgba(88,101,242,.28)';
+    "
+    onmouseout="
+        this.style.background='rgba(88,101,242,.08)';
+        this.style.borderColor='rgba(88,101,242,.18)';
+    ">
+
+        <i class="fa-solid fa-trash"></i>
+        Clear all
+
+    </button>
+
+</div>
+
+<!-- LIST -->
+<div id="notificationsList" style="
+    display:flex;
+    flex-direction:column;
+    padding:14px;
+    gap:10px;
+">
+
+    <!-- EMPTY -->
+    <div style="
+        text-align:center;
+        padding:95px 20px;
+    ">
+
+        <div style="
+            width:72px;
+            height:72px;
+            margin:0 auto 14px;
+            border-radius:22px;
+            background:rgba(255,255,255,.03);
+            backdrop-filter:blur(15px);
+            border:1px solid rgba(255,255,255,.05);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            box-shadow:0 0 15px rgba(88,101,242,.05);
+        ">
+            <i class="fa-regular fa-bell-slash"
+            style="
+                font-size:22px;
+                color:#8ea2ff;
+            "></i>
+        </div>
+
+        <div style="
+            font-size:15px;
+            font-weight:700;
+            color:#fff;
+        ">
+            No notifications
+        </div>
+
+        <div style="
+            font-size:12px;
+            color:#9ca3af;
+            margin-top:4px;
+        ">
+            You're all caught up 🎉
+        </div>
+
+    </div>
+
+</div>
+
+</div>
 <!-- FIREBASE -->
 
 <script type="module">
@@ -2312,9 +2701,10 @@ import {
     doc,
     setDoc,
     getDoc,
-    deleteDoc
+    deleteDoc,
+    onSnapshot,
+    orderBy
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
 import {
     getAuth,
     onAuthStateChanged,
@@ -2330,7 +2720,7 @@ import {
     fetchSignInMethodsForEmail
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-import { onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
 /* FIREBASE */
 const firebaseConfig = {
     apiKey: "AIzaSyCjmJBV_GKL4MLYQGr3DWOOAWwK4V8AHtU",
@@ -2342,8 +2732,9 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+
 const auth = getAuth(app);
+const db = getFirestore(app);
 let appState = {
     disabled: false
 };
@@ -2352,6 +2743,7 @@ let unsubscribeUserListener = null;
 
 /* AUTH STATE */
 onAuthStateChanged(auth, async (user) => {
+    document.querySelector(".sidebar").style.visibility = "visible";
 document.body.style.display = "block";
     isLoggedIn = !!user;
 
@@ -2362,8 +2754,9 @@ document.body.style.display = "block";
 if (!user) {
     showPage("homePage");
     return;
+    
 }
-
+loadNotifications();
 // 👇 هنا حط الكود
 const btn = document.getElementById("appealBtn");
 
@@ -2573,18 +2966,26 @@ window.clearCache = async function() {
 };
 /* MENU */
 function updateMenu(user) {
+    
     const loggedIn = !!user;
-    
-    document.getElementById("loginBtn").style.display = loggedIn ? "none" : "block";
-    document.getElementById("registerBtn").style.display = loggedIn ? "none" : "block";
-    document.getElementById("toolsBtn").style.display = loggedIn ? "block" : "none";
-    
-    document.getElementById("requestBtn").style.display = loggedIn ? "block" : "none";
-    document.getElementById("trackBtn").style.display = loggedIn ? "block" : "none";
-    document.getElementById("myRequestsBtn").style.display = loggedIn ? "block" : "none";
-    document.getElementById("profileBtn").style.display = loggedIn ? "block" : "none";
-    document.getElementById("settingsBtn").style.display = loggedIn ? "block" : "none";
+
+document.getElementById("loginBtn").style.display = loggedIn ? "none" : "block";
+document.getElementById("registerBtn").style.display = loggedIn ? "none" : "block";
+document.getElementById("toolsBtn").style.display = loggedIn ? "block" : "none";
+const dropdown = document.querySelector(".dropdown");
+
+if (dropdown) {
+    dropdown.style.display = loggedIn ? "block" : "none";
 }
+document.getElementById("trackBtn").style.display = loggedIn ? "block" : "none";
+document.getElementById("profileBtn").style.display = loggedIn ? "block" : "none";
+document.getElementById("settingsBtn").style.display = loggedIn ? "block" : "none";
+document.getElementById("myRequestsBtn").style.display = loggedIn ? "block" : "none";
+document.getElementById("notificationsBtn").style.display =
+    loggedIn ? "block" : "none";
+}
+
+
 
 window.copyUID = function() {
     const uid = document.getElementById("uidBox").innerText;
@@ -4087,6 +4488,227 @@ window.filterRequests = function() {
     });
     
 };
+function loadNotifications() {
+    
+    const user = auth.currentUser;
+    if (!user) return;
+    
+    const notificationsRef = collection(db, "notifications");
+    
+    // 📌 1) كل الإشعارات للعرض
+    const q = query(
+        notificationsRef,
+        where("uid", "==", user.uid),
+        orderBy("time", "desc")
+    );
+    
+    // 📌 2) غير المقروء فقط للـ badge
+    const qUnread = query(
+        notificationsRef,
+        where("uid", "==", user.uid),
+        where("read", "==", false)
+    );
+    
+    // =========================
+    // 📌 عرض الإشعارات
+    // =========================
+    onSnapshot(q, (snapshot) => {
+        
+        const list = document.getElementById("notificationsList");
+        
+        if (!list) return;
+        
+        list.innerHTML = "";
+        
+        if (snapshot.empty) {
+            list.innerHTML = `
+                <p style="text-align:center;color:#888;">
+                    No notifications yet.
+                </p>
+            `;
+            return;
+        }
+        
+        snapshot.forEach((docSnap) => {
+    
+    const data = docSnap.data();
+    
+    list.innerHTML += `
+        <div class="notification-card" style="
+            padding:18px 0;
+            border-bottom:1px solid rgba(255,255,255,0.08);
+        ">
+
+            <h4>${data.title}</h4>
+
+            <p>${data.message}</p>
+
+            <div class="notification-time">
+                ${new Date(data.time).toLocaleString()}
+            </div>
+
+            <button class="notification-delete"
+                onclick="deleteNotification('${docSnap.id}')">
+                Delete
+            </button>
+
+        </div>
+    `;
+});
+    });
+    
+    // =========================
+    // 📌 Badge (غير المقروء فقط)
+    // =========================
+    onSnapshot(qUnread, (snapshot) => {
+        
+        const badge = document.getElementById("notificationBadge");
+        if (!badge) return;
+        
+        const count = snapshot.size;
+        
+        if (count > 0) {
+            badge.style.display = "inline-block";
+            badge.textContent = count;
+        } else {
+            badge.style.display = "none";
+        }
+    });
+}
+
+async function deleteNotification(id) {
+    try {
+        await deleteDoc(doc(db, "notifications", id));
+    } catch (e) {
+        console.error(e);
+    }
+}
+
+async function deleteAllNotifications() {
+    
+    const user = auth.currentUser;
+    if (!user) return;
+    
+    const q = query(
+        collection(db, "notifications"),
+        where("uid", "==", user.uid)
+    );
+    
+    const snapshot = await getDocs(q);
+    
+    for (const d of snapshot.docs) {
+        await deleteDoc(d.ref);
+    }
+    
+}
+
+// اجعل الدوال متاحة لـ HTML
+window.loadNotifications = loadNotifications;
+window.deleteNotification = deleteNotification;
+window.deleteAllNotifications = deleteAllNotifications;
+
+
+function updateNotificationBadge() {
+    const badge = document.getElementById("notificationBadge");
+    
+    getDocs(collection(db, "notifications")).then(snap => {
+        let count = 0;
+        
+        snap.forEach(doc => {
+            if (doc.data().read === false) {
+                count++;
+            }
+        });
+        
+        if (count > 0) {
+            badge.style.display = "inline-block";
+            badge.innerText = count;
+        } else {
+            badge.style.display = "none";
+        }
+    });
+}
+
+
+
+window.openNotifications = function() {
+    const page = document.getElementById("notificationsPage");
+    if (!page) return;
+    
+    const isOpen = page.style.display === "block";
+    
+    // سكّر إذا مفتوح
+    if (isOpen) {
+        page.style.display = "none";
+        showPage("homePage"); // بيرجع للهوم (اختياري)
+        return;
+    }
+    
+    // سكّر كل الصفحات
+    document.querySelectorAll(".trackBox").forEach(p => {
+        p.style.display = "none";
+    });
+    
+    document.getElementById("homePage").style.display = "none";
+    
+    // افتح notifications
+    page.style.display = "block";
+};
+
+function markNotificationsAsRead() {
+    
+    const user = auth.currentUser;
+    if (!user) return;
+    
+    const q = query(
+        collection(db, "notifications"),
+        where("uid", "==", user.uid),
+        where("read", "==", false)
+    );
+    
+    getDocs(q).then((snapshot) => {
+        snapshot.forEach((docSnap) => {
+            updateDoc(docSnap.ref, {
+                read: true
+            });
+        });
+        
+        const badge = document.getElementById("notificationBadge");
+        if (badge) {
+            badge.style.display = "none";
+            badge.innerText = "0";
+        }
+    });
+}
+window.toggleRequestMenu = function() {
+    const menu = document.getElementById("requestMenu");
+    const dropdown = document.querySelector(".dropdown");
+    
+    if (!menu || !dropdown) return;
+    
+    const isOpen = menu.style.display === "block";
+    
+    if (isOpen) {
+        menu.style.display = "none";
+        dropdown.classList.remove("open");
+    } else {
+        menu.style.display = "block";
+        dropdown.classList.add("open");
+    }
+};
+
+// إغلاق عند الضغط خارج القائمة
+document.addEventListener("click", function(e) {
+    const dropdown = document.querySelector(".dropdown");
+    const menu = document.getElementById("requestMenu");
+    
+    if (!dropdown || !menu) return;
+    
+    if (!dropdown.contains(e.target)) {
+        menu.style.display = "none";
+        dropdown.classList.remove("open");
+    }
+});
 </script>
 
 </body>
