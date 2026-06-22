@@ -2987,6 +2987,7 @@ document.getElementById("notificationsBtn").style.display =
 
 
 
+
 window.copyUID = function() {
     const uid = document.getElementById("uidBox").innerText;
     
@@ -4489,79 +4490,62 @@ window.filterRequests = function() {
     
 };
 function loadNotifications() {
-    
     const user = auth.currentUser;
     if (!user) return;
     
     const notificationsRef = collection(db, "notifications");
     
-    // 📌 1) كل الإشعارات للعرض
-    const q = query(
+    // 📌 كل الإشعارات
+    const qAll = query(
         notificationsRef,
         where("uid", "==", user.uid),
         orderBy("time", "desc")
     );
     
-    // 📌 2) غير المقروء فقط للـ badge
+    // 📌 غير المقروء فقط (Badge)
     const qUnread = query(
         notificationsRef,
         where("uid", "==", user.uid),
         where("read", "==", false)
     );
     
-    // =========================
-    // 📌 عرض الإشعارات
-    // =========================
-    onSnapshot(q, (snapshot) => {
-        
+    // =====================
+    // عرض الإشعارات
+    // =====================
+    onSnapshot(qAll, (snapshot) => {
         const list = document.getElementById("notificationsList");
-        
         if (!list) return;
         
         list.innerHTML = "";
         
         if (snapshot.empty) {
-            list.innerHTML = `
-                <p style="text-align:center;color:#888;">
-                    No notifications yet.
-                </p>
-            `;
+            list.innerHTML = `<p style="text-align:center;color:#888;">No notifications yet.</p>`;
             return;
         }
         
         snapshot.forEach((docSnap) => {
-    
-    const data = docSnap.data();
-    
-    list.innerHTML += `
-        <div class="notification-card" style="
-            padding:18px 0;
-            border-bottom:1px solid rgba(255,255,255,0.08);
-        ">
+            const data = docSnap.data();
+            
+            list.innerHTML += `
+                <div class="notification-card" style="padding:18px 0;border-bottom:1px solid rgba(255,255,255,0.08);">
+                    <h4>${data.title}</h4>
+                    <p>${data.message}</p>
+                    <div class="notification-time">
+                        ${new Date(data.time).toLocaleString()}
+                    </div>
 
-            <h4>${data.title}</h4>
-
-            <p>${data.message}</p>
-
-            <div class="notification-time">
-                ${new Date(data.time).toLocaleString()}
-            </div>
-
-            <button class="notification-delete"
-                onclick="deleteNotification('${docSnap.id}')">
-                Delete
-            </button>
-
-        </div>
-    `;
-});
+                  <button class="notification-delete"onclick="deleteNotification('${docSnap.id}')">
+                        Delete
+                    </button>
+                </div>
+            `;
+        });
     });
     
-    // =========================
-    // 📌 Badge (غير المقروء فقط)
-    // =========================
+    // =====================
+    // Badge (Realtime)
+    // =====================
     onSnapshot(qUnread, (snapshot) => {
-        
         const badge = document.getElementById("notificationBadge");
         if (!badge) return;
         
@@ -4572,19 +4556,60 @@ function loadNotifications() {
             badge.textContent = count;
         } else {
             badge.style.display = "none";
+            badge.textContent = "";
         }
     });
 }
 
-async function deleteNotification(id) {
+window.openNotifications = async function() {
+    const page = document.getElementById("notificationsPage");
+    if (!page) return;
+    
+    const isOpen = page.style.display === "block";
+    
+    if (isOpen) {
+        page.style.display = "none";
+        showPage("homePage");
+        return;
+    }
+    
+    document.querySelectorAll(".trackBox").forEach(p => p.style.display = "none");
+    document.getElementById("homePage").style.display = "none";
+    
+    page.style.display = "block";
+    
+    // 🔥 أهم سطر: يخلي الكل read
+    await markNotificationsAsRead();
+};
+
+async function markNotificationsAsRead() {
+    const user = auth.currentUser;
+    if (!user) return;
+    
+    const q = query(
+        collection(db, "notifications"),
+        where("uid", "==", user.uid),
+        where("read", "==", false)
+    );
+    
+    const snapshot = await getDocs(q);
+    
+    const updates = snapshot.docs.map(docSnap =>
+        updateDoc(docSnap.ref, { read: true })
+    );
+    
+    await Promise.all(updates);
+}
+
+window.deleteNotification = async function(id) {
     try {
         await deleteDoc(doc(db, "notifications", id));
     } catch (e) {
         console.error(e);
     }
-}
+};
 
-async function deleteAllNotifications() {
+window.deleteAllNotifications = async function() {
     
     const user = auth.currentUser;
     if (!user) return;
@@ -4599,87 +4624,7 @@ async function deleteAllNotifications() {
     for (const d of snapshot.docs) {
         await deleteDoc(d.ref);
     }
-    
-}
-
-// اجعل الدوال متاحة لـ HTML
-window.loadNotifications = loadNotifications;
-window.deleteNotification = deleteNotification;
-window.deleteAllNotifications = deleteAllNotifications;
-
-
-function updateNotificationBadge() {
-    const badge = document.getElementById("notificationBadge");
-    
-    getDocs(collection(db, "notifications")).then(snap => {
-        let count = 0;
-        
-        snap.forEach(doc => {
-            if (doc.data().read === false) {
-                count++;
-            }
-        });
-        
-        if (count > 0) {
-            badge.style.display = "inline-block";
-            badge.innerText = count;
-        } else {
-            badge.style.display = "none";
-        }
-    });
-}
-
-
-
-window.openNotifications = function() {
-    const page = document.getElementById("notificationsPage");
-    if (!page) return;
-    
-    const isOpen = page.style.display === "block";
-    
-    // سكّر إذا مفتوح
-    if (isOpen) {
-        page.style.display = "none";
-        showPage("homePage"); // بيرجع للهوم (اختياري)
-        return;
-    }
-    
-    // سكّر كل الصفحات
-    document.querySelectorAll(".trackBox").forEach(p => {
-        p.style.display = "none";
-    });
-    
-    document.getElementById("homePage").style.display = "none";
-    
-    // افتح notifications
-    page.style.display = "block";
 };
-
-function markNotificationsAsRead() {
-    
-    const user = auth.currentUser;
-    if (!user) return;
-    
-    const q = query(
-        collection(db, "notifications"),
-        where("uid", "==", user.uid),
-        where("read", "==", false)
-    );
-    
-    getDocs(q).then((snapshot) => {
-        snapshot.forEach((docSnap) => {
-            updateDoc(docSnap.ref, {
-                read: true
-            });
-        });
-        
-        const badge = document.getElementById("notificationBadge");
-        if (badge) {
-            badge.style.display = "none";
-            badge.innerText = "0";
-        }
-    });
-}
 window.toggleRequestMenu = function() {
     const menu = document.getElementById("requestMenu");
     const dropdown = document.querySelector(".dropdown");
