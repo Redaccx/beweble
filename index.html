@@ -4654,6 +4654,22 @@ document.addEventListener("click", function(e) {
         dropdown.classList.remove("open");
     }
 });
+window.addEventListener("load", () => {
+    const btn = document.getElementById("notificationsBtn");
+    
+    if (!btn) return;
+    
+    btn.disabled = true;
+    
+    setTimeout(() => {
+        btn.disabled = false;
+        
+        btn.addEventListener("click", () => {
+            showPage("notificationsPage");
+            loadNotifications();
+        });
+    }, 2000); // 2000ms = ثانيتين
+});
 </script>
 
 </body>
