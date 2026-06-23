@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catch Zahraa & Rida</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+overflow:hidden;
+height:100vh;
+background:linear-gradient(135deg,#6a11cb,#2575fc);
+display:flex;
+justify-content:center;
+align-items:center;
+color:white;
+}
+
+#game{
+position:relative;
+width:100%;
+height:100%;
+overflow:hidden;
+}
+
+#score{
+position:absolute;
+top:20px;
+left:20px;
+font-size:28px;
+font-weight:bold;
+z-index:10;
+}
+
+.word{
+position:absolute;
+font-size:34px;
+font-weight:bold;
+cursor:pointer;
+user-select:none;
+animation:pop .25s;
+text-shadow:0 0 15px rgba(255,255,255,.5);
+}
+
+.zahraa{
+color:#ff6ec7;
+}
+
+.rida{
+color:#6ee7ff;
+}
+
+@keyframes pop{
+from{
+transform:scale(.4);
+opacity:0;
+}
+to{
+transform:scale(1);
+opacity:1;
+}
+}
+
+#gameOver{
+position:absolute;
+inset:0;
+background:rgba(0,0,0,.75);
+display:none;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+z-index:100;
+}
+
+#gameOver h1{
+font-size:55px;
+margin-bottom:20px;
+}
+
+#gameOver button{
+padding:15px 35px;
+border:none;
+border-radius:12px;
+font-size:22px;
+cursor:pointer;
+background:#fff;
+}
+</style>
+</head>
+
+<body>
+
+<div id="game">
+
+<div id="score">Score : 0</div>
+
+<div id="gameOver">
+<h1>Game Over</h1>
+<button onclick="restart()">Restart</button>
+</div>
+
+</div>
+
+<script>
+
+const game=document.getElementById("game");
+const scoreText=document.getElementById("score");
+const gameOver=document.getElementById("gameOver");
+
+let score=0;
+let speed=2;
+let playing=true;
+
+function spawn(){
+
+if(!playing)return;
+
+const div=document.createElement("div");
+
+const name=Math.random()<0.5?"Zahraa":"Rida";
+
+div.className="word "+name.toLowerCase();
+div.innerText=name;
+
+div.style.left=Math.random()*(window.innerWidth-140)+"px";
+div.style.top="-50px";
+
+game.appendChild(div);
+
+let y=-50;
+
+const fall=setInterval(()=>{
+
+if(!playing){
+clearInterval(fall);
+return;
+}
+
+y+=speed;
+
+div.style.top=y+"px";
+
+if(y>window.innerHeight){
+
+clearInterval(fall);
+
+div.remove();
+
+endGame();
+
+}
+
+},20);
+
+div.onclick=()=>{
+
+clearInterval(fall);
+
+score++;
+
+scoreText.innerText="Score : "+score;
+
+if(score%5===0){
+speed+=0.5;
+}
+
+div.animate([
+{transform:"scale(1)",opacity:1},
+{transform:"scale(2)",opacity:0}
+],{
+duration:250
+});
+
+setTimeout(()=>div.remove(),240);
+
+}
+
+}
+
+function endGame(){
+
+playing=false;
+
+gameOver.style.display="flex";
+
+}
+
+function restart(){
+
+document.querySelectorAll(".word").forEach(e=>e.remove());
+
+score=0;
+speed=2;
+playing=true;
+
+scoreText.innerText="Score : 0";
+
+gameOver.style.display="none";
+
+loop();
+
+}
+
+function loop(){
+
+if(!playing)return;
+
+spawn();
+
+setTimeout(loop,700);
+
+}
+
+loop();
+
+</script>
+
+</body>
+</html>
