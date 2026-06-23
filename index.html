@@ -2637,47 +2637,18 @@ Delete
     gap:10px;
 ">
 
-    <!-- EMPTY -->
-    <div style="
-        text-align:center;
-        padding:95px 20px;
-    ">
 
-        <div style="
-            width:72px;
-            height:72px;
-            margin:0 auto 14px;
-            border-radius:22px;
-            background:rgba(255,255,255,.03);
-            backdrop-filter:blur(15px);
-            border:1px solid rgba(255,255,255,.05);
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            box-shadow:0 0 15px rgba(88,101,242,.05);
-        ">
-            <i class="fa-regular fa-bell-slash"
-            style="
-                font-size:22px;
-                color:#8ea2ff;
-            "></i>
-        </div>
 
         <div style="
             font-size:15px;
             font-weight:700;
             color:#fff;
+            text-align:center;
         ">
-            No notifications
+          Loading
         </div>
 
-        <div style="
-            font-size:12px;
-            color:#9ca3af;
-            margin-top:4px;
-        ">
-            You're all caught up 🎉
-        </div>
+   
 
     </div>
 
@@ -2877,22 +2848,33 @@ document.getElementById("disabledDate").innerText =
         month: "long",
         day: "numeric"
     });
-            
-            return;
-        }
-        
-        appState.disabled = false;
-        
-        
-        updateMenu(user);
-        showPage("homePage");
-        
-    } catch (err) {
-        
-        console.log(err);
-        updateMenu(user);
+
+return;
+}
+
+appState.disabled = false;
+
+updateMenu(user);
+
+// لا ترجع للصفحة الرئيسية إذا صفحة الإشعارات مفتوحة
+const notificationsPage = document.getElementById("notificationsPage");
+
+if (!notificationsPage || notificationsPage.style.display !== "block") {
+    showPage("homePage");
+}
+
+} catch (err) {
+    
+    console.log(err);
+    
+    updateMenu(user);
+    
+    const notificationsPage = document.getElementById("notificationsPage");
+    
+    if (!notificationsPage || notificationsPage.style.display !== "block") {
         showPage("homePage");
     }
+}
 });
 function loadAccountInfo() {
     const user = auth.currentUser;
