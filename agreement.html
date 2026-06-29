@@ -256,7 +256,25 @@ Official Agreement & Electronic Signature Record
 <h3 id="signature"></h3>
 </div>
 
+<div class="card">
+    <i class="fa fa-globe"></i>
+    <span>Platform</span>
+    <h3 id="platform"></h3>
 </div>
+
+<div class="card">
+    <i class="fa fa-exclamation-circle"></i>
+    <span>Problem Type</span>
+    <h3 id="problemType"></h3>
+</div>
+
+<div class="card" style="grid-column:1/-1;">
+    <i class="fa fa-file-text"></i>
+    <span>Issue Details</span>
+    <h3 id="details"></h3>
+</div>
+</div>
+
 
 <div class="terms">
 <h3>Terms & Conditions</h3>
@@ -346,6 +364,15 @@ if(requestId){
 
         document.getElementById("phone").textContent =
         data.phone || "-";
+        
+document.getElementById("platform").textContent =
+    data.platform || "-";
+
+document.getElementById("problemType").textContent =
+    data.problemType || "-";
+
+document.getElementById("details").textContent =
+    data.details || "-";
 
         document.getElementById("date").textContent =
         data.agreedAt
