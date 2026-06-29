@@ -289,7 +289,7 @@ Verified ✓
 </div>
 </div>
 
-<button class="downloadBtn" onclick="downloadPDF()">
+<button class="downloadBtn">
 
     <i class="fa fa-file-pdf-o"></i>
     
@@ -374,7 +374,10 @@ function downloadPDF() {
             html2canvas: {
                 scale: 2,
                 useCORS: true,
-                scrollY: 0
+                scrollY: 0,
+                ignoreElements: (el) => {
+                    return el.classList.contains("downloadBtn");
+                }
             },
             jsPDF: {
                 unit: "in",
@@ -386,7 +389,8 @@ function downloadPDF() {
         .save();
 }
 
-window.downloadPDF = downloadPDF;
+document.querySelector(".downloadBtn")
+    .addEventListener("click", downloadPDF);
 </script>
 
 </body>
