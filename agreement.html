@@ -289,15 +289,17 @@ Verified ✓
 </div>
 </div>
 
-<button class="downloadBtn"
-onclick="window.print()">
-<i class="fa fa-file-pdf-o"></i>
-Download PDF
+<button class="downloadBtn" onclick="downloadPDF()">
+
+    <i class="fa fa-file-pdf-o"></i>
+    
+    Download PDF
+    
 </button>
 
 </div>
 </div>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script type="module">
 import {
 initializeApp
@@ -356,6 +358,54 @@ if(requestId){
         document.getElementById("signature2").textContent =
         data.signature || "-";
     }
+}
+
+function downloadPDF() {
+    
+    const element = document.querySelector(".certificate");
+    
+    html2pdf()
+        
+        .set({
+            
+            margin: 0.5,
+            
+            filename: "Agreement-Certificate.pdf",
+            
+            image: {
+                
+                type: "jpeg",
+                
+                quality: 1
+                
+            },
+            
+            html2canvas: {
+                
+                scale: 2,
+                
+                useCORS: true,
+                
+                scrollY: 0
+                
+            },
+            
+            jsPDF: {
+                
+                unit: "in",
+                
+                format: "a4",
+                
+                orientation: "portrait"
+                
+            }
+            
+        })
+        
+        .from(element)
+        
+        .save();
+    
 }
 </script>
 
