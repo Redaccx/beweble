@@ -202,16 +202,18 @@ body{
     
     }
 
-@media print{
-    body{
-        background:#fff;
-        padding:0;
+    @media print {
+    body {
+        margin: 0;
+        padding: 0;
     }
-
-    .certificate{
-        box-shadow:none;
-        border:none;
+    
+    .certificate {
+        width: 100%;
+        height: 100vh;
+        border-radius: 0;
     }
+}
 
     .downloadBtn{
         display:none;
@@ -445,7 +447,7 @@ if (btnInClone) btnInClone.remove();
 clone.style.position = "fixed";
 clone.style.left = "-99999px";
 clone.style.top = "0";
-clone.style.width = "1200px";
+clone.style.width = window.innerWidth + "px";
 
 document.body.appendChild(clone);
     
