@@ -28,7 +28,7 @@ body{
     
     width: 100%;
     
-    max-width: 1200px;
+    max-width: 100%;
     
     margin: auto;
     
@@ -202,19 +202,36 @@ body{
     
     }
 
-@media print{
-    body{
-        background:#fff;
-        padding:0;
+@media print {
+    html,
+    body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        background: #fff;
     }
 
-    .certificate{
-        box-shadow:none;
-        border:none;
+    .certificate {
+        width: 100%;
+        max-width: 100%;
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+        margin: 0;
     }
 
-    .downloadBtn{
-        display:none;
+    .content {
+        padding: 30px;
+    }
+
+    .downloadBtn {
+        display: none !important;
+    }
+
+    @page {
+        size: A4;
+        margin: 10mm;
     }
 }
 </style>
@@ -413,15 +430,15 @@ function downloadJPEG() {
     const btn = document.querySelector(".downloadBtn");
     
     btn.style.display = "none";
-    certificate.style.width = "1200px";
     
     html2canvas(certificate, {
         scale: 3,
         useCORS: true,
-        backgroundColor: "#1b2240"
+        backgroundColor: "#1b2240",
+        windowWidth: certificate.scrollWidth,
+        windowHeight: certificate.scrollHeight
     }).then(canvas => {
         btn.style.display = "";
-        certificate.style.width = "";
         
         const link = document.createElement("a");
         link.download = "Agreement-Certificate.jpeg";
