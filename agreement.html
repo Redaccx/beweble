@@ -421,7 +421,7 @@ document.getElementById("details").textContent =
     }
 }
 
-function downloadJPEG() {
+async function downloadJPEG() {
     const certificate = document.querySelector(".certificate");
     const btn = document.querySelector(".downloadBtn");
     
@@ -436,38 +436,48 @@ function downloadJPEG() {
         }
     }, 100);
     
-    // clone مخفي حتى ما يتغير التصميم
     const clone = certificate.cloneNode(true);
-    const btnInClone = clone.querySelector(".downloadBtn");
-if (btnInClone) btnInClone.style.display = "none";
-clone.style.position = "fixed";
-clone.style.left = "-99999px";
-clone.style.top = "0";
-clone.style.width = "1200px";
-
-document.body.appendChild(clone);
     
-    html2canvas(clone, {
-        scale: 3,
-        useCORS: true,
-        backgroundColor: "#1b2240"
-    }).then(canvas => {
-        clearInterval(timer);
+    const btnInClone = clone.querySelector(".downloadBtn");
+    if (btnInClone) btnInClone.remove();
+    
+    clone.style.position = "fixed";
+    clone.style.left = "-100000px";
+    clone.style.top = "0";
+    clone.style.width = "1200px";
+    clone.style.maxWidth = "1200px";
+    clone.style.background = "#171923";
+    
+    document.body.appendChild(clone);
+    
+    try {
+        const canvas = await html2canvas(clone, {
+            scale: 4,
+            useCORS: true,
+            backgroundColor: "#171923",
+            allowTaint: true,
+            logging: false
+        });
         
+        clearInterval(timer);
         btn.innerHTML = "Download 100%";
         
-        document.body.removeChild(clone);
-        
         const link = document.createElement("a");
-        link.download = "Agreement-Certificate.jpeg";
-        link.href = canvas.toDataURL("image/jpeg", 1);
+        link.download = `Agreement-${Date.now()}.jpeg`;
+        link.href = canvas.toDataURL("image/jpeg", 1.0);
         link.click();
-        
-        setTimeout(() => {
-            btn.innerHTML = '<i class="fa fa-image"></i> Download JPEG';
-            btn.disabled = false;
-        }, 1000);
-    });
+    } catch (e) {
+        console.error(e);
+        alert("Failed to generate image");
+    }
+    
+    document.body.removeChild(clone);
+    
+    setTimeout(() => {
+        btn.innerHTML =
+            '<i class="fa fa-image"></i> Download JPEG';
+        btn.disabled = false;
+    }, 1000);
 }
 
 document.querySelector(".downloadBtn")
