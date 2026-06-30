@@ -317,45 +317,57 @@ if (requestId) {
 }
 
 document.querySelector(".downloadBtn")
-.addEventListener("click", async () => {
-
-    const certificate =
-        document.querySelector(".certificate");
-
-    const btn =
-        document.querySelector(".downloadBtn");
-
-    btn.style.display = "none";
-
-    const canvas = await html2canvas(
-    certificate,
-    {
-        width: 1170,
-        height: 2532,
-        windowWidth: 1170,
-        windowHeight: 2532,
-        scale: 1,
-        useCORS: true,
-        backgroundColor: "#111827"
-    }
-);
-
-    btn.style.display = "";
-
-    const link =
-        document.createElement("a");
-
-    link.download =
-        "Agreement-Certificate.jpeg";
-
-    link.href =
-        canvas.toDataURL(
-            "image/jpeg",
-            1
-        );
-
-    link.click();
-});
+    .addEventListener("click", async () => {
+        
+        const certificate = document.querySelector(".certificate");
+        
+        const clone = certificate.cloneNode(true);
+        
+        clone.style.width = "1170px";
+        clone.style.minHeight = "2532px";
+        clone.style.position = "fixed";
+        clone.style.left = "-99999px";
+        clone.style.top = "0";
+        
+        // تكبير الخطوط داخل النسخة
+        clone.style.fontSize = "1.5rem";
+        
+        clone.querySelectorAll(".card").forEach(el => {
+            el.style.padding = "35px";
+        });
+        
+        clone.querySelectorAll(".card h3").forEach(el => {
+            el.style.fontSize = "28px";
+        });
+        
+        clone.querySelectorAll(".card span").forEach(el => {
+            el.style.fontSize = "22px";
+        });
+        
+        clone.querySelector(".title").style.fontSize = "60px";
+        clone.querySelector(".subtitle").style.fontSize = "28px";
+        clone.querySelector(".signature").style.fontSize = "60px";
+        
+        const btn = clone.querySelector(".downloadBtn");
+        if (btn) btn.remove();
+        
+        document.body.appendChild(clone);
+        
+        const canvas = await html2canvas(clone, {
+            width: 1170,
+            height: 2532,
+            scale: 1,
+            useCORS: true,
+            backgroundColor: "#111827"
+        });
+        
+        document.body.removeChild(clone);
+        
+        const link = document.createElement("a");
+        link.download = "Agreement-Certificate.jpeg";
+        link.href = canvas.toDataURL("image/jpeg", 1);
+        link.click();
+    });
 </script>
 
 </body>
