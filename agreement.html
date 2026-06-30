@@ -309,15 +309,14 @@ Verified ✓
 
 <button class="downloadBtn">
 
-    <i class="fa fa-file-pdf-o"></i>
-    
-    Download PDF
+ <i class="fa fa-image"></i>
+Download JPEG
     
 </button>
 
 </div>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script type="module">
 import {
 initializeApp
@@ -388,38 +387,18 @@ document.getElementById("details").textContent =
 }
 
 function downloadPDF() {
-    const element = document.querySelector(".certificate");
-    
-    element.style.transform = "scale(0.85)";
-    element.style.transformOrigin = "top center";
-    
-    html2pdf()
-        .set({
-            margin: 0,
-            filename: "Agreement-Certificate.pdf",
-            image: {
-                type: "jpeg",
-                quality: 1
-            },
-            html2canvas: {
-                scale: 2,
-                useCORS: true
-            },
-            jsPDF: {
-                unit: "mm",
-                format: "a4",
-                orientation: "portrait"
-            }
-        })
-        .from(element)
-        .save()
-        .then(() => {
-            element.style.transform = "";
-        });
-}
+const element = document.querySelector(".certificate");
 
-document.querySelector(".downloadBtn")
-    .addEventListener("click", downloadPDF);
+html2canvas(element, {
+scale: 2,
+useCORS: true
+}).then(canvas => {
+const link = document.createElement("a");
+link.download = "Agreement-Certificate.jpeg";
+link.href = canvas.toDataURL("image/jpeg", 1.0);
+link.click();
+});
+}
 </script>
 
 </body>
