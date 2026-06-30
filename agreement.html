@@ -215,6 +215,14 @@ body{
         display:none;
     }
 }
+html,
+body {
+    overflow-x: hidden;
+}
+
+.certificate {
+    overflow: visible;
+}
 </style>
 </head>
 
@@ -411,27 +419,28 @@ function downloadJPEG() {
     const btn = document.querySelector(".downloadBtn");
     
     btn.style.display = "none";
-    certificate.style.height = "auto";
-certificate.style.maxHeight = "none";
-certificate.style.overflow = "visible";
+    
+    const width = certificate.offsetWidth;
+    const height = certificate.scrollHeight;
     
     html2canvas(certificate, {
-        scale: 3,
+        scale: 2,
         useCORS: true,
         backgroundColor: "#1b2240",
+        width: width,
+        height: height,
+        windowWidth: width,
+        windowHeight: height,
         scrollX: 0,
-        scrollY: -window.scrollY,
-        windowWidth: certificate.scrollWidth,
-        windowHeight: certificate.scrollHeight,
-        width: certificate.scrollWidth,
-        height: certificate.scrollHeight
+        scrollY: 0
     }).then(canvas => {
         btn.style.display = "";
         
+        const img = canvas.toDataURL("image/jpeg", 1);
+        
         const link = document.createElement("a");
+        link.href = img;
         link.download = "Agreement-Certificate.jpg";
-        link.href = canvas.toDataURL("image/jpeg", 1.0);
-        certificate.style.overflow = "hidden";
         link.click();
     });
 }
