@@ -328,13 +328,17 @@ document.querySelector(".downloadBtn")
     btn.style.display = "none";
 
     const canvas = await html2canvas(
-        certificate,
-        {
-            scale:3,
-            useCORS:true,
-            backgroundColor:"#111827"
-        }
-    );
+    certificate,
+    {
+        width: 1170,
+        height: 2532,
+        windowWidth: 1170,
+        windowHeight: 2532,
+        scale: 1,
+        useCORS: true,
+        backgroundColor: "#111827"
+    }
+);
 
     btn.style.display = "";
 
