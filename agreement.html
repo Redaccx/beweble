@@ -390,29 +390,32 @@ document.getElementById("details").textContent =
 function downloadPDF() {
     const element = document.querySelector(".certificate");
     
-    const opt = {
-        margin: 0,
-        filename: "Agreement-Certificate.pdf",
-        image: {
-            type: "jpeg",
-            quality: 1
-        },
-        html2canvas: {
-            scale: 0.8,
-            useCORS: true,
-            scrollY: 0
-        },
-        jsPDF: {
-            unit: "mm",
-            format: "a4",
-            orientation: "portrait"
-        },
-        pagebreak: {
-            mode: ["avoid-all", "css", "legacy"]
-        }
-    };
+    element.style.transform = "scale(0.85)";
+    element.style.transformOrigin = "top center";
     
-    html2pdf().set(opt).from(element).save();
+    html2pdf()
+        .set({
+            margin: 0,
+            filename: "Agreement-Certificate.pdf",
+            image: {
+                type: "jpeg",
+                quality: 1
+            },
+            html2canvas: {
+                scale: 2,
+                useCORS: true
+            },
+            jsPDF: {
+                unit: "mm",
+                format: "a4",
+                orientation: "portrait"
+            }
+        })
+        .from(element)
+        .save()
+        .then(() => {
+            element.style.transform = "";
+        });
 }
 
 document.querySelector(".downloadBtn")
