@@ -16,19 +16,19 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome
     font-family:Arial,sans-serif;
 }
 
-body {
+body{
     background:
-        radial-gradient(circle at top, #1b2240 0%, #0f1117 45%);
-    min-height: 100vh;
-    padding: 0;
-    color: #fff;
+    radial-gradient(circle at top,#1b2240 0%,#0f1117 45%);
+    min-height:100vh;
+    padding:30px;
+    color:#fff;
 }
 
 .certificate {
     
     width: 100%;
     
-    max-width: 100%;
+    max-width: 1200px;
     
     margin: auto;
     
@@ -172,20 +172,20 @@ body {
 
 @media(max-width:700px){
     body{
-        padding:0;
+        padding:15px;
     }
 
     .content{
-        padding:20px;
+        padding:25px;
     }
 
     .title{
         font-size:28px;
     }
-    .infoGrid {
+    .    .infoGrid {
         
         grid-template-columns: repeat(2, 1fr);
-      
+        
     }
     
     .card {
@@ -202,36 +202,19 @@ body {
     
     }
 
-@media print {
-    html,
-    body {
-        width: 100%;
-        height: 100%;
-        margin: 0;
-        padding: 0;
-        background: #fff;
+@media print{
+    body{
+        background:#fff;
+        padding:0;
     }
 
-    .certificate {
-        width: 100%;
-        max-width: 100%;
-        border: none;
-        border-radius: 0;
-        box-shadow: none;
-        margin: 0;
+    .certificate{
+        box-shadow:none;
+        border:none;
     }
 
-    .content {
-        padding: 30px;
-    }
-
-    .downloadBtn {
-        display: none !important;
-    }
-
-    @page {
-        size: A4;
-        margin: 10mm;
+    .downloadBtn{
+        display:none;
     }
 }
 </style>
