@@ -57,10 +57,10 @@ body{
 }
 
 .logo{
-    width:160px;
+    width:120px;
     display:block;
     margin:auto;
-    margin-bottom:15px;
+    margin-bottom:25px;
 }
 
 .title{
@@ -72,38 +72,38 @@ body{
 .subtitle{
     text-align:center;
     color:#8e97b5;
-    margin-top:5px;
-    margin-bottom:20px;
+    margin-top:10px;
+    margin-bottom:40px;
 }
 
 .infoGrid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+    gap: 18px;
 }
 
 .card{
     background:#111520;
     border:1px solid #252b3c;
     border-radius:22px;
-    padding:10px;
+    padding:15px;
 }
 
 .card i{
     color:#7b8cff;
-    font-size:17px;
+    font-size:20px;
     margin-bottom:12px;
 }
 
 .card span{
     display:block;
     color:#8e97b5;
-    font-size:12px;
+    font-size:13px;
     margin-bottom:10px;
 }
 
 .card h3{
-    font-size:15px;
+    font-size:17px;
     word-break:break-word;
 }
 
@@ -182,9 +182,11 @@ body{
     .title{
         font-size:28px;
     }
-.infoGrid {
-    grid-template-columns: repeat(2, 1fr);
-}
+    .    .infoGrid {
+        
+        grid-template-columns: repeat(2, 1fr);
+        
+    }
     
     .card {
         
@@ -194,7 +196,7 @@ body{
     
     .card h3 {
         
-        font-size: 12px;
+        font-size: 14px;
         
     }
     
@@ -214,14 +216,6 @@ body{
     .downloadBtn{
         display:none;
     }
-}
-html,
-body {
-    overflow-x: hidden;
-}
-
-.certificate {
-    overflow: hidden;
 }
 </style>
 </head>
@@ -416,34 +410,22 @@ document.getElementById("details").textContent =
 
 function downloadJPEG() {
     const certificate = document.querySelector(".certificate");
-    const btn = document.querySelector(".downloadBtn");
-    
-    btn.style.display = "none";
+    certificate.style.width = "1200px";
     
     html2canvas(certificate, {
         scale: 3,
         useCORS: true,
-        backgroundColor: "#171923",
-        width: certificate.scrollWidth,
-        height: certificate.scrollHeight,
-        windowWidth: certificate.scrollWidth,
-        windowHeight: certificate.scrollHeight,
-        scrollX: 0,
-        scrollY: -window.scrollY
-    }).then((canvas) => {
-        btn.style.display = "";
+        backgroundColor: "#1b2240"
+    }).then(canvas => {
+        certificate.style.width = "";
         
         const link = document.createElement("a");
-        link.download = "Agreement-Certificate.jpg";
-        link.href = canvas.toDataURL("image/jpeg", 1.0);
+        link.download = "Agreement-Certificate.jpeg";
+        link.href = canvas.toDataURL("image/jpeg", 1);
         link.click();
-    }).catch(() => {
-        btn.style.display = "";
     });
 }
 
-document.querySelector(".downloadBtn")
-    .addEventListener("click", downloadJPEG);
 document.querySelector(".downloadBtn")
     .addEventListener("click", downloadJPEG);
 </script>
