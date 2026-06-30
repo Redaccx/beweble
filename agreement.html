@@ -28,7 +28,7 @@ body{
     
     width: 95%;
     
-    max-width: 1200px;
+    max-width: 1200;
     
     margin: auto;
     
@@ -340,14 +340,15 @@ Verified ✓
        Download 0%
     </p>
 </div>
+
+
+</div>
 <button class="downloadBtn">
 
     <i class="fa fa-image"></i>
     Download JPEG
     
 </button>
-
-</div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script type="module">
@@ -424,8 +425,10 @@ function downloadJPEG() {
     const btn = document.querySelector(".downloadBtn");
     
     btn.disabled = true;
+    btn.innerHTML = "Download 0%";
     
     let progress = 0;
+    
     const timer = setInterval(() => {
         if (progress < 90) {
             progress += 2;
@@ -433,18 +436,18 @@ function downloadJPEG() {
         }
     }, 100);
     
+    certificate.style.width = "1200px";
+    
     html2canvas(certificate, {
         scale: 3,
         useCORS: true,
-        backgroundColor: "#1b2240",
-        scrollX: 0,
-        scrollY: 0,
-        windowWidth: certificate.offsetWidth,
-        windowHeight: certificate.offsetHeight
+        backgroundColor: "#1b2240"
     }).then(canvas => {
         clearInterval(timer);
         
         btn.innerHTML = "Download 100%";
+        
+        certificate.style.width = "";
         
         const link = document.createElement("a");
         link.download = "Agreement-Certificate.jpeg";
@@ -454,7 +457,7 @@ function downloadJPEG() {
         setTimeout(() => {
             btn.innerHTML = '<i class="fa fa-image"></i> Download JPEG';
             btn.disabled = false;
-        }, 800);
+        }, 1000);
     });
 }
 
