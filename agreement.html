@@ -214,7 +214,8 @@ body{
     }
     
     .downloadBtn {
-        display: none;
+        
+        display: none !important;
     }
 }
 </style>
@@ -437,10 +438,12 @@ function downloadJPEG() {
     
     // clone مخفي حتى ما يتغير التصميم
     const clone = certificate.cloneNode(true);
+    const btnInClone = clone.querySelector(".downloadBtn");
+if (btnInClone) btnInClone.style.display = "none";
 clone.style.position = "fixed";
 clone.style.left = "-99999px";
 clone.style.top = "0";
-clone.style.width = window.innerWidth + "px";
+clone.style.width = "1200px";
 
 document.body.appendChild(clone);
     
