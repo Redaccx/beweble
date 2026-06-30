@@ -430,6 +430,16 @@ async function downloadPDF() {
     const certificate = document.querySelector(".certificate");
     
     btn.disabled = true;
+    let progress = 0;
+
+btn.innerHTML = "Downloading 0%";
+
+const timer = setInterval(() => {
+    if (progress < 95) {
+        progress++;
+        btn.innerHTML = `Downloading ${progress}%`;
+    }
+}, 100);
     btn.innerHTML = "Generating PDF...";
     
     try {
@@ -459,8 +469,14 @@ async function downloadPDF() {
             canvas.width,
             canvas.height
         );
+        while (progress < 95) {
+    await new Promise(resolve => setTimeout(resolve, 100));
+}
         
         pdf.save(`Agreement-${Date.now()}.pdf`);
+        clearInterval(timer);
+btn.innerHTML = "Downloading 100%";
+await new Promise(resolve => setTimeout(resolve, 500));
     } catch (e) {
         console.error(e);
         alert("Failed to generate PDF");
