@@ -704,6 +704,88 @@ width:100%;
     100%{transform:rotate(0deg);}
 }
 
+
+.submitBtn,
+.secondaryBtn{
+    position: relative;
+    overflow: hidden;
+    transition: transform .25s ease, opacity .25s ease;
+    will-change: transform;
+}
+
+.submitBtn::before,
+.secondaryBtn::before{
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        120deg,
+        transparent 0%,
+        rgba(255,255,255,.15) 45%,
+        rgba(255,255,255,.35) 50%,
+        rgba(255,255,255,.15) 55%,
+        transparent 100%
+    );
+    transform: translateX(-150%);
+    transition: transform .8s ease;
+}
+
+.submitBtn:hover,
+.secondaryBtn:hover{
+    transform: translateY(-3px) scale(1.02);
+}
+
+.submitBtn:hover::before,
+.secondaryBtn:hover::before{
+    transform: translateX(150%);
+}
+
+.submitBtn:active,
+.secondaryBtn:active{
+    transform: scale(.97);
+}
+
+@keyframes shine {
+    from { transform: translateX(-150%); }
+    to   { transform: translateX(150%); }
+}
+
+.submitBtn::before,
+.secondaryBtn::before{
+    animation: shine 3.5s infinite;
+}
+
+.typingText{
+    width:0;
+    overflow:hidden;
+    white-space:nowrap;
+    margin:auto;
+    animation:
+        typing 3s steps(40,end) forwards,
+        blink .8s infinite;
+    border-right:2px solid #7b8cff;
+}
+
+@keyframes typing{
+    from{
+        width:0;
+    }
+    to{
+        width:100%;
+    }
+}
+
+@keyframes blink{
+    50%{
+        border-color:transparent;
+    }
+}
+
+.typingText {
+    animation:
+        typing 3s steps(40, end) infinite alternate,
+        blink .8s infinite;
+}
 </style>
 
 </head>
@@ -1946,20 +2028,20 @@ Continue
     <!-- STATS -->
     <div class="featuresGrid" style="margin-top:50px;">
         
-        <div class="featureBox" style="text-align:center;">
-            <h2 style="font-size:34px;color:#7b8cff;">12K+</h2>
-            <p style="font-size:13px;">Requests</p>
-        </div>
-        
-        <div class="featureBox" style="text-align:center;">
-            <h2 style="font-size:34px;color:#7b8cff;">4.8K+</h2>
-            <p style="font-size:13px;">Tools</p>
-        </div>
-        
-        <div class="featureBox" style="text-align:center;">
-            <h2 style="font-size:34px;color:#7b8cff;">9.5K+</h2>
-            <p style="font-size:13px;">Users</p>
-        </div>
+       <div class="featureBox" style="text-align:center;">
+    <h2 id="requestsCount" style="font-size:34px;color:#7b8cff;">0</h2>
+    <p style="font-size:13px;">Requests</p>
+</div>
+
+<div class="featureBox" style="text-align:center;">
+    <h2 id="toolsCount" style="font-size:34px;color:#7b8cff;">0</h2>
+    <p style="font-size:13px;">Tools</p>
+</div>
+
+<div class="featureBox" style="text-align:center;">
+    <h2 id="usersCount" style="font-size:34px;color:#7b8cff;">0</h2>
+    <p style="font-size:13px;">Users</p>
+</div>
         
     </div>
     
@@ -1989,7 +2071,7 @@ Continue
                     <i class="fa-solid fa-wand-magic-sparkles"></i>
                 </div>
                 <h3 style="font-size:17px;">Smart Builder</h3>
-                <p style="font-size:13px;">Create tools instantly using HTML/CSS/JS.</p>
+                <p class="typingText" style="font-size:13px;">Create tools instantly using HTML/CSS/JS.</p>
             </div>
             
             <div class="featureBox" style="text-align:center;flex:1;min-width:200px;">
@@ -1997,7 +2079,7 @@ Continue
                     <i class="fa-solid fa-display"></i>
                 </div>
                 <h3 style="font-size:17px;">Live Preview</h3>
-                <p style="font-size:13px;">Instant rendering while you build.</p>
+                <p class="typingText" style="font-size:13px;">Instant rendering while you build.</p>
             </div>
             
             <div class="featureBox" style="text-align:center;flex:1;min-width:200px;">
@@ -2005,7 +2087,7 @@ Continue
                     <i class="fa-solid fa-shield-halved"></i>
                 </div>
                 <h3 style="font-size:17px;">Secure System</h3>
-                <p style="font-size:13px;">Private tools with password protection.</p>
+                <p class="typingText" style="font-size:13px;">Private tools with password protection.</p>
             </div>
             
             <div class="featureBox" style="text-align:center;flex:1;min-width:200px;">
@@ -2013,7 +2095,7 @@ Continue
                     <i class="fa-solid fa-cloud"></i>
                 </div>
                 <h3 style="font-size:17px;">Cloud Access</h3>
-                <p style="font-size:13px;">Access your tools anywhere, anytime.</p>
+                <p class="typingText" style="font-size:13px;">Access your tools anywhere, anytime.</p>
             </div>
             
         </div>
@@ -2982,7 +3064,30 @@ document.getElementById("notificationsBtn").style.display =
 }
 
 
+function animateCount(id, end, suffix = "") {
+    const el = document.getElementById(id);
+    let start = 0;
+    const duration = 2000;
+    const step = end / (duration / 16);
+    
+    const timer = setInterval(() => {
+        start += step;
+        
+        if (start >= end) {
+            start = end;
+            clearInterval(timer);
+        }
+        
+        el.textContent =
+            start >= 1000 ?
+            (start / 1000).toFixed(1).replace(".0", "") + "K" + suffix :
+            Math.floor(start) + suffix;
+    }, 16);
+}
 
+animateCount("requestsCount", 12000);
+animateCount("toolsCount", 4800);
+animateCount("usersCount", 9500);
 
 window.copyUID = function() {
     const uid = document.getElementById("uidBox").innerText;
