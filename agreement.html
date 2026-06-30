@@ -433,11 +433,13 @@ async function downloadPDF() {
     btn.innerHTML = "Generating PDF...";
     
     try {
+        btn.style.display = "none";
         const canvas = await html2canvas(certificate, {
             scale: 4,
             useCORS: true,
             backgroundColor: "#171923"
         });
+        btn.style.display = "block";
         
         const imgData = canvas.toDataURL("image/jpeg", 1);
         
@@ -471,6 +473,8 @@ async function downloadPDF() {
 
 document.querySelector(".downloadBtn")
     .addEventListener("click", downloadPDF);
+
+
 </script>
 
 </body>
