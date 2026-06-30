@@ -351,6 +351,10 @@ document.querySelector(".downloadBtn")
         const btn = clone.querySelector(".downloadBtn");
         if (btn) btn.remove();
         
+        const logo = clone.querySelector(".logo");
+if (logo) {
+    logo.style.width = "250px"; // غيّر الرقم للحجم الذي تريده
+}
         document.body.appendChild(clone);
         
         const canvas = await html2canvas(clone, {
