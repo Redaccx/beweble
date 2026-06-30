@@ -202,21 +202,19 @@ body{
     
     }
 
-    @media print {
+@media print {
     body {
-        margin: 0;
+        background: #fff;
         padding: 0;
     }
     
     .certificate {
-        width: 100%;
-        height: 100vh;
-        border-radius: 0;
+        box-shadow: none;
+        border: none;
     }
-}
-
-    .downloadBtn{
-        display:none;
+    
+    .downloadBtn {
+        display: none;
     }
 }
 </style>
@@ -439,11 +437,6 @@ function downloadJPEG() {
     
     // clone مخفي حتى ما يتغير التصميم
     const clone = certificate.cloneNode(true);
-
-// احذف زر التحميل من النسخة
-const btnInClone = clone.querySelector(".downloadBtn");
-if (btnInClone) btnInClone.remove();
-
 clone.style.position = "fixed";
 clone.style.left = "-99999px";
 clone.style.top = "0";
