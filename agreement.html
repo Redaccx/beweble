@@ -28,7 +28,7 @@ body{
     
     width: 95%;
     
-    max-width: 1200;
+    max-width: 1200px;
     
     margin: auto;
     
@@ -437,10 +437,10 @@ function downloadJPEG() {
         scale: 3,
         useCORS: true,
         backgroundColor: "#1b2240",
-        
-        // هذا المهم
-        windowWidth: document.body.scrollWidth,
-        windowHeight: document.body.scrollHeight
+        scrollX: 0,
+        scrollY: 0,
+        windowWidth: certificate.offsetWidth,
+        windowHeight: certificate.offsetHeight
     }).then(canvas => {
         clearInterval(timer);
         
