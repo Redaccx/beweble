@@ -413,15 +413,21 @@ function downloadJPEG() {
     btn.style.display = "none";
     
     html2canvas(certificate, {
-        scale: 2,
+        scale: 3,
         useCORS: true,
-        backgroundColor: "#1b2240"
+        backgroundColor: "#1b2240",
+        scrollX: 0,
+        scrollY: -window.scrollY,
+        windowWidth: certificate.scrollWidth,
+        windowHeight: certificate.scrollHeight,
+        width: certificate.scrollWidth,
+        height: certificate.scrollHeight
     }).then(canvas => {
         btn.style.display = "";
         
         const link = document.createElement("a");
-        link.download = "Agreement-Certificate.jpeg";
-        link.href = canvas.toDataURL("image/jpeg", 1);
+        link.download = "Agreement-Certificate.jpg";
+        link.href = canvas.toDataURL("image/jpeg", 1.0);
         link.click();
     });
 }
