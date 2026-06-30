@@ -349,6 +349,7 @@ Verified ✓
 </div>
 
 </div>
+<script src="https://unpkg.com/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script type="module">
 import {
@@ -420,52 +421,30 @@ document.getElementById("details").textContent =
 }
 
 async function downloadPDF() {
-    const certificate = document.querySelector(".certificate");
+    if (typeof html2canvas === "undefined") {
+        alert("html2canvas failed to load");
+        return;
+    }
+    
     const btn = document.querySelector(".downloadBtn");
+    const certificate = document.querySelector(".certificate");
     
     btn.disabled = true;
-    btn.innerHTML = "Download 0%";
-    
-    let progress = 0;
-    const timer = setInterval(() => {
-        if (progress < 90) {
-            progress += 2;
-            btn.innerHTML = `Download ${progress}%`;
-        }
-    }, 100);
-    
-    const clone = certificate.cloneNode(true);
-    
-    const btnInClone = clone.querySelector(".downloadBtn");
-    if (btnInClone) btnInClone.remove();
-    
-    clone.style.position = "fixed";
-    clone.style.left = "-100000px";
-    clone.style.top = "0";
-    clone.style.width = "1200px";
-    clone.style.maxWidth = "1200px";
-    clone.style.background = "#171923";
-    
-    document.body.appendChild(clone);
+    btn.innerHTML = "Generating PDF...";
     
     try {
-        const canvas = await html2canvas(clone, {
+        const canvas = await html2canvas(certificate, {
             scale: 4,
             useCORS: true,
-            backgroundColor: "#171923",
-            allowTaint: true,
-            logging: false
+            backgroundColor: "#171923"
         });
         
-        clearInterval(timer);
-        btn.innerHTML = "Download 100%";
-        
-        const imgData = canvas.toDataURL("image/jpeg", 1.0);
+        const imgData = canvas.toDataURL("image/jpeg", 1);
         
         const { jsPDF } = window.jspdf;
         
         const pdf = new jsPDF({
-            orientation: "portrait",
+            orientation: canvas.width > canvas.height ? "landscape" : "portrait",
             unit: "px",
             format: [canvas.width, canvas.height]
         });
@@ -485,13 +464,9 @@ async function downloadPDF() {
         alert("Failed to generate PDF");
     }
     
-    document.body.removeChild(clone);
-    
-    setTimeout(() => {
-        btn.innerHTML =
-            '<i class="fa fa-file-pdf-o"></i> Download PDF';
-        btn.disabled = false;
-    }, 1000);
+    btn.disabled = false;
+    btn.innerHTML =
+        '<i class="fa fa-file-pdf-o"></i> Download PDF';
 }
 
 document.querySelector(".downloadBtn")
