@@ -386,19 +386,22 @@ document.getElementById("details").textContent =
     }
 }
 
-function downloadPDF() {
-const element = document.querySelector(".certificate");
-
-html2canvas(element, {
-scale: 2,
-useCORS: true
-}).then(canvas => {
-const link = document.createElement("a");
-link.download = "Agreement-Certificate.jpeg";
-link.href = canvas.toDataURL("image/jpeg", 1.0);
-link.click();
-});
+function downloadJPEG() {
+    const element = document.querySelector(".certificate");
+    
+    html2canvas(element, {
+        scale: 2,
+        useCORS: true
+    }).then(canvas => {
+        const link = document.createElement("a");
+        link.download = "Agreement-Certificate.jpeg";
+        link.href = canvas.toDataURL("image/jpeg", 1.0);
+        link.click();
+    });
 }
+
+document.querySelector(".downloadBtn")
+    .addEventListener("click", downloadJPEG);
 </script>
 
 </body>
