@@ -340,15 +340,15 @@ Verified ✓
        Download 0%
     </p>
 </div>
-
-
-</div>
 <button class="downloadBtn">
 
     <i class="fa fa-image"></i>
     Download JPEG
     
 </button>
+
+</div>
+
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script type="module">
@@ -428,7 +428,6 @@ function downloadJPEG() {
     btn.innerHTML = "Download 0%";
     
     let progress = 0;
-    
     const timer = setInterval(() => {
         if (progress < 90) {
             progress += 2;
@@ -436,9 +435,16 @@ function downloadJPEG() {
         }
     }, 100);
     
-    certificate.style.width = "1200px";
+    // clone مخفي حتى ما يتغير التصميم
+    const clone = certificate.cloneNode(true);
+    clone.style.position = "fixed";
+    clone.style.left = "-99999px";
+    clone.style.top = "0";
+    clone.style.width = "1200px";
     
-    html2canvas(certificate, {
+    document.body.appendChild(clone);
+    
+    html2canvas(clone, {
         scale: 3,
         useCORS: true,
         backgroundColor: "#1b2240"
@@ -447,7 +453,7 @@ function downloadJPEG() {
         
         btn.innerHTML = "Download 100%";
         
-        certificate.style.width = "";
+        document.body.removeChild(clone);
         
         const link = document.createElement("a");
         link.download = "Agreement-Certificate.jpeg";
