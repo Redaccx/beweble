@@ -323,7 +323,7 @@ document.querySelector(".downloadBtn")
         
         const clone = certificate.cloneNode(true);
         
-        clone.style.width = "1170px";
+        clone.style.width = "1200px";
         clone.style.minHeight = "2080px";
         clone.style.position = "fixed";
         clone.style.left = "-99999px";
@@ -354,7 +354,7 @@ document.querySelector(".downloadBtn")
         document.body.appendChild(clone);
         
         const canvas = await html2canvas(clone, {
-            width: 1170,
+            width: 1200,
             height: 2080,
             scale: 1,
             useCORS: true,
