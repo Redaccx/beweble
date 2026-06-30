@@ -221,7 +221,7 @@ body {
 }
 
 .certificate {
-    overflow: visible;
+    overflow: hidden;
 }
 </style>
 </head>
@@ -420,30 +420,30 @@ function downloadJPEG() {
     
     btn.style.display = "none";
     
-    const width = certificate.offsetWidth;
-    const height = certificate.scrollHeight;
-    
     html2canvas(certificate, {
-        scale: 2,
+        scale: 3,
         useCORS: true,
-        backgroundColor: "#1b2240",
-        width: width,
-        height: height,
-        windowWidth: width,
-        windowHeight: height,
+        backgroundColor: "#171923",
+        width: certificate.scrollWidth,
+        height: certificate.scrollHeight,
+        windowWidth: certificate.scrollWidth,
+        windowHeight: certificate.scrollHeight,
         scrollX: 0,
-        scrollY: 0
-    }).then(canvas => {
+        scrollY: -window.scrollY
+    }).then((canvas) => {
         btn.style.display = "";
         
-        const img = canvas.toDataURL("image/jpeg", 1);
-        
         const link = document.createElement("a");
-        link.href = img;
         link.download = "Agreement-Certificate.jpg";
+        link.href = canvas.toDataURL("image/jpeg", 1.0);
         link.click();
+    }).catch(() => {
+        btn.style.display = "";
     });
 }
+
+document.querySelector(".downloadBtn")
+    .addEventListener("click", downloadJPEG);
 document.querySelector(".downloadBtn")
     .addEventListener("click", downloadJPEG);
 </script>
