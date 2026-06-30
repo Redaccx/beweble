@@ -424,7 +424,6 @@ function downloadJPEG() {
     const btn = document.querySelector(".downloadBtn");
     
     btn.disabled = true;
-    btn.innerHTML = "Download 0%";
     
     let progress = 0;
     const timer = setInterval(() => {
@@ -434,25 +433,18 @@ function downloadJPEG() {
         }
     }, 100);
     
-    // clone مخفي حتى ما يتغير التصميم
-    const clone = certificate.cloneNode(true);
-    clone.style.position = "fixed";
-    clone.style.left = "-99999px";
-    clone.style.top = "0";
-    clone.style.width = "1200px";
-    
-    document.body.appendChild(clone);
-    
-    html2canvas(clone, {
+    html2canvas(certificate, {
         scale: 3,
         useCORS: true,
-        backgroundColor: "#1b2240"
+        backgroundColor: "#1b2240",
+        
+        // هذا المهم
+        windowWidth: document.body.scrollWidth,
+        windowHeight: document.body.scrollHeight
     }).then(canvas => {
         clearInterval(timer);
         
         btn.innerHTML = "Download 100%";
-        
-        document.body.removeChild(clone);
         
         const link = document.createElement("a");
         link.download = "Agreement-Certificate.jpeg";
@@ -462,7 +454,7 @@ function downloadJPEG() {
         setTimeout(() => {
             btn.innerHTML = '<i class="fa fa-image"></i> Download JPEG';
             btn.disabled = false;
-        }, 1000);
+        }, 800);
     });
 }
 
