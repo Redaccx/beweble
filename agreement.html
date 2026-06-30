@@ -28,7 +28,7 @@ body{
     
     width: 100%;
     
-    max-width: 1200px;
+    max-width: 700px;
     
     margin: auto;
     
@@ -182,11 +182,9 @@ body{
     .title{
         font-size:28px;
     }
-    .    .infoGrid {
-        
-        grid-template-columns: repeat(2, 1fr);
-        
-    }
+.infoGrid {
+    grid-template-columns: 1fr;
+}
     
     .card {
         
@@ -415,11 +413,9 @@ function downloadJPEG() {
     btn.style.display = "none";
     
     html2canvas(certificate, {
-        scale: 3,
+        scale: 2,
         useCORS: true,
-        backgroundColor: "#1b2240",
-        windowWidth: certificate.scrollWidth,
-        windowHeight: certificate.scrollHeight
+        backgroundColor: "#1b2240"
     }).then(canvas => {
         btn.style.display = "";
         
@@ -429,7 +425,6 @@ function downloadJPEG() {
         link.click();
     });
 }
-
 document.querySelector(".downloadBtn")
     .addEventListener("click", downloadJPEG);
 </script>
