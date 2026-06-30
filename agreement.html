@@ -213,28 +213,6 @@ body{
         border:none;
     }
 
-    .card{
-        padding:6px;      /* تصغير الكرت */
-        border-radius:14px;
-    }
-
-    .card h3{
-        font-size:10px;
-    }
-
-    .card span{
-        font-size:9px;
-    }
-
-    .card i{
-        font-size:13px;
-        margin-bottom:8px;
-    }
-
-    .infoGrid{
-        gap:6px;
-    }
-
     .downloadBtn{
         display:none;
     }
@@ -350,7 +328,18 @@ Beweble Agency
 Verified ✓
 </div>
 </div>
-
+<div id="loader" style="display:none;margin-top:15px;">
+    <div style="background:#252b3c;height:12px;border-radius:10px;overflow:hidden;">
+        <div id="progressBar"
+             style="width:0%;height:100%;
+             background:linear-gradient(90deg,#7b8cff,#9c7cff);
+             transition:0.2s;"></div>
+    </div>
+    <p id="progressText"
+       style="text-align:center;margin-top:8px;">
+       Download 0%
+    </p>
+</div>
 <button class="downloadBtn">
 
  <i class="fa fa-image"></i>
@@ -432,6 +421,20 @@ document.getElementById("details").textContent =
 
 function downloadJPEG() {
     const certificate = document.querySelector(".certificate");
+    const btn = document.querySelector(".downloadBtn");
+    
+    btn.disabled = true;
+    btn.innerHTML = "Download 0%";
+    
+    let progress = 0;
+    
+    const timer = setInterval(() => {
+        if (progress < 90) {
+            progress += 2;
+            btn.innerHTML = `Download ${progress}%`;
+        }
+    }, 100);
+    
     certificate.style.width = "1200px";
     
     html2canvas(certificate, {
@@ -439,12 +442,21 @@ function downloadJPEG() {
         useCORS: true,
         backgroundColor: "#1b2240"
     }).then(canvas => {
+        clearInterval(timer);
+        
+        btn.innerHTML = "Download 100%";
+        
         certificate.style.width = "";
         
         const link = document.createElement("a");
         link.download = "Agreement-Certificate.jpeg";
         link.href = canvas.toDataURL("image/jpeg", 1);
         link.click();
+        
+        setTimeout(() => {
+            btn.innerHTML = '<i class="fa fa-image"></i> Download JPEG';
+            btn.disabled = false;
+        }, 1000);
     });
 }
 
