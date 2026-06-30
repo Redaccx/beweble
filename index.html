@@ -691,6 +691,19 @@ width:100%;
     border: 2px solid #101827;
 }
 
+
+.shake{
+    animation: shake 0.6s;
+}
+
+@keyframes shake{
+    0%{transform:rotate(0deg);}
+    25%{transform:rotate(-15deg);}
+    50%{transform:rotate(15deg);}
+    75%{transform:rotate(-15deg);}
+    100%{transform:rotate(0deg);}
+}
+
 </style>
 
 </head>
@@ -3981,23 +3994,31 @@ const phone = countryCode + phoneNumber;
         
         resultBox.style.display = "block";
         resultBox.innerHTML = `
-            <h2>Request Submitted ✅</h2>
+            <h2>
+    <i class="fa fa-check-circle" style="color:#4CAF50;"></i>
+    Request Submitted
+</h2>
 
-            <p>Your tracking code:</p>
+<p>
+    <i class="fa fa-ticket fa-bounce"></i>
+    Your tracking code:
+</p>
 
-            <div class="address">
-                <b>${requestId}</b>
-            </div>
+<div class="address">
+    <b>${requestId}</b>
+</div>
 
-            <button class="submitBtn"
-                style="margin-top:15px;"
-                onclick="copyCode('${requestId}')">
-                📋 Copy Code
-            </button>
+<button class="submitBtn"
+    style="margin-top:15px;"
+    onclick="copyCode('${requestId}')">
+    <i class="fa fa-copy"></i>
+    Copy Code
+</button>
 
-            <p style="margin-top:15px;color:#7b8cff;font-weight:600;">
-                ⏳ Opening WhatsApp...
-            </p>
+<p style="margin-top:15px;color:#7b8cff;font-weight:600;text-align:center;">
+    <i class="fa fa-spinner fa-spin"></i>
+    Opening WhatsApp...
+</p>
         `;
         
         const whatsappNumber = "639560038029";
@@ -4536,20 +4557,27 @@ function loadNotifications() {
     // =====================
     // Badge (Realtime)
     // =====================
-    onSnapshot(qUnread, (snapshot) => {
-        const badge = document.getElementById("notificationBadge");
-        if (!badge) return;
+onSnapshot(qUnread, (snapshot) => {
+    const badge = document.getElementById("notificationBadge");
+    const btn = document.getElementById("notificationsBtn");
+    
+    if (!badge) return;
+    
+    const count = snapshot.size;
+    
+    if (count > 0) {
+        badge.style.display = "inline-block";
+        badge.textContent = count;
         
-        const count = snapshot.size;
-        
-        if (count > 0) {
-            badge.style.display = "inline-block";
-            badge.textContent = count;
-        } else {
-            badge.style.display = "none";
-            badge.textContent = "";
-        }
-    });
+        btn.classList.remove("shake");
+        void btn.offsetWidth;
+        btn.classList.add("shake");
+    } else {
+        badge.style.display = "none";
+        badge.textContent = "";
+        btn.classList.remove("shake");
+    }
+});
 }
 
 window.openNotifications = async function() {
@@ -4645,6 +4673,7 @@ document.addEventListener("click", function(e) {
         dropdown.classList.remove("open");
     }
 });
+
 </script>
 
 </body>
