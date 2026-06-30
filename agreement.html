@@ -25,7 +25,7 @@ body{
 }
 
 .certificate{
-    max-width:950px;
+    max-width:850px;
     margin:auto;
     background:rgba(23,25,35,.95);
     border:1px solid rgba(123,140,255,.18);
@@ -48,11 +48,11 @@ body{
 }
 
 .content{
-    padding:30px;
+    padding:20px;
 }
 
 .logo{
-    width:150px;
+    width:120px;
     display:block;
     margin:auto;
     margin-bottom:25px;
@@ -82,7 +82,7 @@ body{
     background:#111520;
     border:1px solid #252b3c;
     border-radius:22px;
-    padding:20px;
+    padding:15px;
 }
 
 .card i{
@@ -390,8 +390,7 @@ document.getElementById("details").textContent =
 function downloadPDF() {
     const element = document.querySelector(".certificate");
     
-    html2pdf()
-    .set({
+    const opt = {
         margin: 0,
         filename: "Agreement-Certificate.pdf",
         image: {
@@ -399,24 +398,21 @@ function downloadPDF() {
             quality: 1
         },
         html2canvas: {
-            scale: 1,
+            scale: 0.8,
             useCORS: true,
-            scrollY: 0,
-            ignoreElements: (el) => {
-                return el.classList.contains("downloadBtn");
-            }
+            scrollY: 0
         },
         jsPDF: {
-            unit: "in",
+            unit: "mm",
             format: "a4",
             orientation: "portrait"
         },
         pagebreak: {
-            mode: ['avoid-all']
+            mode: ["avoid-all", "css", "legacy"]
         }
-    })
-    .from(element)
-    .save();
+    };
+    
+    html2pdf().set(opt).from(element).save();
 }
 
 document.querySelector(".downloadBtn")
