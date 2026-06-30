@@ -17,205 +17,142 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome
 }
 
 body{
-    background:
-    radial-gradient(circle at top,#1b2240 0%,#0f1117 45%);
+    background:linear-gradient(135deg,#0f172a,#1e293b);
     min-height:100vh;
-    padding:30px;
-    color:#fff;
-}
-
-.certificate {
-    
-    width: 95%;
-    
-    max-width: 1200;
-    
-    margin: auto;
-    
-    background: rgba(23, 25, 35, .95);
-    border:1px solid rgba(123,140,255,.18);
-    border-radius:35px;
-    overflow:hidden;
-    box-shadow:
-    0 30px 80px rgba(0,0,0,.55),
-    inset 0 1px 0 rgba(255,255,255,.03);
-}
-
-.topBar{
-    height:6px;
-    background:
-    linear-gradient(
-        90deg,
-        #7b8cff,
-        #9c7cff,
-        #7b8cff
-    );
-}
-
-.content{
     padding:20px;
 }
 
+.certificate{
+    max-width:1100px;
+    margin:auto;
+    background:#111827;
+    border-radius:30px;
+    overflow:hidden;
+    color:#fff;
+    box-shadow:0 20px 50px rgba(0,0,0,.5);
+}
+
+.topBar{
+    height:8px;
+    background:linear-gradient(90deg,#6366f1,#8b5cf6,#6366f1);
+}
+
+.content{
+    padding:30px;
+}
+
 .logo{
-    width:150px;
+    width:130px;
     display:block;
     margin:auto;
-    margin-bottom:25px;
 }
 
 .title{
     text-align:center;
-    font-size:34px;
-    color:#fff;
+    margin-top:20px;
+    font-size:35px;
 }
 
 .subtitle{
     text-align:center;
-    color:#8e97b5;
+    color:#94a3b8;
     margin-top:10px;
-    margin-bottom:30px;
+    margin-bottom:35px;
 }
 
-.infoGrid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+.infoGrid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:15px;
 }
 
 .card{
-    background:#111520;
-    border:1px solid #252b3c;
-    border-radius:22px;
-    padding:10px;
+    background:#1e293b;
+    border-radius:20px;
+    padding:20px;
 }
 
 .card i{
-    color:#7b8cff;
-    font-size:17px;
+    color:#818cf8;
+    font-size:22px;
     margin-bottom:12px;
 }
 
 .card span{
     display:block;
-    color:#8e97b5;
-    font-size:11px;
-    margin-bottom:10px;
+    color:#94a3b8;
+    margin-bottom:8px;
+    font-size:13px;
 }
 
 .card h3{
-    font-size:12px;
+    font-size:16px;
     word-break:break-word;
 }
 
+.full{
+    grid-column:1/-1;
+}
+
 .terms{
-    margin-top:35px;
-    background:#111520;
-    border:1px solid #252b3c;
-    border-radius:22px;
-    padding:30px;
+    margin-top:30px;
+    background:#1e293b;
+    border-radius:20px;
+    padding:25px;
 }
 
 .terms h3{
-    color:#7b8cff;
+    color:#818cf8;
     margin-bottom:15px;
 }
 
 .terms p{
+    color:#cbd5e1;
     line-height:1.8;
-    color:#c4c8d8;
 }
 
 .signatureBox{
     text-align:center;
-    margin-top:20px;
-}
-
-.signatureTitle{
-    color:#8e97b5;
-    margin-bottom:12px;
+    margin-top:30px;
 }
 
 .signature{
-    font-size:30px;
-    color:#7b8cff;
+    margin-top:10px;
+    font-size:38px;
+    color:#818cf8;
     font-family:cursive;
 }
 
 .footer{
-    margin-top:20px;
-    padding-top:25px;
-    border-top:1px solid #252b3c;
+    margin-top:30px;
+    padding-top:20px;
+    border-top:1px solid #334155;
     display:flex;
     justify-content:space-between;
-    color:#8e97b5;
     flex-wrap:wrap;
     gap:20px;
+    color:#94a3b8;
 }
 
 .downloadBtn{
     width:100%;
-    margin-top:35px;
+    margin-top:30px;
+    padding:18px;
     border:none;
-    background:
-    linear-gradient(
-        90deg,
-        #7b8cff,
-        #9c7cff
-    );
-    color:#fff;
-    padding:16px;
     border-radius:18px;
+    background:linear-gradient(90deg,#6366f1,#8b5cf6);
+    color:#fff;
+    font-size:17px;
     cursor:pointer;
-    font-size:16px;
-    font-weight:600;
 }
 
 @media(max-width:700px){
-    body{
-        padding:15px;
-    }
-
     .content{
-        padding:25px;
+        padding:20px;
     }
 
     .title{
         font-size:28px;
-    }
-    .infoGrid {
-        
-        grid-template-columns: repeat(2, 1fr);
-        
-    }
-    
-    .card {
-        
-        padding: 12px;
-        
-    }
-    
-    .card h3 {
-        
-        font-size: 14px;
-        
-    }
-    
-    }
-
-@media print {
-    body {
-        background: #fff;
-        padding: 0;
-    }
-    
-    .certificate {
-        box-shadow: none;
-        border: none;
-    }
-    
-    .downloadBtn {
-        
-        display: none !important;
     }
 }
 </style>
@@ -229,13 +166,10 @@ body{
 
 <div class="content">
 
-<img
-src="https://i.ibb.co/MyBzHqF3/IMG-4294.png"
+<img src="https://i.ibb.co/MyBzHqF3/IMG-4294.png"
 class="logo">
 
-<h1 class="title">
-Agreement Certificate
-</h1>
+<h1 class="title">Agreement Certificate</h1>
 
 <p class="subtitle">
 Official Agreement & Electronic Signature Record
@@ -246,76 +180,58 @@ Official Agreement & Electronic Signature Record
 <div class="card">
 <i class="fa fa-hashtag"></i>
 <span>Request ID</span>
-<h3 id="requestId"></h3>
+<h3 id="requestId">-</h3>
 </div>
 
 <div class="card">
 <i class="fa fa-user"></i>
 <span>Username</span>
-<h3 id="client"></h3>
+<h3 id="client">-</h3>
 </div>
 
 <div class="card">
 <i class="fa fa-envelope"></i>
-<span>Email Address</span>
-<h3 id="email"></h3>
+<span>Email</span>
+<h3 id="email">-</h3>
 </div>
 
 <div class="card">
 <i class="fa fa-phone"></i>
-<span>Phone Number</span>
-<h3 id="phone"></h3>
+<span>Phone</span>
+<h3 id="phone">-</h3>
 </div>
 
 <div class="card">
-<i class="fa fa-calendar"></i>
-<span>Agreement Date</span>
-<h3 id="date"></h3>
+<i class="fa fa-globe"></i>
+<span>Platform</span>
+<h3 id="platform">-</h3>
 </div>
 
 <div class="card">
-<i class="fa fa-pencil"></i>
-<span>Electronic Signature</span>
-<h3 id="signature"></h3>
+<i class="fa fa-exclamation-circle"></i>
+<span>Problem Type</span>
+<h3 id="problemType">-</h3>
 </div>
 
-<div class="card">
-    <i class="fa fa-globe"></i>
-    <span>Platform</span>
-    <h3 id="platform"></h3>
+<div class="card full">
+<i class="fa fa-file-text"></i>
+<span>Issue Details</span>
+<h3 id="details">-</h3>
 </div>
 
-<div class="card">
-    <i class="fa fa-exclamation-circle"></i>
-    <span>Problem Type</span>
-    <h3 id="problemType"></h3>
 </div>
-
-<div class="card" style="grid-column:1/-1;">
-    <i class="fa fa-file-text"></i>
-    <span>Issue Details</span>
-    <h3 id="details"></h3>
-</div>
-</div>
-
 
 <div class="terms">
 <h3>Terms & Conditions</h3>
-
 <p>
 This document confirms that the client has reviewed and accepted all
-Terms & Conditions and policies of Beweble Agency. The electronic
-signature above serves as an official confirmation that the information
-provided is accurate and approved by the client.
+Terms & Conditions and policies of Beweble Agency.
 </p>
 </div>
 
 <div class="signatureBox">
-<div class="signatureTitle">
-Verified Electronic Signature
-</div>
-
-<div class="signature" id="signature2"></div>
+<div>Verified Electronic Signature</div>
+<div class="signature" id="signature2">-</div>
 </div>
 
 <div class="footer">
@@ -329,29 +245,18 @@ Beweble Agency
 Verified ✓
 </div>
 </div>
-<div id="loader" style="display:none;margin-top:15px;">
-    <div style="background:#252b3c;height:12px;border-radius:10px;overflow:hidden;">
-        <div id="progressBar"
-             style="width:0%;height:100%;
-             background:linear-gradient(90deg,#7b8cff,#9c7cff);
-             transition:0.2s;"></div>
-    </div>
-    <p id="progressText"
-       style="text-align:center;margin-top:8px;">
-       Download 0%
-    </p>
-</div>
-<button class="downloadBtn">
 
-    <i class="fa fa-image"></i>
-    Download JPEG
-    
+<button class="downloadBtn">
+<i class="fa fa-image"></i>
+Download JPEG
 </button>
 
 </div>
 
 </div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
 <script type="module">
 import {
 initializeApp
@@ -378,100 +283,75 @@ const db = getFirestore(app);
 const params = new URLSearchParams(window.location.search);
 const requestId = params.get("id");
 
-if(requestId){
-
+if (requestId) {
     const snap =
-    await getDoc(doc(db,"requests",requestId));
+    await getDoc(doc(db, "requests", requestId));
 
-    if(snap.exists()){
-
+    if (snap.exists()) {
         const data = snap.data();
 
         document.getElementById("requestId").textContent =
-        data.requestId || "-";
+            data.requestId || "-";
 
         document.getElementById("client").textContent =
-        data.username || "-";
+            data.username || "-";
 
         document.getElementById("email").textContent =
-        data.newemail || "-";
+            data.newemail || "-";
 
         document.getElementById("phone").textContent =
-        data.phone || "-";
-        
-document.getElementById("platform").textContent =
-    data.platform || "-";
+            data.phone || "-";
 
-document.getElementById("problemType").textContent =
-    data.problemType || "-";
+        document.getElementById("platform").textContent =
+            data.platform || "-";
 
-document.getElementById("details").textContent =
-    data.details || "-";
+        document.getElementById("problemType").textContent =
+            data.problemType || "-";
 
-        document.getElementById("date").textContent =
-        data.agreedAt
-        ? new Date(data.agreedAt).toLocaleString()
-        : "-";
-
-        document.getElementById("signature").textContent =
-        data.signature || "-";
+        document.getElementById("details").textContent =
+            data.details || "-";
 
         document.getElementById("signature2").textContent =
-        data.signature || "-";
+            data.signature || "-";
     }
 }
 
-function downloadJPEG() {
-    const certificate = document.querySelector(".certificate");
-    const btn = document.querySelector(".downloadBtn");
-    
-    btn.disabled = true;
-    btn.innerHTML = "Download 0%";
-    
-    let progress = 0;
-    const timer = setInterval(() => {
-        if (progress < 90) {
-            progress += 2;
-            btn.innerHTML = `Download ${progress}%`;
-        }
-    }, 100);
-    
-    // clone مخفي حتى ما يتغير التصميم
-    const clone = certificate.cloneNode(true);
-    const btnInClone = clone.querySelector(".downloadBtn");
-if (btnInClone) btnInClone.style.display = "none";
-clone.style.position = "fixed";
-clone.style.left = "-99999px";
-clone.style.top = "0";
-clone.style.width = "1200px";
-
-document.body.appendChild(clone);
-    
-    html2canvas(clone, {
-        scale: 3,
-        useCORS: true,
-        backgroundColor: "#1b2240"
-    }).then(canvas => {
-        clearInterval(timer);
-        
-        btn.innerHTML = "Download 100%";
-        
-        document.body.removeChild(clone);
-        
-        const link = document.createElement("a");
-        link.download = "Agreement-Certificate.jpeg";
-        link.href = canvas.toDataURL("image/jpeg", 1);
-        link.click();
-        
-        setTimeout(() => {
-            btn.innerHTML = '<i class="fa fa-image"></i> Download JPEG';
-            btn.disabled = false;
-        }, 1000);
-    });
-}
-
 document.querySelector(".downloadBtn")
-    .addEventListener("click", downloadJPEG);
+.addEventListener("click", async () => {
+
+    const certificate =
+        document.querySelector(".certificate");
+
+    const btn =
+        document.querySelector(".downloadBtn");
+
+    btn.style.display = "none";
+
+    const canvas = await html2canvas(
+        certificate,
+        {
+            scale:3,
+            useCORS:true,
+            backgroundColor:"#111827"
+        }
+    );
+
+    btn.style.display = "";
+
+    const link =
+        document.createElement("a");
+
+    link.download =
+        "Agreement-Certificate.jpeg";
+
+    link.href =
+        canvas.toDataURL(
+            "image/jpeg",
+            1
+        );
+
+    link.click();
+});
 </script>
 
 </body>
