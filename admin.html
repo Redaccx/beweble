@@ -6,7 +6,7 @@
 <title>Beweble Admin Pro</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 <style>
 *{
 margin:0;
@@ -57,6 +57,7 @@ color:white;
 font-weight:700;
 cursor:pointer;
 transition:.2s;
+
 }
 
 button:hover{transform:scale(1.03);}
@@ -215,7 +216,9 @@ border:none;
 color:white;
 cursor:pointer;
 }
-
+.sidebar button i {
+    margin-right: 8px;
+}
 .sidebar button:hover{background:#6366f1;}
 
 .overlay{
@@ -372,17 +375,30 @@ cursor:pointer;
 <!-- ADMIN -->
 <div id="admin">
     <div id="sidebar" class="sidebar">
-    <h3>⚡ Menu</h3>
-    
-  <button onclick="showPage('requests');toggleMenu()">📨 Requests</button>
+  <h3><i class="fa fa-bolt"></i> Dashboard Menu</h3>
 
-<button onclick="showPage('appeals');toggleMenu()">📄 Appeals</button>
+<button onclick="showPage('requests');toggleMenu()">
+    <i class="fa fa-envelope"></i> Requests
+</button>
 
-<button onclick="showPage('users');toggleMenu()">👥 Users</button>
+<button onclick="showPage('appeals');toggleMenu()">
+    <i class="fa fa-file-text"></i> Appeals
+</button>
 
-<button onclick="showPage('notifications');toggleMenu()">🔔 Notifications</button>
+<button onclick="showPage('users');toggleMenu()">
+    <i class="fa fa-users"></i> Users
+</button>
 
-<button onclick="logout()">🚪 Logout</button>
+<button onclick="showPage('notifications');toggleMenu()">
+    <i class="fa fa-bell"></i> Notifications
+</button>
+<button onclick="showPage('agreements');toggleMenu()">
+    <i class="fa-solid fa-file-signature"></i> Agreements
+</button>
+
+<button onclick="logout()">
+    <i class="fa fa-sign-out"></i> Logout
+</button>
 </div>
 
 <div id="overlay" class="overlay" onclick="toggleMenu()"></div>
@@ -553,7 +569,46 @@ gap:10px;
 </div> <!-- end admin -->
 
 <!-- الصق هنا -->
+<div id="agreementsPage" style="display:none;">
 
+<div class="pageHeader">
+    <h2>📜 Agreements</h2>
+
+    <div class="badge">
+        Total Agreements:
+        <span id="agreementsCount">0</span>
+    </div>
+</div>
+<button id="deleteAllAgreementsBtn"
+style="
+margin-top:12px;
+width:220px;
+padding:10px 14px;
+border:none;
+border-radius:12px;
+background:linear-gradient(135deg,#ef4444,#dc2626);
+color:white;
+font-size:14px;
+font-weight:700;
+cursor:pointer;
+display:flex;
+justify-content:center;
+align-items:center;
+gap:8px;
+">
+    <i class="fa-solid fa-trash"></i>
+    Delete All Agreements
+</button>
+<input
+class="searchBox"
+id="agreementsSearchInput"
+placeholder="Search by username or email">
+
+
+
+<div class="grid" id="agreementsContainer"></div>
+
+</div>
 
 <!-- POPUP -->
 <div class="popup" id="popup">
@@ -586,6 +641,7 @@ import {
     onSnapshot
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+import { setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import {
 getAuth, signInWithEmailAndPassword,
 onAuthStateChanged, signOut
@@ -626,6 +682,16 @@ const sendNotificationBtn = document.getElementById("sendNotificationBtn");
 const notificationsAdminContainer = document.getElementById("notificationsAdminContainer");
 const deleteAllNotificationsBtn =
     document.getElementById("deleteAllNotificationsBtn");
+    
+    const agreementsSearchInput =
+    document.getElementById("agreementsSearchInput");
+const agreementsContainer =
+    document.getElementById("agreementsContainer");
+
+const agreementsCount =
+    document.getElementById("agreementsCount");
+    const deleteAllAgreementsBtn =
+    document.getElementById("deleteAllAgreementsBtn");
 
 let allAppeals = [];
 let allNotifications = [];
@@ -634,6 +700,7 @@ let all = [];
 let deleteId = null;
 let deleteCollection = null;
 
+let allAgreements = [];
 /* LOGIN */
 document.getElementById("loginBtn").onclick = async () => {
 await signInWithEmailAndPassword(auth,email.value,password.value);
@@ -672,7 +739,7 @@ count.innerText = all.length;
 render(all);
 loadUsers();
 loadAppeals();
-
+loadAgreements();
 }
 
 /* RENDER */
@@ -721,16 +788,33 @@ card.innerHTML=`
 </select>
 
 <button class="smallBtn update">Update</button>
-<button class="smallBtn certificate">View Agreement </button>
+<button class="smallBtn certificate">Recover Agreement </button>
 <button class="smallBtn delete">Delete</button>
 
 `;
 
 const select = card.querySelector("select");
-const certificateBtn =
-    card.querySelector(".certificate");
+const certificateBtn = card.querySelector(".certificate");
 
-certificateBtn.onclick = () => {
+certificateBtn.onclick = async () => {
+    
+    const uid = auth.currentUser?.uid;
+    if (!uid) return;
+    
+    await setDoc(doc(db, "agreements", r.id), {
+    uid: auth.currentUser.uid,
+    requestId: r.id,
+    username: r.username || "",
+    newemail: r.newemail || "",
+    phone: r.phone || "",
+    platform: r.platform || "",
+    problemType: r.problemType || "",
+    details: r.details || "",
+    signature: r.signature || "",
+    agreedAt: Date.now()
+});
+
+    
     window.location.href =
         `agreement.html?id=${r.id}`;
 };
@@ -768,7 +852,9 @@ confirmDelete.onclick = async () => {
             if (deleteCollection === "requests") load();
             if (deleteCollection === "appeals") loadAppeals();
             if (deleteCollection === "notifications") loadNotificationsAdmin();
-            
+            if (deleteCollection === "agreements") {
+    loadAgreements();
+}
         }
         
     } catch (e) {
@@ -790,6 +876,82 @@ popup.style.display = "flex";
 container.appendChild(card);
 });
 }
+async function loadAgreements() {
+    
+    agreementsContainer.innerHTML = "";
+    
+    const snap = await getDocs(
+        collection(db, "agreements")
+    );
+    
+    allAgreements = [];
+    
+    snap.forEach(docSnap => {
+        allAgreements.push({
+            id: docSnap.id,
+            ...docSnap.data()
+        });
+    });
+    
+    agreementsCount.innerText =
+        allAgreements.length;
+    
+    renderAgreements(allAgreements);
+}
+
+
+function renderAgreements(data) {
+
+    agreementsContainer.innerHTML = "";
+
+    data.forEach(a => {
+
+        const card =
+            document.createElement("div");
+
+        card.className = "card";
+
+        card.innerHTML = `
+            <h3>📜 ${a.username || "-"}</h3>
+
+            <div class="info">
+                <b>Email:</b>
+                ${a.newemail || "-"}
+            </div>
+
+            <div class="info">
+                <b>Platform:</b>
+                ${a.platform || "-"}
+            </div>
+
+            <button class="smallBtn update">
+                View Agreement
+            </button>
+
+            <button class="smallBtn delete">
+                Delete
+            </button>
+        `;
+
+        card.querySelector(".update").onclick =
+        () => {
+         location.href = `agreement.html?id=${a.id}`;
+        };
+
+        card.querySelector(".delete").onclick =
+        () => {
+            deleteCollection =
+                "agreements";
+
+            deleteId = a.id;
+
+            popup.style.display = "flex";
+        };
+
+        agreementsContainer.appendChild(card);
+    });
+}
+
 
 /* LOAD USERS */
 async function loadUsers() {
@@ -1080,7 +1242,7 @@ window.showPage = (page) => {
     document.getElementById("usersPage").style.display = "none";
     document.getElementById("appealsPage").style.display = "none";
     document.getElementById("notificationsPage").style.display = "none";
-    
+    document.getElementById("agreementsPage").style.display = "none";
     if (page === "requests") {
         document.getElementById("requestsPage").style.display = "block";
     }
@@ -1102,25 +1264,42 @@ window.showPage = (page) => {
       
   }
   
+  if (page === "agreements") {
+document.getElementById("agreementsPage").style.display = "block";
+loadAgreements();
+}
   };
 
 usersSearchInput.addEventListener("input", e => {
-    
-    const q = e.target.value.toLowerCase();
-    
-    const cards = usersContainer.querySelectorAll(".card");
-    
-    cards.forEach(card => {
-        
-        const text = card.innerText.toLowerCase();
-        
-        if (text.includes(q)) {
-            card.style.display = "block";
-        } else {
-            card.style.display = "none";
-        }
-    });
-    
+
+const q = e.target.value.toLowerCase();
+
+const cards = usersContainer.querySelectorAll(".card");
+
+cards.forEach(card => {
+
+const text = card.innerText.toLowerCase();
+
+if (text.includes(q)) {
+card.style.display = "block";
+} else {
+card.style.display = "none";
+}
+});
+
+});
+
+agreementsSearchInput.addEventListener("input", e => {
+
+const q = e.target.value.toLowerCase();
+
+renderAgreements(
+allAgreements.filter(a =>
+(a.username || "").toLowerCase().includes(q) ||
+(a.newemail || "").toLowerCase().includes(q)
+)
+);
+
 });
 window.toggleMenu = () => {
     document.getElementById("sidebar").classList.toggle("open");
@@ -1269,6 +1448,17 @@ deleteAllNotificationsBtn.onclick = () => {
     popup.style.display = "flex";
 };
 
+deleteAllAgreementsBtn.onclick = async () => {
+    const snap = await getDocs(collection(db, "agreements"));
+    
+    await Promise.all(
+        snap.docs.map(d =>
+            deleteDoc(doc(db, "agreements", d.id))
+        )
+    );
+    
+    loadAgreements();
+};
 </script>
 
 </body>
