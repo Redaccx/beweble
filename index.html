@@ -4088,13 +4088,25 @@ const phone = countryCode + phoneNumber;
     platform,
     problemType,
     details,
-    
     signature: window.userSignature,
     agreedToTerms: true,
     agreedAt: Date.now(),
-    
     status: "Pending",
     createdAt: Date.now()
+});
+
+/* 🔥 ADD THIS */
+await setDoc(doc(db, "agreements", requestId), {
+    uid: user.uid,
+    requestId,
+    username,
+    newemail,
+    phone,
+    platform,
+    problemType,
+    details,
+    signature: window.userSignature,
+    agreedAt: Date.now()
 });
         
         resultBox.style.display = "block";
@@ -4309,15 +4321,10 @@ box.innerHTML += `
     </button>
 
 <button class="secondaryBtn"
-
-    style="margin-top:10px;width:100%;"
-
-    onclick="location.href='agreement.html?id=${data.requestId}'">
-
+style="margin-top:10px;width:100%;"
+onclick="location.href='agreement.html?id=${data.requestId}'">
     <i class="fa fa-file-pdf-o"></i>
-
     View Agreement
-
 </button>
     <button class="submitBtn"
         style="margin-top:10px;width:100%;background:#d32f2f;"
