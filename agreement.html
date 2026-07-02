@@ -18,7 +18,8 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome
 
 body{
     background:
-    radial-gradient(circle at top,#1b2240 0%,#0f1117 45%);
+ radial-gradient(circle at top left, #1f2140 0%, #0b0b0b 40%),
+#0b0b0b;
     min-height:100vh;
     padding:30px;
     color:#fff;
@@ -29,7 +30,7 @@ body{
     width: 95%;
     
     max-width: 1200px;
-    
+    display: none;
     margin: auto;
     
     background: rgba(23, 25, 35, .95);
@@ -218,11 +219,115 @@ body{
         display: none !important;
     }
 }
+
+#authOverlay{
+    position:fixed;
+    inset:0;
+    background:radial-gradient(circle at top left, #1f2140 0%, #0b0b0b 40%),
+#0b0b0b;;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:999999;
+    overflow:hidden;
+}
+
+#authOverlay::before{
+    content:"";
+    position:absolute;
+    width:400px;
+    height:400px;
+    background:rgba(18,18,18,.9);
+    filter:blur(180px);
+    opacity:.35;
+    animation:pulseBg 3s infinite;
+}
+
+.loader{
+    position:relative;
+    width:170px;
+    height:170px;
+}
+
+.loader-ring{
+    position:absolute;
+    inset:0;
+    border-radius:50%;
+    background:
+        conic-gradient(
+            transparent 0deg,
+            transparent 180deg,
+            #60a5fa 250deg,
+            #a855f7 320deg,
+            #60a5fa 360deg
+        );
+    animation:spin 1.5s linear infinite;
+}
+
+.loader-ring::before{
+    content:"";
+    position:absolute;
+    inset:12px;
+    background:radial-gradient(circle at top left, #1f2140 0%, #0b0b0b 40%),
+#0b0b0b;;
+    border-radius:50%;
+}
+
+.loader-center{
+    position:absolute;
+    inset:30px;
+    background:rgba(255,255,255,.05);
+    backdrop-filter:blur(20px);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:50%;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    z-index:2;
+    box-shadow:0 0 40px rgba(96,165,250,.25);
+}
+
+.loader-text{
+    color:#fff;
+    font-size:22px;
+    font-weight:700;
+    letter-spacing:4px;
+    margin-bottom:8px;
+}
+
+.loader-center span{
+    color:#94a3b8;
+    font-size:13px;
+    letter-spacing:2px;
+}
+
+@keyframes spin{
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+@keyframes pulseBg{
+    50%{
+        transform:scale(1.2);
+        opacity:.5;
+    }
+}
 </style>
 </head>
 
 <body>
 
+
+<div id="authOverlay">
+    <div class="loader">
+        <div class="loader-ring"></div>
+        <div class="loader-center">
+            <span>Loading</span>
+        </div>
+    </div>
+</div>
 <div class="certificate">
 
 <div class="topBar"></div>
@@ -352,15 +457,17 @@ Verified ✓
 <script src="https://unpkg.com/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
-initializeApp
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    getFirestore,
+    doc,
+    getDoc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 import {
-getFirestore,
-doc,
-getDoc
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    getAuth,
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyCjmJBV_GKL4MLYQGr3DWOOAWwK4V8AHtU",
@@ -373,53 +480,97 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
 
 const params = new URLSearchParams(window.location.search);
 const requestId = params.get("id");
 
-if(requestId){
-
-    const snap =
-    await getDoc(doc(db,"requests",requestId));
-
-    if(snap.exists()){
-
-        const data = snap.data();
-
-        document.getElementById("requestId").textContent =
-        data.requestId || "-";
-
-        document.getElementById("client").textContent =
-        data.username || "-";
-
-        document.getElementById("email").textContent =
-        data.newemail || "-";
-
-        document.getElementById("phone").textContent =
-        data.phone || "-";
+async function loadAgreement() {
+    document.getElementById("authOverlay").style.display = "flex";
+    if (!requestId) return;
+    
+    const snap = await getDoc(doc(db, "agreements", requestId));
+    
+    document.getElementById("authOverlay").style.display = "none";
+    
+    // ❌ إذا محذوف
+    if (!snap.exists()) {
+        document.body.innerHTML = `
+    <div style="
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:background:rgba(18,18,18,.9);
+    color:white;
+    font-family:Arial, sans-serif;
+    text-align:center;
+    padding:20px;
+">
+    
+    <div style="
+        background:rgba(18,18,18,.9);
+        border:1px solid rgba(255,255,255,0.08);
+        padding:40px 30px;
+        border-radius:20px;
+        backdrop-filter:blur(12px);
+        max-width:420px;
+    ">
         
-document.getElementById("platform").textContent =
-    data.platform || "-";
-
-document.getElementById("problemType").textContent =
-    data.problemType || "-";
-
-document.getElementById("details").textContent =
-    data.details || "-";
-
-        document.getElementById("date").textContent =
-        data.agreedAt
-        ? new Date(data.agreedAt).toLocaleString()
-        : "-";
-
-        document.getElementById("signature").textContent =
-        data.signature || "-";
-
-        document.getElementById("signature2").textContent =
-        data.signature || "-";
+        <i class="fa fa-times-circle" style="
+            font-size:60px;
+            color:#ef4444;
+            margin-bottom:15px;
+            display:block;
+        "></i>
+        
+        <h1 style="
+            color:#ef4444;
+            font-size:28px;
+            margin-bottom:10px;
+        ">
+            Contract Cancelled
+        </h1>
+        
+        <p style="
+            color:#9ca3af;
+            font-size:15px;
+            line-height:1.6;
+        ">
+            This contract is no longer available.<br>
+            It has been removed by the administration.
+        </p>
+        
+    </div>
+</div>
+        `;
+        return;
     }
+    
+    const data = snap.data();
+  document.getElementById("authOverlay").style.display = "none";
+document.querySelector(".certificate").style.display = "block";
+    
+    document.getElementById("requestId").textContent = data.requestId || "-";
+    document.getElementById("client").textContent = data.username || "-";
+    document.getElementById("email").textContent = data.newemail || "-";
+    document.getElementById("phone").textContent = data.phone || "-";
+    document.getElementById("platform").textContent = data.platform || "-";
+    document.getElementById("problemType").textContent = data.problemType || "-";
+    document.getElementById("details").textContent = data.details || "-";
+    
+    document.getElementById("date").textContent =
+        data.agreedAt ? new Date(data.agreedAt).toLocaleString() : "-";
+    
+    document.getElementById("signature").textContent = data.signature || "-";
+    document.getElementById("signature2").textContent = data.signature || "-";
 }
 
+/* مهم: نخليها تشتغل بدون ما توقف الصفحة */
+loadAgreement();
+
+/* auth فقط اختياري */
+onAuthStateChanged(auth, () => {});
 async function downloadPDF() {
     if (typeof html2canvas === "undefined") {
         alert("html2canvas failed to load");
