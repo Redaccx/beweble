@@ -6,6 +6,7 @@
 <title>Beweble Admin Pro</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+
 <style>
 *{
 margin:0;
@@ -720,11 +721,19 @@ card.innerHTML=`
 </select>
 
 <button class="smallBtn update">Update</button>
+<button class="smallBtn certificate">View Agreement </button>
 <button class="smallBtn delete">Delete</button>
 
 `;
 
 const select = card.querySelector("select");
+const certificateBtn =
+    card.querySelector(".certificate");
+
+certificateBtn.onclick = () => {
+    window.location.href =
+        `agreement.html?id=${r.id}`;
+};
 select.value = r.status || "Pending";
 
 card.querySelector(".update").onclick = async () => {
@@ -1244,7 +1253,7 @@ function loadNotificationsAdmin() {
     
     
 };
-          
+            
             notificationsAdminContainer.appendChild(card);
             
         });
