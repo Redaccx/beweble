@@ -710,12 +710,14 @@ load();
 };
 
 /* AUTH */
-onAuthStateChanged(auth,(user)=>{
-if(user){
-login.style.display="none";
-admin.style.display="block";
-load();
-}
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        login.style.display = "none";
+        admin.style.display = "block";
+        
+        load();
+        
+    }
 });
 
 /* LOGOUT */
@@ -739,7 +741,7 @@ count.innerText = all.length;
 render(all);
 loadUsers();
 loadAppeals();
-loadAgreements();
+
 }
 
 /* RENDER */
@@ -802,7 +804,7 @@ certificateBtn.onclick = async () => {
     if (!uid) return;
     
     await setDoc(doc(db, "agreements", r.id), {
-    uid: auth.currentUser.uid,
+    uid: r.uid,
     requestId: r.id,
     username: r.username || "",
     newemail: r.newemail || "",
@@ -814,7 +816,7 @@ certificateBtn.onclick = async () => {
     agreedAt: Date.now()
 });
 
-    loadAgreements();
+    
     window.location.href =
         `agreement.html?id=${r.id}`;
 };
@@ -853,7 +855,7 @@ confirmDelete.onclick = async () => {
             if (deleteCollection === "appeals") loadAppeals();
             if (deleteCollection === "notifications") loadNotificationsAdmin();
             if (deleteCollection === "agreements") {
-    loadAgreements();
+    
 }
         }
         
@@ -875,30 +877,8 @@ popup.style.display = "flex";
 
 container.appendChild(card);
 });
-}
-async function loadAgreements() {
-    
-    agreementsContainer.innerHTML = "";
-    
-    const snap = await getDocs(
-        collection(db, "agreements")
-    );
-    
-    allAgreements = [];
-    
-    snap.forEach(docSnap => {
-        allAgreements.push({
-            id: docSnap.id,
-            ...docSnap.data()
-        });
-    });
-    
-    agreementsCount.innerText =
-        allAgreements.length;
-    
-    renderAgreements(allAgreements);
-}
 
+}
 
 function renderAgreements(data) {
 
@@ -1457,8 +1437,29 @@ deleteAllAgreementsBtn.onclick = async () => {
         )
     );
     
-    loadAgreements();
+    
 };
+
+let agreementsListenerStarted = false;
+
+function loadAgreements() {
+    if (agreementsListenerStarted) return;
+    agreementsListenerStarted = true;
+    
+    onSnapshot(collection(db, "agreements"), (snapshot) => {
+        allAgreements = [];
+        
+        snapshot.forEach((docSnap) => {
+            allAgreements.push({
+                id: docSnap.id,
+                ...docSnap.data()
+            });
+        });
+        
+        agreementsCount.innerText = allAgreements.length;
+        renderAgreements(allAgreements);
+    });
+}
 </script>
 
 </body>
