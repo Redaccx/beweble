@@ -4663,58 +4663,73 @@ function loadNotifications() {
             const data = docSnap.data();
             
             list.innerHTML += `
-       <div class="notification-card"
-style="padding:16px 0;border-bottom:1px solid rgba(255,255,255,0.08);">
+<div class="notification-card"
+style="padding:16px;border-bottom:1px solid rgba(255,255,255,0.08);">
 
-    <h4 style="margin-bottom:6px;">${data.title}</h4>
+    <!-- header -->
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
 
-    <p style="margin-bottom:10px;color:#cfcfcf;">
+        <h4 style="margin:0;font-size:16px;">
+            ${data.title}
+        </h4>
+
+        ${data.link ? `
+            <a href="${data.link}" target="_blank" style="text-decoration:none;">
+                <span style="
+                    padding:6px 10px;
+                    border-radius:999px;
+                    background:rgba(99,102,241,0.15);
+                    color:#a5b4fc;
+                    font-size:12px;
+                    border:1px solid rgba(99,102,241,0.25);
+                    display:flex;
+                    align-items:center;
+                    gap:6px;
+                    cursor:pointer;
+                ">
+                    <i class="fa fa-link"></i>
+                    Link
+                </span>
+            </a>
+        ` : ""}
+
+    </div>
+
+    <!-- message -->
+    <p style="margin:10px 0 12px;color:#cfcfcf;font-size:14px;line-height:1.4;">
         ${data.message}
     </p>
 
-    ${data.link ? `
-        <a href="${data.link}" target="_blank">
-            <button style="
-                padding:8px 12px;
-                border:none;
-                border-radius:8px;
-                background:#6366f1;
-                color:white;
-                font-size:13px;
-                cursor:pointer;
-                margin-bottom:10px;
-            ">
-                Open Link
-            </button>
-        </a>
-    ` : ""}
-
+    <!-- footer -->
     <div style="
         display:flex;
         justify-content:space-between;
         align-items:center;
-        margin-top:8px;
     ">
 
         <div style="font-size:12px;color:#888;">
             ${new Date(data.time).toLocaleString()}
         </div>
 
-     <button onclick="deleteNotification('${docSnap.id}')"
-style="
-    padding:7px 10px;
-    border:none;
-    border-radius:8px;
-    background:rgba(239,68,68,0.15);
-    color:#ef4444;
-    font-size:13px;
-    cursor:pointer;
-    transition:.2s;
-"
-onmouseover="this.style.background='rgba(239,68,68,0.25)'"
-onmouseout="this.style.background='rgba(239,68,68,0.15)'">
-    <i class="fa fa-trash"></i>
-</button>
+        <button onclick="deleteNotification('${docSnap.id}')"
+        style="
+            width:34px;
+            height:34px;
+            border:none;
+            border-radius:10px;
+            background:rgba(239,68,68,0.12);
+            color:#ef4444;
+            cursor:pointer;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            transition:.2s;
+        "
+        onmouseover="this.style.background='rgba(239,68,68,0.25)'"
+        onmouseout="this.style.background='rgba(239,68,68,0.12)'">
+
+            <i class="fa fa-trash"></i>
+        </button>
 
     </div>
 </div>
