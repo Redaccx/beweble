@@ -769,9 +769,16 @@ const card = document.createElement("div");
 card.className="card";
 
 card.innerHTML=`
-<h3>🆔 ${r.requestId || r.id}</h3>
+<h3 style="display:flex;flex-direction:column;gap:4px;">
+    <span>🆔 ${r.requestId || r.id}</span>
+    <span style="font-size:13px;color:#9ca3af;font-weight:500;">
+        ${r.email || "-"}
+    </span>
+</h3>
 
 <div class="info"><b>User:</b> ${r.username || "-"}</div>
+
+
 
 <div class="info"><b>Email:</b> ${r.newemail || "-"}</div>
 
@@ -949,6 +956,7 @@ function renderAgreements(data) {
 
 
 /* LOAD USERS */
+let usersMap = {};
 async function loadUsers() {
     
     usersContainer.innerHTML = "";
@@ -965,6 +973,7 @@ if (usersCount) {
 const userData = userDoc.data();
         
         const user = userDoc.data();
+        usersMap[user.uid] = user;
         const disabled = user.disabled === true;const createdDate = user.createdAt ?
     new Date(user.createdAt).toLocaleString() :
     "-";
@@ -1223,13 +1232,24 @@ deleteId=null;
 };
 
 /* SEARCH */
-searchInput.addEventListener("input",e=>{
-const q = e.target.value.toLowerCase();
-
-render(all.filter(r =>
-(r.username||"").toLowerCase().includes(q) ||
-(r.requestId||"").toLowerCase().includes(q)
-));
+searchInput.addEventListener("input", e => {
+    const q = e.target.value.trim().toLowerCase();
+    
+    const filtered = all.filter(r => {
+        
+        const username = (r.username || "").toLowerCase();
+        const id = (r.requestId || r.id || "").toLowerCase();
+        
+        const email = (usersMap[r.uid]?.email || "").toLowerCase();
+        
+        return (
+            username.includes(q) ||
+            id.includes(q) ||
+            email.includes(q)
+        );
+    });
+    
+    render(filtered);
 });
 window.showPage = (page) => {
     
