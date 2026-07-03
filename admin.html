@@ -515,6 +515,20 @@ placeholder="Search appeal by username or email">
 
         </div>
 
+<div>
+
+    <label class="notifyLabel">
+        <i class="fa-solid fa-link"></i>
+        Link (optional)
+    </label>
+
+    <input
+    id="notifyLink"
+    class="searchBox"
+    style="margin:0;width:100%;"
+    placeholder="https://example.com">
+
+</div>
         <div>
 
             <label class="notifyLabel">
@@ -678,6 +692,7 @@ const appealsCount = document.getElementById("appealsCount");
 const notifyEmail = document.getElementById("notifyEmail");
 const notifyTitle = document.getElementById("notifyTitle");
 const notifyMessage = document.getElementById("notifyMessage");
+const notifyLink = document.getElementById("notifyLink");
 const sendNotificationBtn = document.getElementById("sendNotificationBtn");
 const notificationsAdminContainer = document.getElementById("notificationsAdminContainer");
 const deleteAllNotificationsBtn =
@@ -1312,6 +1327,7 @@ sendNotificationBtn.onclick = async () => {
                 email: (user.email || "").toLowerCase(),
                 title,
                 message,
+                link: notifyLink.value.trim(),
                 time: Date.now(),
                 read: false
             });
@@ -1342,6 +1358,7 @@ sendNotificationBtn.onclick = async () => {
             email,
             title,
             message,
+            link: notifyLink.value.trim(),
             time: Date.now(),
             read: false
         });
