@@ -4104,6 +4104,7 @@ const phone = countryCode + phoneNumber;
         
      const data = {
     uid: user.uid,
+    email: user.email,
     requestId,
     username,
     newemail,
@@ -4117,6 +4118,7 @@ const phone = countryCode + phoneNumber;
     status: "Pending",
     createdAt: Date.now()
 };
+
 
 await setDoc(doc(db, "requests", requestId), data);
 await setDoc(doc(db, "agreements", requestId), data);
