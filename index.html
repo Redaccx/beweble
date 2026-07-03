@@ -2925,10 +2925,16 @@ document.getElementById("disabledDate").innerText =
         if (data.disabled === true) {
             
             appState.disabled = true;
-            
-            await signOut(auth);
-            
-            updateMenu(null);
+
+const email = user.email.toLowerCase();
+
+const appealSnap = await getDoc(
+    doc(db, "appeals", email)
+);
+
+await signOut(auth);
+
+updateMenu(null);
             document.documentElement.style.visibility = "visible";
             
             document.querySelectorAll(".card, #homePage").forEach(e => {
@@ -2945,6 +2951,23 @@ document.getElementById("disabledDate").innerText =
         day: "numeric"
     });
 
+
+const btn = document.getElementById("appealBtn");
+
+if (appealSnap.exists()) {
+    btn.innerHTML =
+        `<i class="fa-solid fa-magnifying-glass"></i> Check Result`;
+    
+    btn.onclick = () => {
+        openAppealPopupOnly();
+        startLiveStatus(email);
+    };
+} else {
+    btn.innerHTML =
+        `<i class="fa-solid fa-gavel"></i> Appeal Account`;
+    
+    btn.onclick = openAppealPopup;
+}
 return;
 }
 
@@ -4079,7 +4102,7 @@ const phone = countryCode + phoneNumber;
     
     try {
         
-     await setDoc(doc(db, "requests", requestId), {
+     const data = {
     uid: user.uid,
     requestId,
     username,
@@ -4093,21 +4116,10 @@ const phone = countryCode + phoneNumber;
     agreedAt: Date.now(),
     status: "Pending",
     createdAt: Date.now()
-});
+};
 
-/* 🔥 ADD THIS */
-await setDoc(doc(db, "agreements", requestId), {
-    uid: user.uid,
-    requestId,
-    username,
-    newemail,
-    phone,
-    platform,
-    problemType,
-    details,
-    signature: window.userSignature,
-    agreedAt: Date.now()
-});
+await setDoc(doc(db, "requests", requestId), data);
+await setDoc(doc(db, "agreements", requestId), data);
         
         resultBox.style.display = "block";
         resultBox.innerHTML = `
