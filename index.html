@@ -4663,17 +4663,61 @@ function loadNotifications() {
             const data = docSnap.data();
             
             list.innerHTML += `
-                <div class="notification-card" style="padding:18px 0;border-bottom:1px solid rgba(255,255,255,0.08);">
-                    <h4>${data.title}</h4>
-                    <p>${data.message}</p>
-                    <div class="notification-time">
-                        ${new Date(data.time).toLocaleString()}
-                    </div>
+       <div class="notification-card"
+style="padding:16px 0;border-bottom:1px solid rgba(255,255,255,0.08);">
 
-                  <button class="notification-delete"onclick="deleteNotification('${docSnap.id}')">
-                        Delete
-                    </button>
-                </div>
+    <h4 style="margin-bottom:6px;">${data.title}</h4>
+
+    <p style="margin-bottom:10px;color:#cfcfcf;">
+        ${data.message}
+    </p>
+
+    ${data.link ? `
+        <a href="${data.link}" target="_blank">
+            <button style="
+                padding:8px 12px;
+                border:none;
+                border-radius:8px;
+                background:#6366f1;
+                color:white;
+                font-size:13px;
+                cursor:pointer;
+                margin-bottom:10px;
+            ">
+                Open Link
+            </button>
+        </a>
+    ` : ""}
+
+    <div style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin-top:8px;
+    ">
+
+        <div style="font-size:12px;color:#888;">
+            ${new Date(data.time).toLocaleString()}
+        </div>
+
+     <button onclick="deleteNotification('${docSnap.id}')"
+style="
+    padding:7px 10px;
+    border:none;
+    border-radius:8px;
+    background:rgba(239,68,68,0.15);
+    color:#ef4444;
+    font-size:13px;
+    cursor:pointer;
+    transition:.2s;
+"
+onmouseover="this.style.background='rgba(239,68,68,0.25)'"
+onmouseout="this.style.background='rgba(239,68,68,0.15)'">
+    <i class="fa fa-trash"></i>
+</button>
+
+    </div>
+</div>
             `;
         });
     });
