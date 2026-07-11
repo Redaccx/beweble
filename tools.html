@@ -1137,86 +1137,61 @@ white-space: normal;
   overflow: hidden;
 }
 
-#authOverlay::before {
-  content: "";
-  position: absolute;
-  width: 400px;
-  height: 400px;
-  background: rgba(18, 18, 18, .9);
-  filter: blur(180px);
-  opacity: .35;
-  animation: pulseBg 3s infinite;
+#authOverlay{
+position:fixed;
+inset:0;
+background:#020617;
+display:flex;
+justify-content:center;
+align-items:center;
+z-index:999999;
+transition:.5s;
 }
 
-.loader {
-  position: relative;
-  width: 170px;
-  height: 170px;
+.loaderBox{
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:18px;
 }
 
-.loader-ring {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background:
-    conic-gradient(transparent 0deg,
-      transparent 180deg,
-      #60a5fa 250deg,
-      #a855f7 320deg,
-      #60a5fa 360deg);
-  animation: spin 1.5s linear infinite;
+.loaderBox i{
+font-size:60px;
+color:#6366f1;
+animation:pulse 1.2s infinite;
 }
 
-.loader-ring::before {
-  content: "";
-  position: absolute;
-  inset: 12px;
-  background: radial-gradient(circle at top left, #1f2140 0%, #0b0b0b 40%),
-    #0b0b0b;
-  ;
-  border-radius: 50%;
+.loaderBox h2{
+font-size:30px;
+font-weight:700;
+letter-spacing:1px;
 }
 
-.loader-center {
-  position: absolute;
-  inset: 30px;
-  background: rgba(255, 255, 255, .05);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, .08);
-  border-radius: 50%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 2;
-  box-shadow: 0 0 40px rgba(96, 165, 250, .25);
+.loaderBar{
+width:220px;
+height:6px;
+background:rgba(255,255,255,.08);
+border-radius:20px;
+overflow:hidden;
 }
 
-.loader-text {
-  color: #fff;
-  font-size: 22px;
-  font-weight: 700;
-  letter-spacing: 4px;
-  margin-bottom: 8px;
+.loaderBar span{
+display:block;
+height:100%;
+width:40%;
+background:linear-gradient(90deg,#6366f1,#a855f7);
+border-radius:20px;
+animation:loading 1.2s linear infinite;
 }
 
-.loader-center span {
-  color: #94a3b8;
-  font-size: 13px;
-  letter-spacing: 2px;
+@keyframes loading{
+0%{transform:translateX(-120%);}
+100%{transform:translateX(320%);}
 }
 
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes pulseBg {
-  50% {
-    transform: scale(1.2);
-    opacity: .5;
-  }
+@keyframes pulse{
+0%,100%{transform:scale(1);}
+50%{transform:scale(1.15);}
 }
 </style>
 </head>
@@ -1245,13 +1220,14 @@ white-space: normal;
 </div>
 <!-- 🔐 AUTH OVERLAY -->
 <div id="authOverlay">
-    <div class="loader">
-        <div class="loader-ring"></div>
-        <div class="loader-center">
-        
-            <span>Loading</span>
-        </div>
+  <div class="loaderBox">
+    <i class="fa-solid fa-bolt"></i>
+    <h2>Beweble</h2>
+    
+    <div class="loaderBar">
+      <span></span>
     </div>
+  </div>
 </div>
 
 <!-- 🔥 APP CONTENT -->
@@ -1403,7 +1379,76 @@ white-space: normal;
 <script type="module">
 
 
-const _0xff4dea=_0x16fc;function _0x9c40(){const _0x5efee6=['beweble.firebaseapp.com','users','search','306DLDVqX','display','slice','35466uLRSZz','none','432HJxoWq','1116522yHqZfI','index.html','184003889465','1:184003889465:web:6426d12aca892d95c600e8','toLowerCase','getElementById','appContent','authOverlay','style','value','3955rMbGYa','AIzaSyCjmJBV_GKL4MLYQGr3DWOOAWwK4V8AHtU','input','12047KZfvjS','uid','href','15BcGwAN','489627ilXrrv','exists','beweble.firebasestorage.app','687224vJomhm','20czVgOc','145143mvTKra','target'];_0x9c40=function(){return _0x5efee6;};return _0x9c40();}function _0x16fc(_0x564137,_0x4cb324){_0x564137=_0x564137-0x72;const _0x9c40f1=_0x9c40();let _0x16fc66=_0x9c40f1[_0x564137];return _0x16fc66;}(function(_0x3d5d03,_0x44a0ea){const _0x56d041=_0x16fc,_0x3aeab4=_0x3d5d03();while(!![]){try{const _0xe3a7=parseInt(_0x56d041(0x7e))/0x1+-parseInt(_0x56d041(0x86))/0x2*(parseInt(_0x56d041(0x78))/0x3)+parseInt(_0x56d041(0x7c))/0x4+parseInt(_0x56d041(0x72))/0x5*(-parseInt(_0x56d041(0x83))/0x6)+parseInt(_0x56d041(0x75))/0x7*(-parseInt(_0x56d041(0x88))/0x8)+parseInt(_0x56d041(0x79))/0x9*(parseInt(_0x56d041(0x7d))/0xa)+-parseInt(_0x56d041(0x89))/0xb;if(_0xe3a7===_0x44a0ea)break;else _0x3aeab4['push'](_0x3aeab4['shift']());}catch(_0x53ff21){_0x3aeab4['push'](_0x3aeab4['shift']());}}}(_0x9c40,0x18fa9));import{initializeApp}from'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';import{getAuth,onAuthStateChanged}from'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';import{getFirestore,collection,addDoc,onSnapshot,deleteDoc,doc,serverTimestamp,updateDoc,query,orderBy,increment,getDoc,setDoc}from'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';const firebaseConfig={'apiKey':_0xff4dea(0x73),'authDomain':_0xff4dea(0x80),'projectId':'beweble','storageBucket':_0xff4dea(0x7b),'messagingSenderId':_0xff4dea(0x8b),'appId':_0xff4dea(0x8c)},app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app);let filter='all',searchText='',unsubscribe=null,editingId=null,currentToolId=null,toolOwnerId=null,editingCommentId=null,editingCommentToolId=null;onAuthStateChanged(auth,async _0x47af81=>{const _0x4f4536=_0xff4dea,_0x46ec4a=document[_0x4f4536(0x8e)](_0x4f4536(0x90)),_0x469fe9=document[_0x4f4536(0x8e)](_0x4f4536(0x8f));if(!_0x47af81){window['location'][_0x4f4536(0x77)]=_0x4f4536(0x8a);return;}const _0x3e5f57=doc(db,_0x4f4536(0x81),_0x47af81[_0x4f4536(0x76)]),_0x3c70fc=await getDoc(_0x3e5f57);!_0x3c70fc[_0x4f4536(0x7a)]()&&await setDoc(_0x3e5f57,{'username':'User_'+_0x47af81['uid'][_0x4f4536(0x85)](0x0,0x6)}),_0x46ec4a[_0x4f4536(0x91)]['display']=_0x4f4536(0x87),_0x469fe9[_0x4f4536(0x91)][_0x4f4536(0x84)]='block',loadTools(),document[_0x4f4536(0x8e)](_0x4f4536(0x82))['addEventListener'](_0x4f4536(0x74),_0x5a07ae=>{const _0x10fc8c=_0x4f4536;searchText=_0x5a07ae[_0x10fc8c(0x7f)][_0x10fc8c(0x92)][_0x10fc8c(0x8d)](),loadTools();});});
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  onSnapshot,
+  deleteDoc,
+  doc,
+  serverTimestamp,
+  updateDoc,
+  query,
+  orderBy,
+  increment,
+  getDoc,
+  setDoc
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCjmJBV_GKL4MLYQGr3DWOOAWwK4V8AHtU",
+  authDomain: "beweble.firebaseapp.com",
+  projectId: "beweble",
+  storageBucket: "beweble.firebasestorage.app",
+  messagingSenderId: "184003889465",
+  appId: "1:184003889465:web:6426d12aca892d95c600e8"
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+let filter = "all";
+let searchText = "";
+let unsubscribe = null;
+let editingId = null;
+let currentToolId = null;
+let toolOwnerId = null;
+let editingCommentId = null;
+let editingCommentToolId = null;
+
+/* AUTH CHECK */
+onAuthStateChanged(auth, async (user) => {
+  const overlay = document.getElementById("authOverlay");
+  const appContent = document.getElementById("appContent");
+  
+  if (!user) {
+    window.location.href = "index.html";
+    return;
+  }
+  
+  // 🔥 إنشاء username أول مرة فقط
+  const userRef = doc(db, "users", user.uid);
+  const snap = await getDoc(userRef);
+  
+  if (!snap.exists()) {
+    await setDoc(userRef, {
+  username: "User_" + user.uid.slice(0, 6)
+});
+  }
+  
+  overlay.style.display = "none";
+  appContent.style.display = "block";
+  
+  loadTools();
+  
+  document.getElementById("search").addEventListener("input", (e) => {
+    searchText = e.target.value.toLowerCase();
+    loadTools();
+  });
+});
+
 /* POPUP */
 window.openPopup = ()=>{
 document.getElementById("popup").style.display="flex";
