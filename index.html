@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>Update Loading</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Outfit',sans-serif;
+}
+
+body{
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:#020617;
+color:white;
+overflow:hidden;
+}
+
+
+body::before{
+content:"";
+position:absolute;
+inset:0;
+
+background:
+radial-gradient(circle at 20% 20%,rgba(138,43,226,.3),transparent 40%),
+radial-gradient(circle at 80% 70%,rgba(0,245,255,.2),transparent 40%);
+
+filter:blur(45px);
+}
+
+
+.card{
+
+position:relative;
+
+text-align:center;
+
+padding:40px 30px;
+
+border-radius:24px;
+
+width:90%;
+max-width:420px;
+
+background:rgba(17,24,39,.7);
+
+backdrop-filter:blur(20px);
+
+border:1px solid rgba(255,255,255,.1);
+
+box-shadow:
+0 25px 80px rgba(0,0,0,.6);
+
+animation:float 3s infinite ease-in-out;
+
+}
+
+
+@keyframes float{
+
+50%{
+transform:translateY(-10px);
+}
+
+}
+
+
+h1{
+
+font-size:34px;
+
+background:linear-gradient(90deg,#8a2be2,#00f5ff);
+
+-webkit-background-clip:text;
+
+-webkit-text-fill-color:transparent;
+
+margin-bottom:15px;
+
+}
+
+
+
+p{
+
+color:#a1a1aa;
+
+font-size:15px;
+
+}
+
+
+
+.timer{
+
+margin-top:25px;
+
+font-size:30px;
+
+font-weight:700;
+
+color:#00f5ff;
+
+}
+
+
+
+.loading{
+
+margin:25px auto;
+
+width:230px;
+
+height:7px;
+
+background:rgba(255,255,255,.1);
+
+border-radius:20px;
+
+overflow:hidden;
+
+}
+
+
+
+.loading span{
+
+display:block;
+
+height:100%;
+
+width:40%;
+
+background:linear-gradient(
+90deg,
+#8a2be2,
+#00f5ff
+);
+
+border-radius:20px;
+
+animation:load 1.2s infinite linear;
+
+}
+
+
+
+@keyframes load{
+
+0%{
+transform:translateX(-120%);
+}
+
+100%{
+transform:translateX(300%);
+}
+
+}
+
+
+
+.done{
+
+display:none;
+
+font-size:22px;
+
+color:#22c55e;
+
+font-weight:700;
+
+margin-top:20px;
+
+}
+
+
+
+button{
+
+margin-top:20px;
+
+padding:12px 20px;
+
+border:none;
+
+border-radius:14px;
+
+cursor:pointer;
+
+background:linear-gradient(
+90deg,
+#8a2be2,
+#00f5ff
+);
+
+color:white;
+
+font-weight:700;
+
+}
+
+
+
+button:hover{
+
+transform:scale(1.05);
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="card">
+
+<h1 id="title">
+Coming Soon 🚀
+</h1>
+
+
+<p id="text">
+We are uploading a new update.<br>
+Please wait until the release time.
+</p>
+
+
+
+<div class="timer" id="timer">
+00:00:00
+</div>
+
+
+
+<div class="loading" id="loading">
+
+<span></span>
+
+</div>
+
+
+
+<div class="done" id="done">
+
+✅ تم رفع التحديث بنجاح
+
+</div>
+
+
+
+<button onclick="location.href='index.html'">
+
+Back
+
+</button>
+
+
+</div>
+
+
+
+<script>
+
+// توقيت لبنان 🇱🇧
+function getLebanonTime(){
+
+    return new Date(
+        new Date().toLocaleString("en-US", {
+            timeZone: "Asia/Beirut"
+        })
+    );
+
+}
+
+
+// موعد التحديث
+// غداً الساعة 10:00 صباحاً بتوقيت لبنان
+
+// موعد التحديث: الساعة 10:00 صباحاً بتوقيت لبنان 🇱🇧
+
+let target = getLebanonTime();
+
+target.setHours(10, 0, 0, 0);
+
+// إذا انتهى وقت اليوم، اجعل الموعد غداً
+if (target <= getLebanonTime()) {
+    target.setDate(target.getDate() + 1);
+}
+
+
+function updateTimer(){
+
+
+    let current = getLebanonTime();
+
+    let diff = target - current;
+
+
+
+    if(diff <= 0){
+
+
+        document.getElementById("timer").style.display = "none";
+
+        document.getElementById("loading").style.display = "none";
+
+
+        document.getElementById("done").style.display = "block";
+
+
+        document.getElementById("title").innerHTML =
+        "Update Completed 🚀";
+
+
+        document.getElementById("text").innerHTML =
+        "تم رفع التحديث الجديد بنجاح";
+
+
+        return;
+
+    }
+
+
+
+    let hours = Math.floor(
+        diff / (1000 * 60 * 60)
+    );
+
+
+    let minutes = Math.floor(
+        (diff % (1000 * 60 * 60)) / (1000 * 60)
+    );
+
+
+    let seconds = Math.floor(
+        (diff % (1000 * 60)) / 1000
+    );
+
+
+
+    document.getElementById("timer").innerHTML =
+
+    String(hours).padStart(2,"0")
+    + ":"
+    +
+    String(minutes).padStart(2,"0")
+    + ":"
+    +
+    String(seconds).padStart(2,"0");
+
+
+}
+
+
+
+setInterval(updateTimer,1000);
+
+updateTimer();
+
+
+</script>
+
+</body>
+</html>
